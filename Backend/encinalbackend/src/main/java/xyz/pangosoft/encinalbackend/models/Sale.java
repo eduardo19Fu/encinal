@@ -37,7 +37,7 @@ public class Sale implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Status status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terrain_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Terrain terrain;
