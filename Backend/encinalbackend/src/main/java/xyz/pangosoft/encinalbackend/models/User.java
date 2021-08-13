@@ -1,10 +1,16 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
     private String username;
     private String password;
@@ -12,7 +18,19 @@ public class User implements Serializable {
     private String middleName;
     private String lastName;
     private boolean enabled;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
+    @PrePersist
+    public void configCreatedAt(){
+        this.createdAt = new Date();
+        this.enabled = true;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -76,6 +94,14 @@ public class User implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     private static final long serialVersionUID = 1L;

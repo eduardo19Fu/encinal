@@ -1,0 +1,36 @@
+package xyz.pangosoft.encinalbackend.services.implementations;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import xyz.pangosoft.encinalbackend.models.Terrain;
+import xyz.pangosoft.encinalbackend.repositories.ITerrainRepository;
+import xyz.pangosoft.encinalbackend.services.ITerrainService;
+
+import java.util.List;
+
+@Service
+public class TerrainServiceImpl implements ITerrainService {
+
+    @Autowired
+    private ITerrainRepository terrainRepository;
+
+    @Override
+    public List<Terrain> listTerrains() {
+        return terrainRepository.findAll();
+    }
+
+    @Override
+    public Terrain singleTerrain(Integer idTerrain) {
+        return terrainRepository.findById(idTerrain).orElse(null);
+    }
+
+    @Override
+    public Terrain save(Terrain terrain) {
+        return terrainRepository.save(terrain);
+    }
+
+    @Override
+    public void delete(Integer idTerrain) {
+        terrainRepository.deleteById(idTerrain);
+    }
+}

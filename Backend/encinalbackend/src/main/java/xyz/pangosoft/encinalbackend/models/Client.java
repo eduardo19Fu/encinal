@@ -1,11 +1,17 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@Table(name = "clients")
 public class Client implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer clientId;
+
     private String firstName;
     private String middleName;
     private String lastName;
@@ -13,9 +19,17 @@ public class Client implements Serializable {
     private String id;
     private String telNumber;
     private String email;
-    private Date birthDate;
-    private Date createdAt;
     private String address;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
+    private Status status;
 
     public Integer getClientId() {
         return clientId;
@@ -103,6 +117,14 @@ public class Client implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     private static final long serialVersionUID = 1L;
