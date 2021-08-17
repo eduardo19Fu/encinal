@@ -1,11 +1,34 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "clients")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "clientRegister",
+                procedureName = "SP_CLIENT_REGISTER",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PFIRST_NAME", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PMIDDLE_NAME", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PLAST_NAME", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PNIT", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PID", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PIDENTIFICACION", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PIDENTIFICATION_TYPE_ID", type = Integer.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PTEL_NUMBER", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PEMAIL", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PBIRTH_DATE", type = Date.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PADDRESS", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "PSTATUS_ID", type = Integer.class),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, name = "PMESSAGE", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, name = "PERROR", type = String.class)
+                })
+})
 public class Client implements Serializable {
 
     @Id
@@ -29,7 +52,13 @@ public class Client implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "identification_type_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private IdentificationType identificationType;
 
     public Integer getClientId() {
         return clientId;
@@ -125,6 +154,14 @@ public class Client implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public IdentificationType getIdentificationType() {
+        return identificationType;
+    }
+
+    public void setIdentificationType(IdentificationType identificationType) {
+        this.identificationType = identificationType;
     }
 
     private static final long serialVersionUID = 1L;
