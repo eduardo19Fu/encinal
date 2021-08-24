@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.Client;
+import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.services.IClientService;
+import xyz.pangosoft.encinalbackend.services.IStatusService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,9 @@ public class ClientApiController {
 
     @Autowired
     private IClientService clientService;
+
+    @Autowired
+    private IStatusService statusService;
 
     @GetMapping("/clients")
     public List<Client> index() {
@@ -54,6 +59,7 @@ public class ClientApiController {
 
         Map<String, Object> response = new HashMap<>();
         Client newClient = null;
+        Status status = null;
 
         // ERRORS HANDLER
         if (result.hasErrors()) {
@@ -66,6 +72,8 @@ public class ClientApiController {
         }
 
         try {
+            status = statusService.singleStatus(5);
+            client.setStatus(status);
             newClient = clientService.save(client);
         } catch(DataAccessException e) {
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
@@ -79,7 +87,7 @@ public class ClientApiController {
         }
 
         response.put("message", "¡El cliente ha sido registrado con éxito!");
-        response.put("client", newClient);
+        response.put("client", newClient);  
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 

@@ -3,6 +3,7 @@ package xyz.pangosoft.encinalbackend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,6 +17,9 @@ public class Seller implements Serializable {
     private String firstName;
     private String middleName;
     private String lastName;
+
+    @NotNull(message = "El campo teléfono es obligatorio!")
+    private String telefono;
 
     @Temporal(TemporalType.DATE)
     private Date contractDate;
@@ -66,6 +70,14 @@ public class Seller implements Serializable {
 
     public void setContractDate(Date contractDate) {
         this.contractDate = contractDate;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public Double getBaseSalary() {

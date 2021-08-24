@@ -1,0 +1,79 @@
+<!-- CREATE BLOCK MODAL -->
+<app-create-block [block]="block"></app-create-block>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success"
+                    data-toggle="modal" data-target="#modal-lg">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Manzanas Disponibles
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="blocks?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ninguna manzana registrada en la Base de Datos!
+        </div>
+
+        <table id="blocks" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm" role="grid"
+            *ngIf="blocks?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Número de Manzana</th>
+                    <th>Capacidad</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let block of blocks">
+                    <td>{{block.blockId}}</td>
+                    <td>{{block.blockNumber}}</td>
+                    <td>{{block.capacity}}</td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-warning margin" type="button" name="edit" 
+                            data-toggle="tooltip" data-placement="top" title="Editar" [routerLink]="['/admin/blocks/update', block.blockId]">
+
+                            <i class="fas fa-edit"></i>
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-danger margin" type="button" name="delete" (click)="delete(marca)"
+                            data-toggle="tooltip" data-placement="top" title="Eliminar">
+
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Número de Manzana</th>
+                    <th>Capacidad</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

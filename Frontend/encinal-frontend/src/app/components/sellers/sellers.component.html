@@ -1,0 +1,89 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/admin/sellers/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Vendedores
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="sellers?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún vendedor registrado en la Base de Datos!
+        </div>
+
+        <table id="sellers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm" role="grid"
+            *ngIf="sellers?.length > 0 || sellers">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellidos(s)</th>
+                    <th>Fecha de Contratación</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let seller of sellers">
+                    <td>{{seller.sellerId}}</td>
+                    <td>{{seller.firstName}}</td>
+                    <td>{{seller.middleName}}</td>
+                    <td>{{seller.lastName}}</td>
+                    <td>{{seller.contractDate | date: 'dd-mm-yyyy'}}</td>
+                    <td>{{seller.status.status}}</td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-info margin" type="button" name="info"
+                            data-toggle="tooltip" data-placement="top" title="Información">
+                            <i class="fas fa-info-circle"></i>
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-warning margin" type="button" name="edit" 
+                            data-toggle="tooltip" data-placement="top" title="Editar" [routerLink]="['/admin/sellers/create', seller.sellerId]">
+
+                            <i class="fas fa-edit"></i>
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-danger margin" type="button" name="delete" (click)="delete(seller)"
+                            data-toggle="tooltip" data-placement="top" title="Eliminar">
+
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellidos(s)</th>
+                    <th>Fecha de Contratación</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

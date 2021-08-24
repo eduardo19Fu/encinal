@@ -1,0 +1,45 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/admin/blocks/index']">Manzanas</a></li>
+                    <li class="breadcrumb-item active">Registrar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="col-sm-6">
+    <div class="card card-maroon">
+        <div class="card-header">
+            <h3 class="card-title">Actualización de Manzana</h3>
+        </div>
+        <form action="">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="block-number">Número de Manzana</label>
+                        <input type="text" name="block-number" id="block-number" class="form-control" [(ngModel)]="block.blockNumber">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="capacity">Capacidad</label>
+                        <input type="number" name="capacity" id="capacity" class="form-control" [(ngModel)]="block.capacity">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="card-footer">
+            <button type="submit" class="btn bg-gradient-warning" (click)="update()">Actualizar</button>
+        </div>
+    </div>
+</div>  

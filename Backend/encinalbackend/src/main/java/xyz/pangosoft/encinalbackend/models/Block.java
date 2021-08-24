@@ -1,5 +1,7 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,6 +26,11 @@ public class Block implements Serializable {
     private String blockNumber;
     private Integer capacity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Status status;
+
     public Integer getBlockId() {
         return blockId;
     }
@@ -46,6 +53,14 @@ public class Block implements Serializable {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     private static final long serialVersionUID = 1L;

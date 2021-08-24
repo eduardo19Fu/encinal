@@ -5,10 +5,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;   
 
 import xyz.pangosoft.encinalbackend.models.Block;
+import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.services.IBlockService;
+import xyz.pangosoft.encinalbackend.services.IStatusService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,9 @@ public class BlockApiController {
 
     @Autowired
     private IBlockService blockService;
+
+    @Autowired
+    private IStatusService statusService;
 
     @GetMapping("/blocks")
     public List<Block> index(){
@@ -54,6 +59,7 @@ public class BlockApiController {
     public ResponseEntity<?> create(@RequestBody Block block, BindingResult result) {
 
         Block newBlock = null;
+        Status status = null;
         Map<String, Object> response = new HashMap<>();
 
         // ERRORS HANDLER
@@ -67,6 +73,8 @@ public class BlockApiController {
         }
 
         try {
+            status = statusService.singleStatus(8);
+            block.setStatus(status);
             newBlock = blockService.save(block);
         } catch(DataAccessException e) {
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");

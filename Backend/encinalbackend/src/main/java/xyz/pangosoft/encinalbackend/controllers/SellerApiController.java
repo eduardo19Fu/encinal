@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.Seller;
+import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.services.ISellerService;
+import xyz.pangosoft.encinalbackend.services.IStatusService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,9 @@ public class SellerApiController {
 
     @Autowired
     private ISellerService sellerService;
+
+    @Autowired
+    private IStatusService statusService;
 
     @GetMapping("/sellers")
     public List<Seller> index() {
@@ -54,6 +59,7 @@ public class SellerApiController {
 
         Map<String, Object> response = new HashMap<>();
         Seller newSeller = null;
+        Status status = null;
 
         if(result.hasErrors()) {
             List<String> errors = result.getFieldErrors().stream()
@@ -65,7 +71,10 @@ public class SellerApiController {
         }
 
         try {
-            newSeller = sellerService.save(seller);
+            status = this.statusService.singleStatus(1);
+            seller.setStatus(status);
+            seller.setSalesQuantity(0);
+            newSeller = this.sellerService.save(seller);
         } catch(DataAccessException e) {
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

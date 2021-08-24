@@ -1,0 +1,92 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/admin/clients/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Clientes
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="clients?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún cliente registrada en la Base de Datos!
+        </div>
+
+        <table id="clients" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="clients?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellidos(s)</th>
+                    <th>NIT</th>
+                    <th>Dirección</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    <td>{{client.clientId}}</td>
+                    <td>{{client.firstName}}</td>
+                    <td>{{client.middleName}}</td>
+                    <td>{{client.lastName}}</td>
+                    <td>{{client.nit}}</td>
+                    <td>{{client.address}}</td>
+                    <td>{{client.status.status}}</td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-info margin" type="button" name="info" data-toggle="tooltip"
+                            data-placement="top" title="Información">
+                            <i class="fas fa-info-circle"></i>
+                        </button>&nbsp;
+
+                        <a class="btn bg-gradient-warning margin" type="button" name="edit" data-toggle="tooltip"
+                            data-placement="top" title="Editar" [routerLink]="['/admin/clients/create', client.clientId]">
+
+                            <i class="fas fa-edit"></i>
+                        </a>&nbsp;
+
+                        <button class="btn bg-gradient-danger margin" type="button" name="delete"
+                            (click)="delete(marca)" rel="tooltip" data-placement="top" title="Eliminar">
+
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellidos(s)</th>
+                    <th>NIT</th>
+                    <th>Dirección</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

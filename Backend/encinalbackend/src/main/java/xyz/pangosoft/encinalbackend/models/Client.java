@@ -60,6 +60,11 @@ public class Client implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private IdentificationType identificationType;
 
+    @PrePersist
+    public void initConfig() {
+        this.createdAt = new Date();
+    }
+
     public Integer getClientId() {
         return clientId;
     }
