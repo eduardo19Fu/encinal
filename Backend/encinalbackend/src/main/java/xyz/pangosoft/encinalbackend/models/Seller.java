@@ -19,7 +19,7 @@ public class Seller implements Serializable {
     private String lastName;
 
     @NotNull(message = "El campo teléfono es obligatorio!")
-    private String telefono;
+    private String telNumber;
 
     @Temporal(TemporalType.DATE)
     private Date contractDate;
@@ -72,12 +72,12 @@ public class Seller implements Serializable {
         this.contractDate = contractDate;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getTelNumber() {
+        return telNumber;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setTelNumber(String telNumber) {
+        this.telNumber = telNumber;
     }
 
     public Double getBaseSalary() {

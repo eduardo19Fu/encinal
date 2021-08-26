@@ -1,6 +1,3 @@
-<!-- SELLERS DETAIL MODAL -->
-<app-detail-seller [seller]="seller"></app-detail-seller>
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -19,21 +16,21 @@
 
 <div class="card">
     <div class="card-header">
-        Listado de Vendedores
+        Listado de Lotes
     </div>
     <div class="card-body table-responsive">
 
-        <div *ngIf="sellers?.length == 0" class="alert alert-info alert-dismissible">
+        <div *ngIf="terrains?.length == 0" class="alert alert-info alert-dismissible">
             <h5>
                 <i class="icon fas fa-info"></i>
                 Atención!
             </h5>
 
-            No existe ningún vendedor registrado en la Base de Datos!
+            No existe ningún lote registrado en la Base de Datos!
         </div>
 
-        <table id="sellers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm" role="grid"
-            *ngIf="sellers?.length > 0 || sellers">
+        <table id="terrains" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm" role="grid"
+            *ngIf="terrains?.length > 0">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -46,7 +43,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let seller of sellers">
+                <tr *ngFor="let terrain of terrains">
                     <td>{{seller.sellerId}}</td>
                     <td>{{seller.firstName}}</td>
                     <td>{{seller.middleName}}</td>
@@ -59,18 +56,21 @@
                     <td class="center-options">
 
                         <button class="btn bg-gradient-info" type="button" name="info"
-                            data-toggle="modal" data-target="#modal-detail" (click)="sellerDetail(seller)">
+                            data-toggle="modal" data-target="#modal-detail">
+
                             <i class="fas fa-info-circle"></i>
                             Detalle
                         </button>&nbsp;
 
                         <button class="btn bg-gradient-warning" type="button" name="edit" 
                                 [routerLink]="['/admin/sellers/create', seller.sellerId]">
+
                             <i class="fas fa-edit"></i>
                             Editar
                         </button>&nbsp;
 
                         <button class="btn bg-gradient-danger" type="button" name="delete" (click)="delete(seller)">
+
                             <i class="fas fa-trash-alt"></i>
                             Inactivar
                         </button>

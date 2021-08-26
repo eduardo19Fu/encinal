@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-warning elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a [routerLink]="['/']" class="brand-link">
         <img src="assets/images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">Encinal</span>
@@ -22,7 +22,7 @@
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
                         <i class="fas fa-search fa-fw"></i>
@@ -37,12 +37,22 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 
                 <!-- SALES AND TERRAINS MENUS -->
-                <!-- SALES ITEM -->
+                <!-- TERRAINS ITEM -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-bacteria" [ngClass]="{'active': router.url.startsWith('/sales')}"></i>
+                    <a [routerLink]="['/terrains/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/terrains')}">
+                        <i class="nav-icon fas fa-bacteria"></i>
                         <p>
                             Lotes
+                        </p>
+                    </a>
+                </li>
+
+                <!-- SALES ITEM -->
+                <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/sales')}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p>
+                            Ventas
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -50,9 +60,7 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Listado
-                                </p>
+                                <p>Ventas Realizadas</p>
                             </a>
                         </li>
                     </ul>

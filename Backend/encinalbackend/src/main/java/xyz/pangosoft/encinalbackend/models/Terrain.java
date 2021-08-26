@@ -1,5 +1,7 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -17,10 +19,12 @@ public class Terrain implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Block block;
 
     public Integer getTerrainId() {

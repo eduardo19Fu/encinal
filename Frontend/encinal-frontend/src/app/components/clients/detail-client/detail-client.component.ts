@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Client } from '../../../models/client';
 
 @Component({
   selector: 'app-detail-client',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailClientComponent implements OnInit {
 
-  constructor() { }
+  title: string;
+  @Input() client: Client;
+
+  constructor() {
+    this.title = 'Detalle de Cliente';
+  }
 
   ngOnInit(): void {
   }

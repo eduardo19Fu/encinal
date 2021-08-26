@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Client } from 'src/app/models/client';
 import { ClientService } from '../../services/client-service/client.service';
 import { JqueryConfigs } from '../../utils/jquery-utils';
@@ -10,10 +10,11 @@ import { JqueryConfigs } from '../../utils/jquery-utils';
   ]
 })
 
-export class ClientsComponent implements OnInit {
+export class ClientsComponent implements OnInit, AfterViewInit{
 
   title: string;
   clients: Client[];
+  client: Client;
 
   jqueryConfigs: JqueryConfigs;
 
@@ -21,11 +22,15 @@ export class ClientsComponent implements OnInit {
     private clientService: ClientService
   ) {
     this.title = 'Clientes';
+    this.client = new Client();
     this.jqueryConfigs = new JqueryConfigs();
   }
 
   ngOnInit(): void {
     this.getClients();
+  }
+
+  ngAfterViewInit(): void{
   }
 
   getClients(): void {
@@ -35,6 +40,10 @@ export class ClientsComponent implements OnInit {
         this.jqueryConfigs.configDataTable('clients');
       }
     );
+  }
+
+  clientDetail(clientLoaded: Client): void{
+    this.client = clientLoaded;
   }
 
 }

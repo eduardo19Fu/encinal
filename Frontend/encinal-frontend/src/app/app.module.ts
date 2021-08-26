@@ -21,6 +21,8 @@ import { IdentificationTypesComponent } from './components/identification-types/
 import { DetailSellerComponent } from './components/sellers/detail-seller/detail-seller.component';
 import { CreateIdentificationTypeComponent } from './components/identification-types/create-identification-type/create-identification-type.component';
 import { UpdateBlockComponent } from './components/blocks/update-block/update-block.component';
+import { TerrainsComponent } from './components/terrains/terrains.component';
+import { CreateTerrainComponent } from './components/terrains/create-terrain/create-terrain.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { UpdateBlockComponent } from './components/blocks/update-block/update-bl
     IdentificationTypesComponent,
     DetailSellerComponent,
     CreateIdentificationTypeComponent,
-    UpdateBlockComponent
+    UpdateBlockComponent,
+    TerrainsComponent,
+    CreateTerrainComponent
   ],
   imports: [
     BrowserModule,

@@ -49,16 +49,16 @@
                     <td>{{type.name}}</td>
                     <td class="center-options">
 
-                        <button class="btn bg-gradient-warning margin" type="button" name="edit" 
-                            data-toggle="tooltip" data-placement="top" title="Editar" [routerLink]="['/admin/blocks/update', block.blockId]">
+                        <button class="btn bg-gradient-warning" type="button" name="edit">
 
                             <i class="fas fa-edit"></i>
+                            Editar
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger margin" type="button" name="delete" (click)="delete(marca)"
-                            data-toggle="tooltip" data-placement="top" title="Eliminar">
+                        <button class="btn bg-gradient-danger" type="button" name="delete" (click)="delete(type)">
 
                             <i class="fas fa-trash-alt"></i>
+                            Eliminar
                         </button>
                     </td>
                 </tr>

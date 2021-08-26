@@ -1,1 +1,65 @@
-<p>detail-client works!</p>
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header header-color">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="width: auto;">
+                    <ul class="list-group list-group-flush" *ngIf="client.clientId">
+                        <li class="list-group-item active">
+                            <strong>ID: </strong>
+                            {{client.clientId}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Nombre Completo: </strong>
+                            {{client.firstName + ' ' + client.middleName + ' ' + client.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>NIT: </strong>
+                            {{client.nit}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Identificación: </strong>
+                            {{client.id}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Tipo de Identificación: </strong>
+                            {{client.identificationType.name}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Número de Teléfono: </strong>
+                            {{client.telNumber}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Correo Electrónico: </strong>
+                            {{client.email}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Fecha de Nacimiento: </strong>
+                            {{client.birthDate | date: 'dd-MM-YYYY'}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Dirección: </strong>
+                            {{client.address}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Fecha de Registro: </strong>
+                            {{client.createdAt}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Estado: </strong>
+                            {{client.status.status}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

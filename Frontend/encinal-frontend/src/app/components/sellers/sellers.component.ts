@@ -14,6 +14,7 @@ export class SellersComponent implements OnInit, AfterViewInit {
   title: string;
 
   sellers: Seller[];
+  seller: Seller;
   jqueryConfigs: JqueryConfigs;
 
   constructor(
@@ -21,6 +22,7 @@ export class SellersComponent implements OnInit, AfterViewInit {
   ) {
     this.title = 'Vendedores';
     this.jqueryConfigs = new JqueryConfigs();
+    this.seller = new Seller();
   }
 
   ngOnInit(): void {
@@ -38,6 +40,11 @@ export class SellersComponent implements OnInit, AfterViewInit {
         this.jqueryConfigs.configToolTip();
       }
     );
+  }
+
+  sellerDetail(seller: Seller): void{
+    this.seller = seller;
+    console.log(this.seller);
   }
 
 }

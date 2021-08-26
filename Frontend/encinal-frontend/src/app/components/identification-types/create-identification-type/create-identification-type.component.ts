@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IdentificationType } from '../../../models/identification-type';
 import { IdentificationTypeService } from '../../../services/identification-type-service/identification-type.service';
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-identification-type',
@@ -13,7 +16,8 @@ export class CreateIdentificationTypeComponent implements OnInit {
   @Input() identificationType: IdentificationType;
 
   constructor(
-    private identificationTypeService: IdentificationTypeService
+    private identificationTypeService: IdentificationTypeService,
+    private router: Router
   ) {
     this.title = 'Registrar Tipo de Identificación';
   }
@@ -21,6 +25,13 @@ export class CreateIdentificationTypeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  create(): void{}
+  create(): void{
+    this.identificationTypeService.create(this.identificationType).subscribe(
+      response => {
+        this.router.navigate(['/admin/identification-types/index']);
+        Swal.fire(response.message, `¡El tipo de documento ${response.identificationType.name} ha sido registrado con éixto!`, 'success');
+      }
+    );
+  }
 
 }

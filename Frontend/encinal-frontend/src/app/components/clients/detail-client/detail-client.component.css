@@ -1,3 +1,9 @@
 .header-color{
     background-color: brown;
+    color: white;
+}
+
+.card-header{
+    background-color: cadetblue;
+    color: white;
 }

@@ -9,7 +9,7 @@ export class Seller {
     contractDate: Date;
     baseSalary: number;
     salesQuantity: number;
-    telefono: string;
+    telNumber: string;
 
     status: Status;
 }

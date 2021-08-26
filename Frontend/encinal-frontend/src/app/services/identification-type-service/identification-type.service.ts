@@ -37,4 +37,13 @@ export class IdentificationTypeService {
       })
     );
   }
+
+  delete(id: number): Observable<any>{
+    return this.httpClient.delete<any>(`${this.url}/identifications/${id}`, {headers: this.httpHeaders}).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error);
+        return throwError(e);
+      })
+    );
+  }
 }

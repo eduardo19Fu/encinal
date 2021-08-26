@@ -1,3 +1,6 @@
+<!-- CLIENT DETAIL MODAL -->
+<app-detail-client [client]="client"></app-detail-client>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -36,8 +39,7 @@
                     <th>ID</th>
                     <th>Primer Nombre</th>
                     <th>Segundo Nombre</th>
-                    <th>Apellidos(s)</th>
-                    <th>NIT</th>
+                    <th>Apellido (s)</th>
                     <th>Dirección</th>
                     <th>Estado</th>
                     <th>Opciones</th>
@@ -50,26 +52,36 @@
                     <td>{{client.firstName}}</td>
                     <td>{{client.middleName}}</td>
                     <td>{{client.lastName}}</td>
-                    <td>{{client.nit}}</td>
                     <td>{{client.address}}</td>
-                    <td>{{client.status.status}}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{'badge-danger': client.status.status == 'Moroso', 
+                                                        'badge-success': client.status.status == 'Activo',
+                                                        'badge-dark': client.status.status == 'Inactivo'}">
+                            {{client.status.status}}
+                        </span>
+                    </td>
                     <td class="center-options">
 
-                        <button class="btn bg-gradient-info margin" type="button" name="info" data-toggle="tooltip"
-                            data-placement="top" title="Información">
+                        <button class="btn bg-gradient-info" type="button" name="info" data-toggle="modal"
+                            data-target="#modal-detail" (click)="clientDetail(client)">
                             <i class="fas fa-info-circle"></i>
+                            Detalle
                         </button>&nbsp;
 
-                        <a class="btn bg-gradient-warning margin" type="button" name="edit" data-toggle="tooltip"
-                            data-placement="top" title="Editar" [routerLink]="['/admin/clients/create', client.clientId]">
-
+                        <button class="btn bg-gradient-warning" type="button" name="edit"
+                            [routerLink]="['/admin/clients/create', client.clientId]"
+                            [disabled]="client.status.status == 'Inactivo'">
+                            
                             <i class="fas fa-edit"></i>
-                        </a>&nbsp;
+                            Editar
+                        </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger margin" type="button" name="delete"
-                            (click)="delete(marca)" rel="tooltip" data-placement="top" title="Eliminar">
-
-                            <i class="fas fa-trash-alt"></i>
+                        <button class="btn bg-gradient-danger" type="button" name="delete"
+                            (click)="delete(marca)" 
+                            [disabled]="client.status.status == 'Inactivo' || client.status.status == 'Moroso'">
+                            
+                            <i class="fas fa-ban"></i>
+                            Desactivar
                         </button>
                     </td>
                 </tr>
@@ -80,8 +92,7 @@
                     <th>ID</th>
                     <th>Primer Nombre</th>
                     <th>Segundo Nombre</th>
-                    <th>Apellidos(s)</th>
-                    <th>NIT</th>
+                    <th>Apellido (s)</th>
                     <th>Dirección</th>
                     <th>Estado</th>
                     <th>Opciones</th>

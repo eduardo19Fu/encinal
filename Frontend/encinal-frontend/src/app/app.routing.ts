@@ -10,11 +10,17 @@ import { BlocksComponent } from './components/blocks/blocks.component';
 import { CreateBlockComponent } from './components/blocks/create-block/create-block.component';
 import { IdentificationTypesComponent } from './components/identification-types/identification-types.component';
 import { UpdateBlockComponent } from './components/blocks/update-block/update-block.component';
+import { TerrainsComponent } from './components/terrains/terrains.component';
+import { CreateTerrainComponent } from './components/terrains/create-terrain/create-terrain.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
     {path: '', component: HomeComponent},
     {path: 'home', component: HomeComponent},
+
+    /*********** PATH FOR TERRAINS PAGES  *************/
+    {path: 'terrains/index', component: TerrainsComponent},
+    {path: 'terrains/create', component: CreateTerrainComponent},
 
     /*********** PATH FOR ADMIN PAGES  *************/
     // Clients

@@ -70,7 +70,7 @@
                         <div class="form-group">
                             <label for="telefono">Telefono</label>
                             <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ingrese un número de teléfono"
-                                [(ngModel)]="seller.telefono" required #telefono="ngModel">
+                                [(ngModel)]="seller.telNumber" required #telefono="ngModel">
 
                             <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
                                 <span class="requerido" *ngIf="telefono.errors.required">
