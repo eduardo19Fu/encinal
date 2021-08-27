@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Terrain } from 'src/app/models/terrain';
 import { TerrainService } from '../../services/terrain-service/terrain.service';
+
 import { JqueryConfigs } from '../../utils/jquery-utils';
 
 @Component({

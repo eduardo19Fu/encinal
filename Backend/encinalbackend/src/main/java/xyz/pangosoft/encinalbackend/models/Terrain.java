@@ -3,6 +3,7 @@ package xyz.pangosoft.encinalbackend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -12,10 +13,16 @@ public class Terrain implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer terrainId;
+    @NotNull(message = "El número de Lote es obligatorio.")
     private String terrainNumber;
+    @NotNull(message = "El precio del Lote es obligatorio.")
     private Double price;
+    @NotNull(message = "El largo del Lote es obligatorio.")
     private Double height;
+    @NotNull(message = "El ancho del Lote es obligatorio.")
     private Double weight;
+    @NotNull(message = "El área del Lote es obligatorio.")
+    private Double area;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
@@ -65,6 +72,14 @@ public class Terrain implements Serializable {
 
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public Double getArea() {
+        return area;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
     }
 
     public Status getStatus() {

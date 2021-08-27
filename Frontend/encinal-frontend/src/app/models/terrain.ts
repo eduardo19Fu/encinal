@@ -8,6 +8,7 @@ export class Terrain {
     price: number;
     height: number;
     weight: number;
+    area: number;
 
     status: Status;
     block: Block;

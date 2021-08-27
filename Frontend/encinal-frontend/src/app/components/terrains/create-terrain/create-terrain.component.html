@@ -1,1 +1,130 @@
-<p>create-terrain works!</p>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/terrains/index']">Lotes</a></li>
+                    <li class="breadcrumb-item active">Registrar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<hr>
+<!-- /.content-header -->
+
+
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #terrainForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="terrain-number">Número de Lote</label>
+                            <input type="text" name="terrain-number" id="terrain-number" class="form-control"
+                                [(ngModel)]="terrain.terrainNumber" placeholder="Ingrese el número de lote"
+                                required #terrainNumber="ngModel">
+                            
+                            <div *ngIf="terrainNumber.invalid && (terrainNumber.dirty || terrainNumber.touched)">
+                                <span class="requerido" *ngIf="terrainNumber.errors.required">
+                                    El número de lote es un campo obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="block">Manzana</label>
+                            <select name="block" id="block" class="form-control" 
+                                [(ngModel)]="terrain.block" [compareWith]="">
+
+                                <option value="undefined">Seleccione una Manzana</option>
+                                <option *ngFor="let block of blocks" [ngValue]="block">{{block.blockNumber}}</option>
+                            </select>
+                            
+                            <div>
+                                <span class="requerido">
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="price">Precio</label>
+                            <input type="number" name="price" id="price" class="form-control"
+                                [(ngModel)]="terrain.price" placeholder="Ingrese el precio del lote"
+                                required #price="ngModel">
+                            
+                            <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                                <span class="requerido" *ngIf="price.errors.required">
+                                    El precio es un campo obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="height">Largo</label>
+                            <input type="number" name="height" id="height" class="form-control" 
+                                [(ngModel)]="terrain.height" placeholder="Ingrese el largo del lote."
+                                required #height="ngModel">
+
+                            <div *ngIf="height.invalid && (height.dirty || height.touched)">
+                                <span class="requerido" *ngIf="height.errors.required">
+                                    El largo es un campo obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="weight">Ancho</label>
+                            <input type="number" name="weight" id="weight" class="form-control"
+                                [(ngModel)]="terrain.weight" placeholder="Ingrese el ancho del lote."
+                                required #weight="ngModel">
+                            
+                            <div *ngIf="weight.invalid && (weight.dirty || weight.touched)">
+                                <span class="requerido" *ngIf="weight.errors.required">
+                                    El ancho es un campo obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="area">Área</label>
+                            <input type="number" name="area" id="area" class="form-control"
+                                [(ngModel)]="terrain.area" placeholder="Ingrese área del lote."
+                                required #area="ngModel">
+                            
+                            <div *ngIf="area.invalid && (area.dirty || area.touched)">
+                                <span class="requerido" *ngIf="area.errors.required">
+                                    El área es un campo obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn bg-gradient-success" (click)="create()" [disabled]="!terrainForm.form.valid">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

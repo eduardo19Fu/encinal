@@ -5,7 +5,7 @@
             <div class="col-sm-6">
                 <h1>{{title}}</h1>
                 <br>
-                <a class="btn bg-gradient-success" [routerLink]="['/admin/sellers/create']">
+                <a class="btn bg-gradient-success" [routerLink]="['/terrains/create']">
                     <i class="fas fa-plus-circle"></i>
                     Nuevo
                 </a>
@@ -33,37 +33,43 @@
             *ngIf="terrains?.length > 0">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Apellidos(s)</th>
+                    <th>Número de Lote</th>
+                    <th>Precio</th>
+                    <th>Largo</th>
+                    <th>Ancho</th>
+                    <th>Área</th>
+                    <th>Manzana</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr *ngFor="let terrain of terrains">
-                    <td>{{seller.sellerId}}</td>
-                    <td>{{seller.firstName}}</td>
-                    <td>{{seller.middleName}}</td>
-                    <td>{{seller.lastName}}</td>
+                    <td>{{terrain.terrainNumber}}</td>
+                    <td>{{terrain.price}}</td>
+                    <td>{{terrain.height}} mts</td>
+                    <td>{{terrain.weight}} mts</td>
+                    <td>{{terrain.area}} mts <sup>2</sup></td>
+                    <td>{{terrain.block.blockNumber}}</td>
                     <td>
-                        <span class="badge" [ngClass]="{'badge-success': seller.status.statusId === 1}">
-                            {{seller.status.status}}
+                        <span class="badge" [ngClass]="{'badge-success': terrain.status.statusId === 10,
+                                                        'badge-warning': terrain.status.statusId === 12,
+                                                        'badge-info': terrain.status.statusId === 11,
+                                                        'badge-danger': terrain.status.statusId === 13}">
+                            {{terrain.status.status}}
                         </span>
                     </td>
                     <td class="center-options">
 
-                        <button class="btn bg-gradient-info" type="button" name="info"
+                        <button class="btn bg-gradient-secondary" type="button" name="info"
                             data-toggle="modal" data-target="#modal-detail">
 
-                            <i class="fas fa-info-circle"></i>
-                            Detalle
+                            <i class="fas fa-share-square"></i>
+                            Vender
                         </button>&nbsp;
 
                         <button class="btn bg-gradient-warning" type="button" name="edit" 
-                                [routerLink]="['/admin/sellers/create', seller.sellerId]">
+                                [routerLink]="['/terrains/create', terrain.terrainId]">
 
                             <i class="fas fa-edit"></i>
                             Editar
@@ -77,13 +83,14 @@
                     </td>
                 </tr>
             </tbody>
-
             <tfoot>
                 <tr>
-                    <th>ID</th>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Apellidos(s)</th>
+                    <th>Número de Lote</th>
+                    <th>Precio</th>
+                    <th>Largo</th>
+                    <th>Ancho</th>
+                    <th>Área</th>
+                    <th>Manzana</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

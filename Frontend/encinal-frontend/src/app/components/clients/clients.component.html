@@ -54,9 +54,9 @@
                     <td>{{client.lastName}}</td>
                     <td>{{client.address}}</td>
                     <td>
-                        <span class="badge" [ngClass]="{'badge-danger': client.status.status == 'Moroso', 
-                                                        'badge-success': client.status.status == 'Activo',
-                                                        'badge-dark': client.status.status == 'Inactivo'}">
+                        <span class="badge" [ngClass]="{'badge-danger': client.status.status === 'Moroso', 
+                                                        'badge-success': client.status.status === 'Activo',
+                                                        'badge-dark': client.status.status === 'Inactivo'}">
                             {{client.status.status}}
                         </span>
                     </td>

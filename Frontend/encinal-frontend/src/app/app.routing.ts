@@ -21,6 +21,7 @@ const appRoutes: Routes = [
     /*********** PATH FOR TERRAINS PAGES  *************/
     {path: 'terrains/index', component: TerrainsComponent},
     {path: 'terrains/create', component: CreateTerrainComponent},
+    {path: 'terrains/create/:id', component: CreateTerrainComponent},
 
     /*********** PATH FOR ADMIN PAGES  *************/
     // Clients

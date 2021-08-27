@@ -19,7 +19,7 @@
 
 <div class="col-md-9">
 
-    <div class="card card-maroon">
+    <div class="card card-info">
         <div class="card-header">
             <h3 class="card-title">Formulario de Registro</h3>
         </div>
@@ -120,7 +120,8 @@
                                 [(ngModel)]="client.identificationType">
                                 <option [ngValue]="undefined">Seleccionar Tipo de Documento</option>
                                 <option *ngFor="let identification of identificationTypes" [ngValue]="identification">
-                                    {{identification.name}}</option>
+                                    {{identification.name}}
+                                </option>
                             </select>
                         </div>
                     </div>
