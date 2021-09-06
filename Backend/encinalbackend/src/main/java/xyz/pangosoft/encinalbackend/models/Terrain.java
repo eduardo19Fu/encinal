@@ -18,9 +18,9 @@ public class Terrain implements Serializable {
     @NotNull(message = "El precio del Lote es obligatorio.")
     private Double price;
     @NotNull(message = "El largo del Lote es obligatorio.")
-    private Double height;
+    private Double length;
     @NotNull(message = "El ancho del Lote es obligatorio.")
-    private Double weight;
+    private Double width;
     @NotNull(message = "El área del Lote es obligatorio.")
     private Double area;
 
@@ -58,20 +58,20 @@ public class Terrain implements Serializable {
         this.price = price;
     }
 
-    public Double getHeight() {
-        return height;
+    public Double getLength() {
+        return length;
     }
 
-    public void setHeight(Double height) {
-        this.height = height;
+    public void setLength(Double length) {
+        this.length = length;
     }
 
-    public Double getWeight() {
-        return weight;
+    public Double getWidth() {
+        return width;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setWidth(Double width) {
+        this.width = width;
     }
 
     public Double getArea() {

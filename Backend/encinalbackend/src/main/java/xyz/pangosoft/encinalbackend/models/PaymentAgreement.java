@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,10 @@ public class PaymentAgreement implements Serializable {
     @JoinColumn(name = "payment_agreement_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<Payment> payments;
+
+    public PaymentAgreement(){
+        this.payments = new ArrayList<>();
+    }
 
     public Integer getPaymentAgreementId() {
         return paymentAgreementId;

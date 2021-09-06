@@ -32,6 +32,24 @@ public class TerrainApiController {
         return this.terrainService.listTerrains();
     }
 
+    @GetMapping("/terrains/on-sale")
+    public ResponseEntity<?> listOnSale(){
+
+        Map<String, Object> response = new HashMap<>();
+        Status status = null;
+
+        try{
+            status = statusService.singleStatus(10);
+        }
+        catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<List<Terrain>>(this.terrainService.listTerrainsOnSale(status), HttpStatus.OK);
+    }
+
     @GetMapping("/terrains/{id}")
     public ResponseEntity<?> findTerrain(@PathVariable("id") Integer id){
 

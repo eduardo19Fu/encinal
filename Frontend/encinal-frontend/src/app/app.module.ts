@@ -23,6 +23,11 @@ import { CreateIdentificationTypeComponent } from './components/identification-t
 import { UpdateBlockComponent } from './components/blocks/update-block/update-block.component';
 import { TerrainsComponent } from './components/terrains/terrains.component';
 import { CreateTerrainComponent } from './components/terrains/create-terrain/create-terrain.component';
+import { SalesComponent } from './components/sales/sales.component';
+import { CreateSaleComponent } from './components/sales/create-sale/create-sale.component';
+import { Step1Component } from './components/sales/create-sale/steps/step1/step1.component';
+import { Step2Component } from './components/sales/create-sale/steps/step2/step2.component';
+import { Step3Component } from './components/sales/create-sale/steps/step3/step3.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,12 @@ import { CreateTerrainComponent } from './components/terrains/create-terrain/cre
     CreateIdentificationTypeComponent,
     UpdateBlockComponent,
     TerrainsComponent,
-    CreateTerrainComponent
+    CreateTerrainComponent,
+    SalesComponent,
+    CreateSaleComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component
   ],
   imports: [
     BrowserModule,

@@ -32,6 +32,23 @@ public class ClientApiController {
         return clientService.listClients();
     }
 
+    @GetMapping("/clients/active")
+    public ResponseEntity<?> activeClients(){
+
+        Status status = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            status = statusService.singleStatus(6);
+        }catch(DataAccessException e){
+            response.put("message", "¡Ha ocurddio un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<List<Client>>(clientService.listActiveClients(status), HttpStatus.OK);
+    }
+
     @GetMapping("/clients/{id}")
     public ResponseEntity<?> findClient(@PathVariable("id") Integer id) {
 

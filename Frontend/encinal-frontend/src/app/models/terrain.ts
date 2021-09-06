@@ -6,8 +6,8 @@ export class Terrain {
     terrainId: number;
     terrainNumber: string;
     price: number;
-    height: number;
-    weight: number;
+    length: number;
+    width: number;
     area: number;
 
     status: Status;

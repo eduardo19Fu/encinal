@@ -38,6 +38,9 @@
                 
                 <!-- SALES AND TERRAINS MENUS -->
                 <!-- TERRAINS ITEM -->
+                <li class="nav-header">
+                    Lotes
+                </li>
                 <li class="nav-item">
                     <a [routerLink]="['/terrains/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/terrains')}">
                         <i class="nav-icon fas fa-bacteria"></i>
@@ -48,8 +51,11 @@
                 </li>
 
                 <!-- SALES ITEM -->
+                <li class="nav-header">
+                    Ventas y Cuotas Niveladas
+                </li>
                 <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/sales')}">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/sales')}">
                         <i class="nav-icon fas fa-cart-arrow-down"></i>
                         <p>
                             Ventas
@@ -58,7 +64,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a [routerLink]="['/sales/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/sales')}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ventas Realizadas</p>
                             </a>
@@ -67,6 +74,9 @@
                 </li>
 
                 <!-- ADMIN MENU -->
+                <li class="nav-header">
+                    Items Administrativos
+                </li>
                 <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/admin')}">
                     <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin')}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -76,6 +86,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a [routerLink]="['/admin/clients/index']"
                                 class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/clients')}">

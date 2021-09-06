@@ -1,0 +1,19 @@
+.center-elements{
+    height: 75%;
+    float: none;
+    text-align: center;
+}
+
+.size{
+    width: 145px;
+    height: 110px;
+}
+
+.steps-images{
+    width: 100px;
+}
+
+.display-3{
+    font-family: fangsong;
+}
+

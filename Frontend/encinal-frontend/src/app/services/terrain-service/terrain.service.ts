@@ -21,12 +21,12 @@ export class TerrainService {
     this.url = global.url;
   }
 
-  getTerrains(): Observable<Terrain[]>{
-    return this.httpClient.get<Terrain[]>(`${this.url}/terrains`, {headers: this.httpHeaders});
+  getTerrains(): Observable<Terrain[]> {
+    return this.httpClient.get<Terrain[]>(`${this.url}/terrains`, { headers: this.httpHeaders });
   }
 
-  getTerrain(id: number): Observable<any>{
-    return this.httpClient.get<Terrain>(`${this.url}/terrains/${id}`, {headers: this.httpHeaders}).pipe(
+  getTerrainOnSale(): Observable<any> {
+    return this.httpClient.get<any>(`${this.url}/terrains/on-sale`, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -34,8 +34,8 @@ export class TerrainService {
     );
   }
 
-  create(terrain: Terrain): Observable<any>{
-    return this.httpClient.post<any>(`${this.url}/terrains`, terrain, {headers: this.httpHeaders}).pipe(
+  getTerrain(id: number): Observable<any> {
+    return this.httpClient.get<Terrain>(`${this.url}/terrains/${id}`, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -43,8 +43,17 @@ export class TerrainService {
     );
   }
 
-  update(terrain: Terrain): Observable<any>{
-    return this.httpClient.put<any>(`${this.url}/terrains`, terrain, {headers: this.httpHeaders}).pipe(
+  create(terrain: Terrain): Observable<any> {
+    return this.httpClient.post<any>(`${this.url}/terrains`, terrain, { headers: this.httpHeaders }).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
+  update(terrain: Terrain): Observable<any> {
+    return this.httpClient.put<any>(`${this.url}/terrains`, terrain, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

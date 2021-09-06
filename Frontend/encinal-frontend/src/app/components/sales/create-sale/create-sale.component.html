@@ -1,0 +1,39 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/sales/index']">Ventas</a></li>
+                    <li class="breadcrumb-item active">Elegir Tipo de Venta</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+
+<div class="container center-elements">
+    <button class="btn btn-app bg-gradient-blue size" [routerLink]="['/sales/create/step-1']" (click)="emitSaleType(1)">
+        Compra Directa
+    </button>
+    <button class="btn btn-app bg-gradient-blue size"
+        (click)="changeToCuotas()">
+        Cuotas Niveladas
+    </button>
+</div>
+
+<!-- STEP 1 -->
+    <app-step1 *ngIf="step1"></app-step1>
+<!-- STEP 2 -->
+
+<!-- END CASH PURCHASE -->
+
+<!-- LEVEL FEES SECTION -->
+<div *ngIf="!contado && cuotas">
+
+</div>

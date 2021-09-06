@@ -104,6 +104,14 @@ public class Sale implements Serializable {
         this.status = status;
     }
 
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
     private static final long serialVersionUID = 1L;
 
 }

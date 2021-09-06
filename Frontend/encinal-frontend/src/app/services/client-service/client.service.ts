@@ -34,6 +34,15 @@ export class ClientService {
     );
   }
 
+  getActiveCustomers(): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/clients/active`, {headers: this.httpHeaders}).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   create(client: Client): Observable<any>{
     return this.httpClient.post<any>(`${this.url}/clients`, client, {headers: this.httpHeaders}).pipe(
       catchError(e => {

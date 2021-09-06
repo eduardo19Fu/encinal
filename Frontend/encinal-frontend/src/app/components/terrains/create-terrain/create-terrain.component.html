@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="height">Largo</label>
                             <input type="number" name="height" id="height" class="form-control" 
-                                [(ngModel)]="terrain.height" placeholder="Ingrese el largo del lote."
+                                [(ngModel)]="terrain.length" placeholder="Ingrese el largo del lote."
                                 required #height="ngModel">
 
                             <div *ngIf="height.invalid && (height.dirty || height.touched)">
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label for="weight">Ancho</label>
                             <input type="number" name="weight" id="weight" class="form-control"
-                                [(ngModel)]="terrain.weight" placeholder="Ingrese el ancho del lote."
+                                [(ngModel)]="terrain.width" placeholder="Ingrese el ancho del lote."
                                 required #weight="ngModel">
                             
                             <div *ngIf="weight.invalid && (weight.dirty || weight.touched)">
