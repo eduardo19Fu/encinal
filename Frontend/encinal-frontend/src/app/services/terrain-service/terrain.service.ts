@@ -25,7 +25,7 @@ export class TerrainService {
     return this.httpClient.get<Terrain[]>(`${this.url}/terrains`, { headers: this.httpHeaders });
   }
 
-  getTerrainOnSale(): Observable<any> {
+  getTerrainsOnSale(): Observable<any> {
     return this.httpClient.get<any>(`${this.url}/terrains/on-sale`, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');

@@ -1,3 +1,9 @@
+<!-- SERACH CUSTOMER MODAL -->
+<app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+
+<!-- SEARCH SELLER MODAL -->
+<app-seller-searching (seller)="loadSeller($event)"></app-seller-searching>
+
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
@@ -8,7 +14,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a [routerLink]="['/sales/index']">Ventas</a></li>
-                    <li class="breadcrumb-item active">Elegir Tipo de Venta</li>
+                    <li class="breadcrumb-item active">Registrar Venta</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -16,24 +22,76 @@
 </div>
 <!-- /.content-header -->
 
+<form action="">
+    <div class="card">
+        <!-- <div class="card-header">
+            <h3 class="card-title">Formulario</h3>
+        </div> -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client" class="labels">Cliente</label>
+                        <input type="text" name="client" id="client" class="form-control inputs" disabled>
 
-<div class="container center-elements">
-    <button class="btn btn-app bg-gradient-blue size" [routerLink]="['/sales/create/step-1']" (click)="emitSaleType(1)">
-        Compra Directa
-    </button>
-    <button class="btn btn-app bg-gradient-blue size"
-        (click)="changeToCuotas()">
-        Cuotas Niveladas
-    </button>
-</div>
+                        <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal" data-target="#modal-customers">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
 
-<!-- STEP 1 -->
-    <app-step1 *ngIf="step1"></app-step1>
-<!-- STEP 2 -->
+                <div class="col">
+                    <div class="form-group">
+                        <label for="seller" class="labels">Vendedor</label>
+                        <input type="text" name="seller" id="seller" class="form-control inputs" disabled>
 
-<!-- END CASH PURCHASE -->
+                        <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal" data-target="#modal-sellers">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-<!-- LEVEL FEES SECTION -->
-<div *ngIf="!contado && cuotas">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="terrain" class="labels">Lote</label>
+                        <select name="terrain" id="terrain" class="form-control inputs"
+                            [(ngModel)]="sale.terrain" (ngModelChange)="mostrarTotal($event)">
+                            <option [ngValue]="undefined">Elija un lote</option>
+                            <option *ngFor="let terrain of terrains" [ngValue]="terrain">
+                                {{'Lote: ' + terrain.terrainNumber + ' | Manzana: ' + terrain.block.blockNumber}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
-</div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="sale-type" class="labels">Tipo de Venta</label>
+                        <select name="sale-type" id="sale-type" class="form-control inputs"
+                            [(ngModel)]="sale.saleType" (ngModelChange)="setSaleType($event)">
+                            <option [ngValue]="undefined">Elige un tipo de venta</option>
+                            <option *ngFor="let saleType of saleTypes" [ngValue]="saleType">
+                                {{saleType.saleType}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <h4 style="float: right;">Total: Q. <span *ngIf="terrain" id="total">{{terrain.price}}</span></h4>
+        </div>
+
+        <button class="btn bg-gradient-success" *ngIf="saleType?.saleTypeId === 1" [disabled]="!terrain || !customer || !seller"
+            (click)="createSale()">
+            Vender
+        </button>
+    </div>
+
+    <div *ngIf="saleType?.saleTypeId === 2">
+        Hola
+    </div>
+</form>

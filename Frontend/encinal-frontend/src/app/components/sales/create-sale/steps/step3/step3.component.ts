@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SaleType } from '../../../../../models/sale-type';
 import { Client } from '../../../../../models/client';
 import { Terrain } from '../../../../../models/terrain';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './step3.component.html',
   styleUrls: ['./step3.component.css']
 })
-export class Step3Component implements OnInit {
+export class Step3Component implements OnInit, OnDestroy {
 
   title: string;
 
@@ -35,6 +35,10 @@ export class Step3Component implements OnInit {
         console.log(this.customer);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionCustomer.unsubscribe();
   }
 
 }

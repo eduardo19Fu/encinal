@@ -9,13 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import xyz.pangosoft.encinalbackend.models.Sale;
-import xyz.pangosoft.encinalbackend.models.SaleType;
-import xyz.pangosoft.encinalbackend.models.Status;
-import xyz.pangosoft.encinalbackend.services.ISaleService;
-import xyz.pangosoft.encinalbackend.services.ISaleTypeService;
-import xyz.pangosoft.encinalbackend.services.IStatusService;
-import xyz.pangosoft.encinalbackend.services.ITerrainService;
+import xyz.pangosoft.encinalbackend.models.*;
+import xyz.pangosoft.encinalbackend.services.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +33,9 @@ public class SaleApiController {
 
     @Autowired
     private ISaleTypeService saleTypeService;
+
+    @Autowired
+    private ISellerService sellerService;
 
     @GetMapping("/sales")
     public List<Sale> index(){
@@ -71,13 +69,15 @@ public class SaleApiController {
         return new ResponseEntity<Sale>(sale, HttpStatus.OK);
     }
 
-    @PostMapping("/sales/{type}")
-    public ResponseEntity<?> create(@PathVariable("type") Integer type, @RequestBody Sale sale, BindingResult result){
+    @PostMapping("/sales")
+    public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 
         Map<String, Object> response = new HashMap<>();
         Sale newSale = null;
         Status status = null;
         SaleType saleType = null;
+        Terrain terrain = null;
+        Seller seller = null;
 
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream()
@@ -89,16 +89,16 @@ public class SaleApiController {
         }
 
         try{
-            if(type == 1){
-                status = statusService.singleStatus(14);
-                saleType = saleTypeService.singleSaleType(type);
+            if(sale.getSaleType().getSaleTypeId() == 1) {
+                sale.setStatus(statusService.singleStatus(14));
+                terrain = sale.getTerrain();
+                terrain.setStatus(statusService.singleStatus(11));
+                terrainService.save(terrain);
 
-                sale.setStatus(status);
-                sale.setSaleType(saleType);
                 newSale = saleService.save(sale);
-            } else if(type == 2){
-
             }
+
+
         } catch(DataAccessException e){
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

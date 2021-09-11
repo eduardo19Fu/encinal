@@ -1,0 +1,49 @@
+<div class="modal fade" id="modal-customers">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" id="button-x" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body table-responsive">
+                <table id="customers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+                role="grid" *ngIf="customers?.length > 0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of customers">
+                            <td>{{customer.clientId}}</td>
+                            <td>{{customer.firstName + ' ' + customer.lastName}}</td>
+                            <td>{{customer.id}}</td>
+                            <td>
+                                <button class="btn bg-gradient-cyan" (click)="chooseCustomer(customer)">
+                                    Elegir
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

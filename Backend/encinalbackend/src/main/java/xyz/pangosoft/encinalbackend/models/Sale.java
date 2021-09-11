@@ -20,6 +20,7 @@ public class Sale implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)

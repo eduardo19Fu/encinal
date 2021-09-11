@@ -17,3 +17,17 @@
     font-family: fangsong;
 }
 
+/* Form Renew */
+
+.labels{
+    display: block;
+}
+
+.inputs{
+    display: inline;
+    width: 75%;
+}
+
+.search-buttons{
+    margin-left: 5px;
+}

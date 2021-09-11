@@ -104,5 +104,11 @@ public class Seller implements Serializable {
         this.status = status;
     }
 
+    public Integer calculateSalesQuiantity(Seller seller, Integer newSale){
+        Integer actualSales = seller.getSalesQuantity();
+        Integer newSales = actualSales + newSale;
+        return newSales;
+    }
+
     private static final long serialVersionUID = 1L;
 }

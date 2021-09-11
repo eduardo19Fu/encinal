@@ -8,7 +8,7 @@ import { Client } from '../../models/client';
 export class Step1Service {
 
   saleType$ = new EventEmitter<SaleType>();
-  customer$ = new EventEmitter<Client>();
+  // customer$ = new EventEmitter<Client>();
 
   constructor() { }
 }

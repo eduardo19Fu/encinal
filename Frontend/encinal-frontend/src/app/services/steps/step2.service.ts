@@ -8,9 +8,9 @@ import { Terrain } from 'src/app/models/terrain';
 })
 export class Step2Service {
 
-  saleType$ = new EventEmitter<SaleType>();
+  // saleType$ = new EventEmitter<SaleType>();
   customer$ = new EventEmitter<Client>();
-  terrain$ = new EventEmitter<Terrain>();
+  // terrain$ = new EventEmitter<Terrain>();
 
   constructor() { }
 }

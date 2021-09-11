@@ -1,0 +1,52 @@
+<div class="modal fade" id="modal-sellers">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" id="button-y" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body table-responsive">
+                <table id="sellers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+                role="grid" *ngIf="sellers?.length > 0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Teléfono</th>
+                            <th>Ventas Realizadas</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let seller of sellers">
+                            <td>{{seller.sellerId}}</td>
+                            <td>{{seller.firstName + ' ' + seller.lastName}}</td>
+                            <td>{{seller.telNumber}}</td>
+                            <td>{{seller.salesQuantity}}</td>
+                            <td>
+                                <button class="btn bg-gradient-cyan" (click)="chooseSeller(seller)">
+                                    Elegir
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Teléfono</th>
+                            <th>Ventas Realizadas</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

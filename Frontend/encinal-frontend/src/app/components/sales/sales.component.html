@@ -59,34 +59,48 @@
     No existe ninguna venta registrada en la Base de Datos!
 </div>
 
-<div *ngFor="let sale of sales" class="accordion" id="accordionExample">
+<div *ngFor="let sale of sales; let i = index" class="accordion" id="accordionExample_{{i}}">
     <div class="card">
         <div class="card-header" id="headingOne">
             <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                    data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    [attr.data-target]="'#sale_' + sale.saleId" aria-expanded="false" aria-controls="collapseOne">
                     <i class="fas fa-chevron-down"></i>
-                    {{sale.saleDate}}
+                    {{sale.saleDate | date: 'dd/MM/yyyy HH:mm'}}
                 </button>
             </h2>
         </div>
 
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="sale_{{sale.saleId}}" class="collapse" aria-labelledby="headingOne" [attr.data-parent]="'#accordionExample_' + i">
             <div class="card-body">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
+                        <h5 class="card-title"><strong>Lote No.: {{sale.terrain.terrainNumber}}</strong></h5>
+                        <p class="card-text">
+
+                        </p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
+                        <li class="list-group-item">
+                            <strong>Vendedor: </strong>
+                            {{sale.seller.firstName + ' ' + sale.seller.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Cliente: </strong>
+                            {{sale.client.firstName + ' ' + sale.client.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Tipo de Venta: </strong>
+                            {{sale.saleType.saleType}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Estado: </strong>
+                            {{sale.status.status}}
+                        </li>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                        <a href="#" class="card-link" *ngIf="sale.saleType.saleTypeId === 2">Detalle</a>
+                        <a href="#" class="card-link">Anular</a>
                     </div>
                 </div>
             </div>

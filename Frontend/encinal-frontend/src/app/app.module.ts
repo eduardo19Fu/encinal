@@ -28,6 +28,8 @@ import { CreateSaleComponent } from './components/sales/create-sale/create-sale.
 import { Step1Component } from './components/sales/create-sale/steps/step1/step1.component';
 import { Step2Component } from './components/sales/create-sale/steps/step2/step2.component';
 import { Step3Component } from './components/sales/create-sale/steps/step3/step3.component';
+import { CustomerSearchingComponent } from './components/sales/modals/customer-searching/customer-searching.component';
+import { SellerSearchingComponent } from './components/sales/modals/seller-searching/seller-searching.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { Step3Component } from './components/sales/create-sale/steps/step3/step3
     CreateSaleComponent,
     Step1Component,
     Step2Component,
-    Step3Component
+    Step3Component,
+    CustomerSearchingComponent,
+    SellerSearchingComponent
   ],
   imports: [
     BrowserModule,

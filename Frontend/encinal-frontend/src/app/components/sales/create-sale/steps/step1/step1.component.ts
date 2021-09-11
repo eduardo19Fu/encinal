@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Client } from 'src/app/models/client';
 import { ClientService } from '../../../../../services/client-service/client.service';
 import { SaleType } from '../../../../../models/sale-type';
@@ -12,7 +12,7 @@ import { Step2Service } from '../../../../../services/steps/step2.service';
   templateUrl: './step1.component.html',
   styleUrls: ['./step1.component.css']
 })
-export class Step1Component implements OnInit {
+export class Step1Component implements OnInit, OnDestroy {
 
   title: string;
   customers: Client[];
@@ -37,10 +37,15 @@ export class Step1Component implements OnInit {
 
     this.subscriptionSaleType = this.step1Service.saleType$.subscribe(
       saleType => {
+        console.log(saleType);
         this.saleType = saleType;
         localStorage.setItem('sale-type', JSON.stringify(this.saleType));
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionSaleType.unsubscribe();
   }
 
   loadCustomers(): void{
@@ -53,11 +58,10 @@ export class Step1Component implements OnInit {
   }
 
   chooseCustomer(customerSelected: Client): void{
-    this.subscriptionSaleType.unsubscribe();
     this.step2Service.customer$.emit(customerSelected);
-    this.step2Service.saleType$.emit(this.saleType);
-    // console.log(customerSelected);
-    // console.log(this.saleType);
+    this.step1Service.saleType$.emit(this.saleType);
+    console.log(customerSelected);
+    console.log(this.saleType);
   }
 
 }

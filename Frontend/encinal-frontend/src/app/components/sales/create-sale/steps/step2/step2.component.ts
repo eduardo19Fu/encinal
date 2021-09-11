@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Step1Service } from '../../../../../services/steps/step1.service';
 import { SaleType } from '../../../../../models/sale-type';
 import { Client } from '../../../../../models/client';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.css']
 })
-export class Step2Component implements OnInit {
+export class Step2Component implements OnInit, OnDestroy {
 
   title: string;
   saleType: SaleType;
@@ -36,7 +36,7 @@ export class Step2Component implements OnInit {
   ngOnInit(): void {
     this.loadTarrainsOnSale();
 
-    this.subscriptionCustomer = this.step1Service.customer$.subscribe(
+    this.subscriptionCustomer = this.step2Service.customer$.subscribe(
       response => {
         this.customer = response;
         console.log(this.customer);
@@ -51,8 +51,13 @@ export class Step2Component implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+    this.subscriptionCustomer.unsubscribe();
+    this.subscriptionSaleType.unsubscribe();
+  }
+
   loadTarrainsOnSale(): void{
-    this.terrainService.getTerrainOnSale().subscribe(
+    this.terrainService.getTerrainsOnSale().subscribe(
       response => {
         this.terrains = response;
         this.jqueryConfigs.configDataTable('terrains');
@@ -61,11 +66,11 @@ export class Step2Component implements OnInit {
   }
 
   emitToStep3(terrain: Terrain): void{
-    this.subscriptionCustomer.unsubscribe();
-    this.subscriptionSaleType.unsubscribe();
-    this.step2Service.terrain$.emit(terrain);
-    this.step2Service.customer$.emit(this.customer);
-    this.step2Service.saleType$.emit(this.saleType);
+    // this.step2Service.terrain$.emit(terrain);
+    // console.log(this.customer);
+    // console.log(this.saleType);
+    // this.step2Service.customer$.emit(this.customer);
+    // this.step2Service.saleType$.emit(this.saleType);
   }
 
   emitToStep1(): void{}
