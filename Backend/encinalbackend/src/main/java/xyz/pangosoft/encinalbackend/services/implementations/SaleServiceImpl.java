@@ -9,6 +9,7 @@ import xyz.pangosoft.encinalbackend.models.Sale;
 import xyz.pangosoft.encinalbackend.repositories.ISaleRepository;
 import xyz.pangosoft.encinalbackend.services.ISaleService;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,6 +26,11 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public Page<Sale> listSales(Pageable pageable) {
         return saleRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Sale> listSalesByDate(Date initDate, Date endDate) {
+        return saleRepository.findBySaleDateBetween(initDate, endDate);
     }
 
     @Override

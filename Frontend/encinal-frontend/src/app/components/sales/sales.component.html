@@ -25,20 +25,20 @@
                     <div class="col">
                         <div class="from-grup">
                             <label for="init-date">Fecha Inicial</label>
-                            <input type="date" name="init-date" id="init-date" class="form-control">
+                            <input type="date" name="init-date" id="init-date" class="form-control" [(ngModel)]="iniDate">
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="end-date">Fecha Final</label>
-                            <input type="date" name="end-date" id="end-date" class="form-control">
+                            <input type="date" name="end-date" id="end-date" class="form-control" [(ngModel)]="endDate">
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn bg-gradient-gray">
+                        <button type="submit" class="btn bg-gradient-gray" (click)="loadSalesDate()">
                             <i class="fas fa-search"></i>
                             Buscar
                         </button>

@@ -30,6 +30,11 @@ import { Step2Component } from './components/sales/create-sale/steps/step2/step2
 import { Step3Component } from './components/sales/create-sale/steps/step3/step3.component';
 import { CustomerSearchingComponent } from './components/sales/modals/customer-searching/customer-searching.component';
 import { SellerSearchingComponent } from './components/sales/modals/seller-searching/seller-searching.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { LoginComponent } from './components/login/login.component';
+import { CreateUserComponent } from './components/usuarios/create-user/create-user.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +62,12 @@ import { SellerSearchingComponent } from './components/sales/modals/seller-searc
     Step2Component,
     Step3Component,
     CustomerSearchingComponent,
-    SellerSearchingComponent
+    SellerSearchingComponent,
+    UsuariosComponent,
+    LoginComponent,
+    CreateUserComponent,
+    PaymentsComponent,
+    CreatePaymentComponent
   ],
   imports: [
     BrowserModule,

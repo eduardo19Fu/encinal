@@ -52,6 +52,30 @@ export class JqueryConfigs {
         });
     }
 
+    // FEES TABLE
+    configFeesDataTable(nombreTabla: string): void {
+        $(() => {
+            $(`#${nombreTabla}`).DataTable({
+                destroy: true,
+                responsive: false,
+                lengthChange: true,
+                autoWidth: false,
+                buttons: [],
+                searching: false,
+                language: {
+                    lengthMenu: 'Mostrar _MENU_ registros',
+                    paginate: {
+                        first: 'Primero',
+                        last: 'Último',
+                        next: 'Siguiente',
+                        previous: 'Anterior'
+                    },
+                    info: 'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros'
+                }
+            }).buttons().container().appendTo('#' + nombreTabla + '_wrapper .col-md-6:eq(0)');
+        });
+    }
+
     // MÉTODO DE INICIALIZACION DE TOOLTIPS
     configToolTip(): void {
         $(() => {

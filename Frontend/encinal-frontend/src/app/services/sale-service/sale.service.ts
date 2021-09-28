@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -27,8 +27,12 @@ export class SaleService {
     return this.httpClient.get<Sale[]>(`${this.url}/sales`, {headers: this.httpHeaders});
   }
 
-  getSaleTypes(): Observable<SaleType[]>{
-    return this.httpClient.get<SaleType[]>(`${this.url}/sales/sales-types`, {headers: this.httpHeaders});
+  getSalesByDate(initDate: Date, endDate: Date): Observable<Sale[]>{
+    const httpParams = new HttpParams()
+                      .set('initDate', initDate.toString())
+                      .set('endDate', endDate.toString());
+
+    return this.httpClient.get<Sale[]>(`${this.url}/sales`, {params: httpParams, headers: this.httpHeaders});
   }
 
   create(sale: Sale): Observable<any>{
@@ -38,5 +42,10 @@ export class SaleService {
         return throwError(e);
       })
     );
+  }
+
+  // List Sale Types
+  getSaleTypes(): Observable<SaleType[]>{
+    return this.httpClient.get<SaleType[]>(`${this.url}/sales/sales-types`, {headers: this.httpHeaders});
   }
 }

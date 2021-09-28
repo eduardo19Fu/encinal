@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.*;
 import xyz.pangosoft.encinalbackend.services.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +41,22 @@ public class SaleApiController {
     private ISellerService sellerService;
 
     @GetMapping("/sales")
-    public List<Sale> index(){
-        return saleService.listSales();
+    public List<Sale> index(@RequestParam(required = false) String initDate, @RequestParam(required = false) String endDate) throws ParseException {
+
+        Date date1;
+        Date date2;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        if(initDate == null || endDate == null)
+            return saleService.listSales();
+        else{
+            System.out.println(initDate);
+            System.out.println(endDate);
+            date1 = format.parse(initDate);
+            date2 = format.parse(endDate);
+            return saleService.listSalesByDate(date1, date2);
+        }
     }
 
     @GetMapping("/sales/page/{page}")
@@ -93,6 +110,13 @@ public class SaleApiController {
                 sale.setStatus(statusService.singleStatus(14));
                 terrain = sale.getTerrain();
                 terrain.setStatus(statusService.singleStatus(11));
+                terrainService.save(terrain);
+
+                newSale = saleService.save(sale);
+            } else {
+                sale.setStatus(statusService.singleStatus(17));
+                terrain = sale.getTerrain();
+                terrain.setStatus(statusService.singleStatus(12));
                 terrainService.save(terrain);
 
                 newSale = saleService.save(sale);

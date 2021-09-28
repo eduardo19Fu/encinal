@@ -13,6 +13,9 @@ export class SalesComponent implements OnInit {
   title: string;
   sales: Sale[];
 
+  iniDate: Date;
+  endDate: Date;
+
   jqueryConfigs: JqueryConfigs;
 
   constructor(
@@ -23,11 +26,20 @@ export class SalesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadSales();
+    // this.loadSales();
   }
 
   loadSales(): void{
     this.saleService.getSales().subscribe(
+      sales => {
+        this.sales = sales;
+        this.jqueryConfigs.configDataTable('sales');
+      }
+    );
+  }
+
+  loadSalesDate(): void{
+    this.saleService.getSalesByDate(this.iniDate, this.endDate).subscribe(
       sales => {
         this.sales = sales;
         this.jqueryConfigs.configDataTable('sales');

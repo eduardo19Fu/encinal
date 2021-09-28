@@ -2,8 +2,8 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { SellerService } from 'src/app/services/seller-service/seller.service';
-import { TerrainService } from 'src/app/services/terrain-service/terrain.service';
+import { SellerService } from '../../../services/seller-service/seller.service';
+import { TerrainService } from '../../../services/terrain-service/terrain.service';
 import { SaleService } from '../../../services/sale-service/sale.service';
 import { Terrain } from '../../../models/terrain';
 import { Seller } from 'src/app/models/seller';
@@ -12,8 +12,15 @@ import { ClientService } from '../../../services/client-service/client.service';
 import { SaleTypeService } from '../../../services/sale-types-service/sale-type.service';
 import { SaleType } from '../../../models/sale-type';
 import { Sale } from '../../../models/sale';
+import { Payment } from '../../../models/payment';
+import { PaymentAgreement } from '../../../models/payment-agreement';
 
+import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
+import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
+
+declare const $: any;
+window['$'] = window['jQuery'] = $;
 
 @Component({
   selector: 'app-create-sale',
@@ -30,14 +37,25 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   sellers: Seller[];
   customers: Client[];
   saleTypes: SaleType[];
+  payments: Payment[] = [];
 
   customer: Client;
   saleType: SaleType;
   seller: Seller;
   sale: Sale;
   terrain: Terrain;
+  paymentAgreement: PaymentAgreement;
+  payment: Payment;
 
   saleTypeSubscription: Subscription;
+
+  paymentDate: Date;
+  years: number;
+  interestRate: number;
+  hitch: number; // Enganche
+  monthlyFee: number;
+
+  jqueryConfigs: JqueryConfigs = new JqueryConfigs();
 
   constructor(
     private saleService: SaleService,
@@ -45,10 +63,13 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     private sellerService: SellerService,
     private customerService: ClientService,
     private saleTypeService: SaleTypeService,
+    private paymentAgreementService: PaymentAgreementService,
     private router: Router
   ) {
     this.title = 'Venta';
     this.sale = new Sale();
+    this.paymentAgreement = new PaymentAgreement();
+    this.payments = [];
   }
 
   ngOnInit(): void {
@@ -103,7 +124,6 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   }
 
   mostrarTotal(event): void {
-    console.log(event);
     this.terrain = event;
   }
 
@@ -124,5 +144,90 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  /******* CUOTAS NIVELADAS ********/
+
+  calculateMonthlyFee(): void {
+    if (this.hitch >= 0) {
+      this.payments = [];
+      let interest: number; // El interés ingresado por el usuario
+      let months: number; // La cantidad de meses para los pagos
+
+      interest = (this.interestRate / 12) / 100;
+      months = this.years * 12;
+      console.log(this.years);
+      console.log(months);
+      let pv: number = this.terrain.price - this.hitch;
+
+      const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);
+      this.monthlyFee = pmt;
+
+      for (let i = 1; i <= months; i++) {
+        this.payment = new Payment();
+
+        this.payment.paymentNumber = i;
+        this.payment.interestRateGenerated = pv * interest;
+        this.payment.principalValue = pmt - this.payment.interestRateGenerated;
+        this.payment.paymentTotal = this.monthlyFee;
+
+        if (i === 1) {
+          this.payment.expireDate = this.paymentDate;
+        } else {
+          const newDate = new Date(this.paymentDate).setMonth(new Date(this.paymentDate).getMonth() + (i - 1));
+          this.payment.expireDate = new Date(newDate);
+        }
+        pv = pv - this.payment.principalValue;
+        if (pv < 0) {
+          this.payment.remainingBalance = 0;
+        } else {
+          this.payment.remainingBalance = pv;
+        }
+
+        this.payments.push(this.payment);
+
+      }
+      console.log(this.payments);
+      this.jqueryConfigs.configFeesDataTable('fees');
+    } else {
+      Swal.fire('Enganche Vacío', 'El valor del enganche no puede ser vacío, por favor ingrese un valor.', 'warning');
+    }
+  }
+
+  createFeesSale(): void {
+    if (this.terrain) {
+      this.sale.client = this.customer;
+      this.sale.seller = this.seller;
+      this.sale.total = this.terrain.price;
+
+      console.log(this.sale);
+      this.saleService.create(this.sale).subscribe(
+        response => {
+          this.paymentAgreement.payments = this.payments;
+          this.paymentAgreement.totalAgreement = this.calcularTotal(this.paymentAgreement);
+          this.paymentAgreement.sale = response.sale;
+          this.paymentAgreement.interestRate = this.interestRate;
+          this.paymentAgreement.totalPayments = this.paymentAgreement.payments.length;
+          console.log(this.paymentAgreement);
+
+          this.paymentAgreementService.create(this.paymentAgreement).subscribe(
+            res => {
+              this.router.navigate(['/sales/index']);
+              Swal.fire('Venta Realizada con éxito',
+                `Se ha creado con éxito el acuerdo de pagos`, 'success');
+            }
+          );
+          console.log(response);
+        }
+      );
+    }
+  }
+
+  calcularTotal(paymentAgreement: PaymentAgreement): number {
+    let sum = 0;
+    paymentAgreement.payments.forEach((e, index) => {
+      sum = sum + e.paymentTotal;
+    });
+    return sum;
   }
 }

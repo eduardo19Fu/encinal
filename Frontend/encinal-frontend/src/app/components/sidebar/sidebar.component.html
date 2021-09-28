@@ -52,7 +52,7 @@
 
                 <!-- SALES ITEM -->
                 <li class="nav-header">
-                    Ventas y Cuotas Niveladas
+                    Ventas y Pagos
                 </li>
                 <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/sales')}">
                     <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/sales')}">
@@ -65,9 +65,18 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a [routerLink]="['/sales/index']" class="nav-link"
-                                [ngClass]="{'active': router.url.startsWith('/sales')}">
+                                [ngClass]="{'active': router.url.startsWith('/sales/index')}">
+
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ventas Realizadas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a [routerLink]="['/sales/payments/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/sales/payments')}">
+
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pagos</p>
                             </a>
                         </li>
                     </ul>
@@ -87,7 +96,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a [routerLink]="['/admin/users/index']"
+                                class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/users')}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Usuarios</p>
                             </a>

@@ -17,6 +17,10 @@ import { CreateSaleComponent } from './components/sales/create-sale/create-sale.
 import { Step1Component } from './components/sales/create-sale/steps/step1/step1.component';
 import { Step2Component } from './components/sales/create-sale/steps/step2/step2.component';
 import { Step3Component } from './components/sales/create-sale/steps/step3/step3.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { CreateUserComponent } from './components/usuarios/create-user/create-user.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
@@ -29,13 +33,23 @@ const appRoutes: Routes = [
     {path: 'terrains/create/:id', component: CreateTerrainComponent},
 
     /*********** PATH FOR SALES PAGES  *************/
+    // Sales
     {path: 'sales/index', component: SalesComponent},
     {path: 'sales/create', component: CreateSaleComponent},
     {path: 'sales/create/step-1', component: Step1Component},
     {path: 'sales/create/step-2', component: Step2Component},
     {path: 'sales/create/step-3', component: Step3Component},
 
+    // Payments
+    {path: 'sales/payments/index', component: PaymentsComponent},
+    {path: 'sales/payments/create', component: CreatePaymentComponent},
+
     /*********** PATH FOR ADMIN PAGES  *************/
+    // Users
+    {path: 'admin/users/index', component: UsuariosComponent},
+    {path: 'admin/users/create', component: CreateUserComponent},
+    {path: 'admin/users/create/:id', component: CreateUserComponent},
+
     // Clients
     {path: 'admin/clients/index', component: ClientsComponent},
     {path: 'admin/clients/create', component: CreateClientComponent},
@@ -53,6 +67,8 @@ const appRoutes: Routes = [
 
     // Identification Types
     {path: 'admin/identification-types/index', component: IdentificationTypesComponent},
+
+    {path: '**', component: HomeComponent}
 ];
 
 export const appRoutingProviders: any[] = [];
