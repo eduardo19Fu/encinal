@@ -9,4 +9,6 @@ import java.util.List;
 public interface IClientRepository extends JpaRepository<Client, Integer> {
 
     List<Client> findByStatusNot(Status status);
+
+
 }

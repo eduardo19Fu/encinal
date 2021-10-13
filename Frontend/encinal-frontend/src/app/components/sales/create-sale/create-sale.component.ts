@@ -14,13 +14,10 @@ import { SaleType } from '../../../models/sale-type';
 import { Sale } from '../../../models/sale';
 import { Payment } from '../../../models/payment';
 import { PaymentAgreement } from '../../../models/payment-agreement';
+import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
 
 import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
-import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
-
-declare const $: any;
-window['$'] = window['jQuery'] = $;
 
 @Component({
   selector: 'app-create-sale',

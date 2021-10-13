@@ -23,11 +23,11 @@ export class PaymentAgreementService {
   }
 
   getPaymentAgreements(): Observable<PaymentAgreement[]> {
-    return this.httpClient.get<PaymentAgreement[]>(`${this.url}/payment-agreements`, { headers: this.httpHeaders });
+    return this.httpClient.get<PaymentAgreement[]>(`${this.url}/payment-agreements`);
   }
 
   getPaymentAgreement(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.url}/payment-agreements/${id}`, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get<any>(`${this.url}/payment-agreements/${id}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -36,7 +36,7 @@ export class PaymentAgreementService {
   }
 
   create(paymentAgreement: PaymentAgreement): Observable<any> {
-    return this.httpClient.post<any>(`${this.url}/payment-agreements`, paymentAgreement, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.post<any>(`${this.url}/payment-agreements`, paymentAgreement).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

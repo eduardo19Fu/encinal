@@ -54,14 +54,13 @@
                     <td class="center-options">
 
                         <button class="btn bg-gradient-warning margin" type="button" name="edit" 
-                            data-toggle="tooltip" data-placement="top" title="Editar" [routerLink]="['/admin/blocks/update', block.blockId]">
+                            [routerLink]="['/admin/blocks/update', block.blockId]">
 
                             <i class="fas fa-edit"></i>
                             Editar
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger margin" type="button" name="delete" (click)="delete(marca)"
-                            data-toggle="tooltip" data-placement="top" title="Eliminar">
+                        <button class="btn bg-gradient-danger margin" type="button" name="delete" (click)="delete(marca)">
 
                             <i class="fas fa-trash-alt"></i>
                             Eliminar

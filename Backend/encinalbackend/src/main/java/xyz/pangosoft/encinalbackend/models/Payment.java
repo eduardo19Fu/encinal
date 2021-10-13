@@ -91,5 +91,19 @@ public class Payment implements Serializable {
         this.paymentTotal = paymentTotal;
     }
 
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", paymentNumber=" + paymentNumber +
+                ", principalValue=" + principalValue +
+                ", interestRateGenerated=" + interestRateGenerated +
+                ", remainingBalance=" + remainingBalance +
+                ", paymentTotal=" + paymentTotal +
+                ", expireDate=" + expireDate +
+                ", status=" + status +
+                '}';
+    }
+
     private static final long serialVersionUID = 1L;
 }

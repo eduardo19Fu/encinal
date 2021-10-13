@@ -21,52 +21,55 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { CreateUserComponent } from './components/usuarios/create-user/create-user.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
-    {path: '', component: HomeComponent},
-    {path: 'home', component: HomeComponent},
+    {path: '', component: LoginComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
 
     /*********** PATH FOR TERRAINS PAGES  *************/
-    {path: 'terrains/index', component: TerrainsComponent},
-    {path: 'terrains/create', component: CreateTerrainComponent},
-    {path: 'terrains/create/:id', component: CreateTerrainComponent},
+    {path: 'terrains/index', component: TerrainsComponent, canActivate: [AuthGuard]},
+    {path: 'terrains/create', component: CreateTerrainComponent, canActivate: [AuthGuard]},
+    {path: 'terrains/create/:id', component: CreateTerrainComponent, canActivate: [AuthGuard]},
 
     /*********** PATH FOR SALES PAGES  *************/
     // Sales
-    {path: 'sales/index', component: SalesComponent},
-    {path: 'sales/create', component: CreateSaleComponent},
-    {path: 'sales/create/step-1', component: Step1Component},
-    {path: 'sales/create/step-2', component: Step2Component},
-    {path: 'sales/create/step-3', component: Step3Component},
+    {path: 'sales/index', component: SalesComponent, canActivate: [AuthGuard]},
+    {path: 'sales/create', component: CreateSaleComponent, canActivate: [AuthGuard]},
+    {path: 'sales/create/step-1', component: Step1Component, canActivate: [AuthGuard]},
+    {path: 'sales/create/step-2', component: Step2Component, canActivate: [AuthGuard]},
+    {path: 'sales/create/step-3', component: Step3Component, canActivate: [AuthGuard]},
 
     // Payments
-    {path: 'sales/payments/index', component: PaymentsComponent},
-    {path: 'sales/payments/create', component: CreatePaymentComponent},
+    {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},
+    {path: 'sales/payments/create', component: CreatePaymentComponent, canActivate: [AuthGuard]},
 
     /*********** PATH FOR ADMIN PAGES  *************/
     // Users
-    {path: 'admin/users/index', component: UsuariosComponent},
-    {path: 'admin/users/create', component: CreateUserComponent},
-    {path: 'admin/users/create/:id', component: CreateUserComponent},
+    {path: 'admin/users/index', component: UsuariosComponent, canActivate: [AuthGuard]},
+    {path: 'admin/users/create', component: CreateUserComponent, canActivate: [AuthGuard]},
+    {path: 'admin/users/create/:id', component: CreateUserComponent, canActivate: [AuthGuard]},
 
     // Clients
-    {path: 'admin/clients/index', component: ClientsComponent},
-    {path: 'admin/clients/create', component: CreateClientComponent},
-    {path: 'admin/clients/create/:id', component: CreateClientComponent},
+    {path: 'admin/clients/index', component: ClientsComponent, canActivate: [AuthGuard]},
+    {path: 'admin/clients/create', component: CreateClientComponent, canActivate: [AuthGuard]},
+    {path: 'admin/clients/create/:id', component: CreateClientComponent, canActivate: [AuthGuard]},
 
     // Sellers
-    {path: 'admin/sellers/index', component: SellersComponent},
-    {path: 'admin/sellers/create', component: CreateSellerComponent},
-    {path: 'admin/sellers/create/:id', component: CreateSellerComponent},
+    {path: 'admin/sellers/index', component: SellersComponent, canActivate: [AuthGuard]},
+    {path: 'admin/sellers/create', component: CreateSellerComponent, canActivate: [AuthGuard]},
+    {path: 'admin/sellers/create/:id', component: CreateSellerComponent, canActivate: [AuthGuard]},
 
     // Blocks
-    {path: 'admin/blocks/index', component: BlocksComponent},
-    {path: 'admin/blocks/create', component: CreateBlockComponent},
-    {path: 'admin/blocks/update/:id', component: UpdateBlockComponent},
+    {path: 'admin/blocks/index', component: BlocksComponent, canActivate: [AuthGuard]},
+    {path: 'admin/blocks/create', component: CreateBlockComponent, canActivate: [AuthGuard]},
+    {path: 'admin/blocks/update/:id', component: UpdateBlockComponent, canActivate: [AuthGuard]},
 
     // Identification Types
-    {path: 'admin/identification-types/index', component: IdentificationTypesComponent},
+    {path: 'admin/identification-types/index', component: IdentificationTypesComponent, canActivate: [AuthGuard]},
 
     {path: '**', component: HomeComponent}
 ];

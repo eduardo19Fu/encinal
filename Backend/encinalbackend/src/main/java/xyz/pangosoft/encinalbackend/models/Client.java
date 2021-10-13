@@ -43,6 +43,7 @@ public class Client implements Serializable {
     private String telNumber;
     private String email;
     private String address;
+    private Double amountOutstanding;
 
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -151,6 +152,14 @@ public class Client implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Double getAmountOutstanding() {
+        return amountOutstanding;
+    }
+
+    public void setAmountOutstanding(Double amountOutstanding) {
+        this.amountOutstanding = amountOutstanding;
     }
 
     public Status getStatus() {

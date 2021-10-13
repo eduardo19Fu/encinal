@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.Client;
@@ -49,6 +50,7 @@ public class ClientApiController {
         return new ResponseEntity<List<Client>>(clientService.listActiveClients(status), HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/clients/{id}")
     public ResponseEntity<?> findClient(@PathVariable("id") Integer id) {
 
@@ -71,6 +73,7 @@ public class ClientApiController {
         return new ResponseEntity<Client>(client, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/clients")
     public ResponseEntity<?> create(@RequestBody Client client, BindingResult result) {
 
@@ -108,6 +111,7 @@ public class ClientApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PutMapping("/clients")
     public ResponseEntity<?> update(@RequestBody Client client, BindingResult result) {
 
@@ -137,6 +141,7 @@ public class ClientApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @DeleteMapping("/clients/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 

@@ -1,1 +1,103 @@
-<p>usuarios works!</p>
+<!-- CLIENT DETAIL MODAL -->
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/admin/clients/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Clientes
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="users?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún cliente registrada en la Base de Datos!
+        </div>
+
+        <table id="clients" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="users?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellido (s)</th>
+                    <th>Dirección</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    <td>{{client.clientId}}</td>
+                    <td>{{client.firstName}}</td>
+                    <td>{{client.middleName}}</td>
+                    <td>{{client.lastName}}</td>
+                    <td>{{client.address}}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{'badge-danger': client.status.status === 'Moroso', 
+                                                        'badge-success': client.status.status === 'Activo',
+                                                        'badge-dark': client.status.status === 'Inactivo'}">
+                            {{client.status.status}}
+                        </span>
+                    </td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-info" type="button" name="info" data-toggle="modal"
+                            data-target="#modal-detail" (click)="clientDetail(client)">
+                            <i class="fas fa-info-circle"></i>
+                            Detalle
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-warning" type="button" name="edit"
+                            [routerLink]="['/admin/clients/create', client.clientId]"
+                            [disabled]="client.status.status == 'Inactivo'">
+                            
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-danger" type="button" name="delete"
+                            (click)="delete(marca)" 
+                            [disabled]="client.status.status == 'Inactivo' || client.status.status == 'Moroso'">
+                            
+                            <i class="fas fa-ban"></i>
+                            Desactivar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellido (s)</th>
+                    <th>Dirección</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -22,11 +22,11 @@ export class BlockService {
   }
 
   getBlocks(): Observable<Block[]> {
-    return this.httpClient.get<Block[]>(`${this.url}/blocks`, { headers: this.httpHeaders });
+    return this.httpClient.get<Block[]>(`${this.url}/blocks`);
   }
 
   getBlock(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.url}/blocks/${id}`, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get<any>(`${this.url}/blocks/${id}`).pipe(
       catchError(e => {
         Swal.fire('Error al buscar la Manzana', e.error.message, 'error');
         return throwError(e);
@@ -35,7 +35,7 @@ export class BlockService {
   }
 
   create(block: Block): Observable<any> {
-    return this.httpClient.post<any>(`${this.url}/blocks`, block, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.post<any>(`${this.url}/blocks`, block).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -44,7 +44,7 @@ export class BlockService {
   }
 
   update(block: Block): Observable<any> {
-    return this.httpClient.put<any>(`${this.url}/blocks`, block, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.put<any>(`${this.url}/blocks`, block).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

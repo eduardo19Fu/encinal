@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.PaymentAgreement;
@@ -36,6 +37,7 @@ public class PaymentAgreementApiController {
         return this.paymentAgreementService.listPaymentAgreements();
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/payment-agreement/{id}")
     public ResponseEntity<?> findPaymentAgreement(@PathVariable("id") Integer id){
 
@@ -58,6 +60,7 @@ public class PaymentAgreementApiController {
         return new ResponseEntity<PaymentAgreement>(paymentAgreement, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/payment-agreements")
     public ResponseEntity<?> create(@RequestBody PaymentAgreement paymentAgreement, BindingResult result){
 

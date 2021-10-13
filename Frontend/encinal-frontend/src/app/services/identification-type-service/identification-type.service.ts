@@ -22,15 +22,15 @@ export class IdentificationTypeService {
   }
 
   getIdentificationsTypes(): Observable<IdentificationType[]>{
-    return this.httpClient.get<IdentificationType[]>(`${this.url}/identifications`, {headers: this.httpHeaders});
+    return this.httpClient.get<IdentificationType[]>(`${this.url}/identifications`);
   }
 
   getIdentificationType(id: number): Observable<IdentificationType>{
-    return this.httpClient.get<IdentificationType>(`${this.url}/identifications/${id}`, {headers: this.httpHeaders});
+    return this.httpClient.get<IdentificationType>(`${this.url}/identifications/${id}`);
   }
 
   create(identificationType: IdentificationType): Observable<any>{
-    return this.httpClient.post<any>(`${this.url}/identifications`, identificationType, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.post<any>(`${this.url}/identifications`, identificationType).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -39,7 +39,7 @@ export class IdentificationTypeService {
   }
 
   delete(id: number): Observable<any>{
-    return this.httpClient.delete<any>(`${this.url}/identifications/${id}`, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.delete<any>(`${this.url}/identifications/${id}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error);
         return throwError(e);

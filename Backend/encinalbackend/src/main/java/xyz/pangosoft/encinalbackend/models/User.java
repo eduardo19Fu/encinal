@@ -1,5 +1,7 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -24,6 +26,7 @@ public class User implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Role> roles;
 
     @PrePersist
@@ -80,7 +83,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public boolean isEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
@@ -102,6 +105,20 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", enabled=" + enabled +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
     private static final long serialVersionUID = 1L;

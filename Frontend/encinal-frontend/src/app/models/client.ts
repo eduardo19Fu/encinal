@@ -14,6 +14,7 @@ export class Client {
     address: string;
     birthDate: Date;
     createdAt: Date;
+    amountOutstanding: number;
 
     status: Status;
     identificationType: IdentificationType;

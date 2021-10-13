@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;   
 
@@ -33,6 +34,7 @@ public class BlockApiController {
         return this.blockService.listAll();
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/blocks/{id}")
     public ResponseEntity<?> blockById(@PathVariable("id") Integer id){
 
@@ -55,6 +57,7 @@ public class BlockApiController {
         return new ResponseEntity<Block>(block, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/blocks")
     public ResponseEntity<?> create(@RequestBody Block block, BindingResult result) {
 
@@ -92,6 +95,7 @@ public class BlockApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PutMapping("/blocks")
     public ResponseEntity<?> update(@RequestBody Block block, BindingResult result){
 
@@ -126,6 +130,7 @@ public class BlockApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @DeleteMapping("/blocks/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 

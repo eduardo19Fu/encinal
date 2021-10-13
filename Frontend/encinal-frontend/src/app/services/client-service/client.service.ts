@@ -22,11 +22,11 @@ export class ClientService {
   }
 
   getClients(): Observable<Client[]>{
-    return this.httpClient.get<Client[]>(`${this.url}/clients`, {headers: this.httpHeaders});
+    return this.httpClient.get<Client[]>(`${this.url}/clients`);
   }
 
   getClient(id: number): Observable<any>{
-    return this.httpClient.get<any>(`${this.url}/clients/${id}`, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.get<any>(`${this.url}/clients/${id}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, 'No se pudo encontrar el registro deseado', 'error');
         return throwError(e);
@@ -35,7 +35,7 @@ export class ClientService {
   }
 
   getActiveCustomers(): Observable<any>{
-    return this.httpClient.get<any>(`${this.url}/clients/active`, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.get<any>(`${this.url}/clients/active`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -44,7 +44,7 @@ export class ClientService {
   }
 
   create(client: Client): Observable<any>{
-    return this.httpClient.post<any>(`${this.url}/clients`, client, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.post<any>(`${this.url}/clients`, client).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

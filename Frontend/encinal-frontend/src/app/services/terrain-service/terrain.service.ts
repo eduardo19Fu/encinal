@@ -22,11 +22,11 @@ export class TerrainService {
   }
 
   getTerrains(): Observable<Terrain[]> {
-    return this.httpClient.get<Terrain[]>(`${this.url}/terrains`, { headers: this.httpHeaders });
+    return this.httpClient.get<Terrain[]>(`${this.url}/terrains`);
   }
 
   getTerrainsOnSale(): Observable<any> {
-    return this.httpClient.get<any>(`${this.url}/terrains/on-sale`, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get<any>(`${this.url}/terrains/on-sale`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -35,7 +35,7 @@ export class TerrainService {
   }
 
   getTerrain(id: number): Observable<any> {
-    return this.httpClient.get<Terrain>(`${this.url}/terrains/${id}`, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.get<Terrain>(`${this.url}/terrains/${id}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -44,7 +44,7 @@ export class TerrainService {
   }
 
   create(terrain: Terrain): Observable<any> {
-    return this.httpClient.post<any>(`${this.url}/terrains`, terrain, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.post<any>(`${this.url}/terrains`, terrain).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -53,7 +53,7 @@ export class TerrainService {
   }
 
   update(terrain: Terrain): Observable<any> {
-    return this.httpClient.put<any>(`${this.url}/terrains`, terrain, { headers: this.httpHeaders }).pipe(
+    return this.httpClient.put<any>(`${this.url}/terrains`, terrain).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

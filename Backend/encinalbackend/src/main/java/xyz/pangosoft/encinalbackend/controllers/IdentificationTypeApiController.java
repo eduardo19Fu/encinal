@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.IdentificationType;
@@ -49,6 +50,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<IdentificationType>(identificationType, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/identifications")
     public ResponseEntity<?> create(@RequestBody IdentificationType identificationType, BindingResult result){
 
@@ -82,6 +84,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PutMapping("/identifications")
     public ResponseEntity<?> update(@RequestBody IdentificationType identificationType, BindingResult result) {
 
@@ -115,6 +118,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @DeleteMapping("/identifications/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 

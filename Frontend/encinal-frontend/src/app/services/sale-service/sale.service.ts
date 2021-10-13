@@ -23,20 +23,20 @@ export class SaleService {
     this.url = global.url;
   }
 
-  getSales(): Observable<Sale[]>{
-    return this.httpClient.get<Sale[]>(`${this.url}/sales`, {headers: this.httpHeaders});
+  getSales(): Observable<Sale[]> {
+    return this.httpClient.get<Sale[]>(`${this.url}/sales`);
   }
 
-  getSalesByDate(initDate: Date, endDate: Date): Observable<Sale[]>{
+  getSalesByDate(initDate: Date, endDate: Date): Observable<Sale[]> {
     const httpParams = new HttpParams()
-                      .set('initDate', initDate.toString())
-                      .set('endDate', endDate.toString());
+      .set('initDate', initDate.toString())
+      .set('endDate', endDate.toString());
 
-    return this.httpClient.get<Sale[]>(`${this.url}/sales`, {params: httpParams, headers: this.httpHeaders});
+    return this.httpClient.get<Sale[]>(`${this.url}/sales`, { params: httpParams });
   }
 
-  create(sale: Sale): Observable<any>{
-    return this.httpClient.post<any>(`${this.url}/sales`, sale, {headers: this.httpHeaders}).pipe(
+  create(sale: Sale): Observable<any> {
+    return this.httpClient.post<any>(`${this.url}/sales`, sale).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
@@ -45,7 +45,7 @@ export class SaleService {
   }
 
   // List Sale Types
-  getSaleTypes(): Observable<SaleType[]>{
-    return this.httpClient.get<SaleType[]>(`${this.url}/sales/sales-types`, {headers: this.httpHeaders});
+  getSaleTypes(): Observable<SaleType[]> {
+    return this.httpClient.get<SaleType[]>(`${this.url}/sales/sales-types`);
   }
 }

@@ -22,11 +22,11 @@ export class SaleTypeService {
   }
 
   getSaleTypes(): Observable<SaleType[]>{
-    return this.httpClient.get<SaleType[]>(`${this.url}/sale-types`, {headers: this.httpHeaders});
+    return this.httpClient.get<SaleType[]>(`${this.url}/sale-types`);
   }
 
   getSaleType(id: number): Observable<any>{
-    return this.httpClient.get<any>(`${this.url}/sale-types/${id}`, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.get<any>(`${this.url}/sale-types/${id}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error);
         return throwError(e);

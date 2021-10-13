@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.SaleType;
 import xyz.pangosoft.encinalbackend.services.ISaleTypeService;
@@ -25,6 +26,7 @@ public class SaleTypeApiController {
         return this.saleTypeService.listSaleTypes();
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/sale-types/{id}")
     public ResponseEntity<?> findSaleType(@PathVariable("id") Integer id){
 

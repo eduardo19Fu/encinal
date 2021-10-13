@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.Status;
@@ -32,6 +33,7 @@ public class TerrainApiController {
         return this.terrainService.listTerrains();
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/terrains/on-sale")
     public ResponseEntity<?> listOnSale(){
 
@@ -50,6 +52,7 @@ public class TerrainApiController {
         return new ResponseEntity<List<Terrain>>(this.terrainService.listTerrainsOnSale(status), HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/terrains/{id}")
     public ResponseEntity<?> findTerrain(@PathVariable("id") Integer id){
 
@@ -72,6 +75,7 @@ public class TerrainApiController {
         return new ResponseEntity<Terrain>(terrain, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/terrains")
     public ResponseEntity<?> create(@RequestBody Terrain terrain, BindingResult result){
 
@@ -108,6 +112,7 @@ public class TerrainApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PutMapping("/terrains")
     public ResponseEntity<?> update(@RequestBody Terrain terrain, BindingResult result){
 

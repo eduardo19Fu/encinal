@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.*;
@@ -59,11 +60,13 @@ public class SaleApiController {
         }
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/sales/page/{page}")
     public Page<Sale> indexPaginate(@PathVariable("page") Integer page){
         return saleService.listSales(PageRequest.of(page, 5));
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/sales/{id}")
     public ResponseEntity<?> findSale(@PathVariable("id") Integer id){
 
@@ -86,6 +89,7 @@ public class SaleApiController {
         return new ResponseEntity<Sale>(sale, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/sales")
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 

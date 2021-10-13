@@ -28,7 +28,7 @@ public class PaymentAgreement implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_agreement_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<Payment> payments;
@@ -91,6 +91,17 @@ public class PaymentAgreement implements Serializable {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentAgreement{" +
+                "paymentAgreementId=" + paymentAgreementId +
+                ", interestRate=" + interestRate +
+                ", totalAgreement=" + totalAgreement +
+                ", totalPayments=" + totalPayments +
+                ", sale=" + sale +
+                '}';
     }
 
     private static final long serialVersionUID = 1L;

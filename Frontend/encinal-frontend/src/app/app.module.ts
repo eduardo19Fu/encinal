@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { appRoutingProviders, routing } from './app.routing';
@@ -35,6 +35,8 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateUserComponent } from './components/usuarios/create-user/create-user.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
+
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,8 @@ import { CreatePaymentComponent } from './components/payments/create-payment/cre
     routing
   ],
   providers: [
-    appRoutingProviders
+    appRoutingProviders,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

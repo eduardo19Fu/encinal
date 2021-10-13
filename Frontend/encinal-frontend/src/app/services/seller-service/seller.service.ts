@@ -22,11 +22,11 @@ export class SellerService {
   }
 
   getSellers(): Observable<Seller[]> {
-    return this.httpClient.get<Seller[]>(`${this.url}/sellers`, { headers: this.httpHeaders });
+    return this.httpClient.get<Seller[]>(`${this.url}/sellers`);
   }
 
   getSeller(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.url}/sellers/${id}`, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.get<any>(`${this.url}/sellers/${id}`).pipe(
       catchError(e => {
         Swal.fire('Error', e.error.error, 'error');
         return throwError(e);
@@ -35,7 +35,7 @@ export class SellerService {
   }
 
   create(seller: Seller): Observable<any>{
-    return this.httpClient.post<any>(`${this.url}/sellers`, seller, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.post<any>(`${this.url}/sellers`, seller).pipe(
       catchError(e => {
         Swal.fire('Error', e.error.error, 'error');
         return throwError(e);
@@ -44,7 +44,7 @@ export class SellerService {
   }
 
   update(seller: Seller): Observable<any>{
-    return this.httpClient.put<any>(`${this.url}/sellers`, seller, {headers: this.httpHeaders}).pipe(
+    return this.httpClient.put<any>(`${this.url}/sellers`, seller).pipe(
       catchError(e => {
         Swal.fire('Error', e.error.error, 'error');
         return throwError(e);

@@ -39,6 +39,11 @@ public class Receipt implements Serializable {
         this.items = new ArrayList<>();
     }
 
+    @PrePersist
+    public void prepersist(){
+        this.createdAt = new Date();
+    }
+
     public Integer getReceiptId() {
         return receiptId;
     }

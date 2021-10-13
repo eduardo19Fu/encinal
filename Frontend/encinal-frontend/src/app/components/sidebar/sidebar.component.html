@@ -15,7 +15,7 @@
                 <img src="assets/images/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Usuario Logueado</a>
+                <a *ngIf="authService.isAuthenticated()" [routerLink]="['/home']" class="d-block">{{user.username}}</a>
             </div>
         </div>
 
@@ -133,6 +133,18 @@
                         </a>
                         </li>
                     </ul>
+                </li>
+
+                <li class="nav-header">
+                    Sesión
+                </li>
+                <li class="nav-item">
+                    <a (click)="logout()" [routerLink]="['/login']" class="nav-link">
+                        <i class="nav-icon fas fa-bacteria"></i>
+                        <p>
+                            Cerrar Sesión
+                        </p>
+                    </a>
                 </li>
                 
             </ul>

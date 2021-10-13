@@ -43,5 +43,14 @@ public class Status implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "Status{" +
+                "statusId=" + statusId +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     private static final long serialVersionUID = 1L;
 }
