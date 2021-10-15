@@ -51,4 +51,13 @@ export class ClientService {
       })
     );
   }
+
+  update(client: Client): Observable<any>{
+    return this.httpClient.put<any>(`${this.url}/clients`, client).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
 }

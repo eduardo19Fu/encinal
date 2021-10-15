@@ -138,6 +138,7 @@ public class SaleApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/sales/sales-types")
     public List<SaleType> listSaleTypes(){
         return saleTypeService.listSaleTypes();

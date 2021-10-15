@@ -41,9 +41,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.user).subscribe(
       response => {
-        console.log(response);
         const payload = JSON.parse(atob(response.access_token.split('.')[1]));
-        console.log(payload);
 
         this.authService.guardarUsuario(response.access_token);
         this.authService.guardarToken(response.access_token);

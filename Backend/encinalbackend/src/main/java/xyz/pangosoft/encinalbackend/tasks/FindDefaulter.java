@@ -36,6 +36,7 @@ public class FindDefaulter {
 
         Status statusAgreement = null;
         Status newStatusAgreement = null;
+        Status newStatusClient = null;
         Status newStatusPayment = null;
 
         Client customer = null;
@@ -46,6 +47,7 @@ public class FindDefaulter {
             statusAgreement = statusService.singleStatusName("Activo", "Payment Agreement");
             newStatusAgreement = statusService.singleStatusName("En Mora", "Payment Agreement");
             newStatusPayment = statusService.singleStatusName("Retrasado", "Payment");
+            newStatusClient = statusService.singleStatusName("Moroso", "Client");
 
             for(PaymentAgreement paymentAgreement : paymentAgreementService.listPaymentAgreements(statusAgreement)){
                 for(Payment payment : paymentAgreement.getPayments()){
@@ -56,9 +58,11 @@ public class FindDefaulter {
                         amount_outstanding = amount_outstanding + payment.getPaymentTotal();
                     }
                 }
-
+                customer = new Client();
                 customer = paymentAgreement.getSale().getClient();
                 customer.setAmountOutstanding(amount_outstanding);
+                customer.setStatus(newStatusClient);
+
                 clientService.save(customer);
             }
         } catch(DataAccessException e){

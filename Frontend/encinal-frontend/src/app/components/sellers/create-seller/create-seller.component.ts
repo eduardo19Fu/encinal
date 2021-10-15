@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { SellerService } from '../../../services/seller-service/seller.service';
 import { Seller } from '../../../models/seller';
 
 import Swal from 'sweetalert2';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-seller',
@@ -44,6 +45,16 @@ export class CreateSellerComponent implements OnInit {
       response => {
         this.router.navigate(['/admin/sellers/index']);
         Swal.fire(response.message, `El vendedor ${response.seller.firstName + ' ' + response.seller.lastName} fué registrado con éxito!`,
+          'success');
+      }
+    );
+  }
+
+  update(): void{
+    this.sellerService.update(this.seller).subscribe(
+      response => {
+        this.router.navigate(['/admin/sellers/index']);
+        Swal.fire(response.message, `El vendedor ${response.seller.firstName + ' ' + response.seller.lastName} fué actualizado con éxito!`,
           'success');
       }
     );

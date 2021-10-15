@@ -153,9 +153,20 @@
             </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-success" (click)="create()" [disabled]="!clientForm.form.valid">
+                <button *ngIf="!client.clientId else update" type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!clientForm.form.valid">
+                    
                     Registrar
                 </button>
+
+                <ng-template #update>
+                    <button type="submit" class="btn bg-gradient-danger" 
+                        (click)="update()" [disabled]="!clientForm.form.valid">
+                    
+                        Actualizar
+                    </button>
+                </ng-template>
+                
             </div>
         </form>
     </div>

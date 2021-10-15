@@ -18,7 +18,7 @@ public class Sale implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date saleDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Client client;

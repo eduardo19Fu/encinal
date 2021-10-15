@@ -37,4 +37,13 @@ export class CreateBlockComponent implements OnInit {
     );
   }
 
+  update(): void{
+    this.blockService.update(this.block).subscribe(
+      response => {
+        this.router.navigate(['/admin/blocks/index']);
+        Swal.fire('Manzana Actualizada', `${response.message}`, 'success');
+      }
+    );
+  }
+
 }

@@ -34,7 +34,7 @@ export class UserService {
     );
   }
 
-  crete(user: User): Observable<any>{
+  create(user: User): Observable<any>{
     return this.httpClient.post<any>(`${this.url}/users`, user).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
@@ -44,7 +44,7 @@ export class UserService {
   }
 
   update(user: User): Observable<any>{
-    return this.httpClient.put<any>(`${this.url}/users`, user).pipe(
+    return this.httpClient.put<any>(`${this.url}/users/${user.userId}`, user).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

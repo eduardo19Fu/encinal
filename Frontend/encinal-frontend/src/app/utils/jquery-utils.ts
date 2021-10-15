@@ -10,7 +10,7 @@ export class JqueryConfigs {
         $(() => {
             $(`#${nombreTabla}`).DataTable({
                 destroy: true,
-                responsive: true,
+                responsive: false,
                 lengthChange: true,
                 autoWidth: false,
                 buttons: ['excel'],

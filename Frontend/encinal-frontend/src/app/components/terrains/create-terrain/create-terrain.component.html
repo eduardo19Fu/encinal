@@ -45,9 +45,9 @@
                         <div class="form-group">
                             <label for="block">Manzana</label>
                             <select name="block" id="block" class="form-control" 
-                                [(ngModel)]="terrain.block" [compareWith]="">
+                                [(ngModel)]="terrain.block" [compareWith]="compareBlock">
 
-                                <option value="undefined">Seleccione una Manzana</option>
+                                <option [ngValue]="undefined">Seleccione una Manzana</option>
                                 <option *ngFor="let block of blocks" [ngValue]="block">{{block.blockNumber}}</option>
                             </select>
                             
@@ -120,9 +120,19 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-success" (click)="create()" [disabled]="!terrainForm.form.valid">
+                <button *ngIf="!terrain.terrainId else updateBlock" type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!terrainForm.form.valid">
                     Registrar
                 </button>
+
+                <ng-template #updateBlock>
+                    <button type="submit" class="btn bg-gradient-danger" 
+                        (click)="update()" [disabled]="!terrainForm.form.valid">
+                        
+                        Actualizar
+                    </button>
+                </ng-template>
+                
             </div>
         </form>
     </div>

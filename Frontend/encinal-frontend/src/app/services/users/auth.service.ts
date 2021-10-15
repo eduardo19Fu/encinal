@@ -21,8 +21,8 @@ export class AuthService {
   public get user(): User{
     if (this._user != null){
       return this._user;
-    } else if (this._user == null && sessionStorage.getItem('usuario')){
-      this._user = JSON.parse(sessionStorage.getItem('usuario')) as User;
+    } else if (this._user == null && sessionStorage.getItem('user')){
+      this._user = JSON.parse(sessionStorage.getItem('user')) as User;
       return this._user;
     }
     return new User();

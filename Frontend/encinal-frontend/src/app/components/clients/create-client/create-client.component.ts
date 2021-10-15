@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
 import { Client } from '../../../models/client';
 import { ClientService } from '../../../services/client-service/client.service';
 import { IdentificationTypeService } from '../../../services/identification-type-service/identification-type.service';
 import { IdentificationType } from '../../../models/identification-type';
-import { JqueryConfigs } from '../../../utils/jquery-utils';
 
+import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
-import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-client',
@@ -57,8 +58,16 @@ export class CreateClientComponent implements OnInit, AfterViewInit {
     this.clientService.create(this.client).subscribe(
       response => {
         this.router.navigate(['/admin/clients/index']);
-        console.log(response);
         Swal.fire(response.message, `El cliente ${response.client.firstName + ' ' + response.client.lastName} fué registrado con éxito.`, 'success');
+      }
+    );
+  }
+
+  update(): void{
+    this.clientService.update(this.client).subscribe(
+      response => {
+        this.router.navigate(['/admin/clients/index']);
+        Swal.fire(response.message, `El cliente ${response.client.firstName + ' ' + response.client.lastName} fué actualizado con éxito.`, 'success');
       }
     );
   }

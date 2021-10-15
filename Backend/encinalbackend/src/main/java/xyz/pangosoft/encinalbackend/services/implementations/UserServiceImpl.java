@@ -61,6 +61,6 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Override
     public User create(User user) {
-        return null;
+        return this.userRepository.save(user);
     }
 }

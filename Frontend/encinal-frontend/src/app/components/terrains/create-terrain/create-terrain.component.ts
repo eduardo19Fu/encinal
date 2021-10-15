@@ -35,15 +35,6 @@ export class CreateTerrainComponent implements OnInit {
     this.loadTerrain();
   }
 
-  create(): void{
-    this.terrainService.create(this.terrain).subscribe(
-      response => {
-        this.router.navigate(['/terrains/index']);
-        Swal.fire(response.message, `El lote número ${response.terrain.terrainNumber} ha sido registrado con éxito!`, 'success');
-      }
-    );
-  }
-
   loadTerrain(): void{
     this.activatedRoute.params.subscribe(
       params => {
@@ -58,12 +49,37 @@ export class CreateTerrainComponent implements OnInit {
     );
   }
 
+  create(): void{
+    this.terrainService.create(this.terrain).subscribe(
+      response => {
+        this.router.navigate(['/terrains/index']);
+        Swal.fire(response.message, `El lote número ${response.terrain.terrainNumber} ha sido registrado con éxito!`, 'success');
+      }
+    );
+  }
+
+  update(): void{
+    this.terrainService.update(this.terrain).subscribe(
+      response => {
+        this.router.navigate(['/terrains/index']);
+        Swal.fire(response.message, `${response.message}`, 'success');
+      }
+    );
+  }
+
   getBlocks(): void{
     this.blockService.getBlocks().subscribe(
       blocks => {
         this.blocks = blocks;
       }
     );
+  }
+
+  compareBlock(o1: Block, o2: Block): boolean{
+    if (o1 === undefined && o2 === undefined) {
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.blockId === o2.blockId;
   }
 
 }
