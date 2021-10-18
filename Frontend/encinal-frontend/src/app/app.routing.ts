@@ -23,6 +23,10 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ItemsComponent } from './components/items/items.component';
+import { CreateItemComponent } from './components/items/create-item/create-item.component';
+import { RoleGuard } from './guards/role.guard';
+import { UpdateItemComponent } from './components/items/update-item/update-item.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
@@ -70,6 +74,12 @@ const appRoutes: Routes = [
 
     // Identification Types
     {path: 'admin/identification-types/index', component: IdentificationTypesComponent, canActivate: [AuthGuard]},
+
+    // Items
+    {path: 'admin/items/index', component: ItemsComponent, canActivate: [AuthGuard]},
+    {path: 'admin/items/create', component: CreateItemComponent, canActivate: [AuthGuard, RoleGuard], data: {role: ['ROLE_SUPERADMIN']}},
+    {path: 'admin/items/create/:id', component: CreateItemComponent, canActivate: [AuthGuard]},
+    {path: 'admin/items/update/:id', component: UpdateItemComponent, canActivate: [AuthGuard]},
 
     {path: '**', component: HomeComponent}
 ];

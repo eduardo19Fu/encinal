@@ -129,6 +129,13 @@
                             <p>Tipos de Identificación</p>
                         </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/items/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/items')}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Valores</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

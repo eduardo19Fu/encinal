@@ -2,9 +2,10 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Client } from '../../../models/client';
+import { IdentificationType } from '../../../models/identification-type';
+
 import { ClientService } from '../../../services/client-service/client.service';
 import { IdentificationTypeService } from '../../../services/identification-type-service/identification-type.service';
-import { IdentificationType } from '../../../models/identification-type';
 
 import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';

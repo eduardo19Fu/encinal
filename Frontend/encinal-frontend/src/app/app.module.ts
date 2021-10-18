@@ -37,6 +37,9 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { CreatePaymentComponent } from './components/payments/create-payment/create-payment.component';
 
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { ItemsComponent } from './components/items/items.component';
+import { CreateItemComponent } from './components/items/create-item/create-item.component';
+import { UpdateItemComponent } from './components/items/update-item/update-item.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +72,10 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     LoginComponent,
     CreateUserComponent,
     PaymentsComponent,
-    CreatePaymentComponent
+    CreatePaymentComponent,
+    ItemsComponent,
+    CreateItemComponent,
+    UpdateItemComponent
   ],
   imports: [
     BrowserModule,
