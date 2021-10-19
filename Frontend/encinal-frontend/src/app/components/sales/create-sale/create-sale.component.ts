@@ -184,7 +184,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         this.payments.push(this.payment);
 
       }
-      console.log(this.payments);
+      // console.log(this.payments);
       this.jqueryConfigs.configFeesDataTable('fees');
     } else {
       Swal.fire('Enganche Vacío', 'El valor del enganche no puede ser vacío, por favor ingrese un valor.', 'warning');
@@ -197,7 +197,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       this.sale.seller = this.seller;
       this.sale.total = this.terrain.price;
 
-      console.log(this.sale);
+      // console.log(this.sale);
       this.saleService.create(this.sale).subscribe(
         response => {
           this.paymentAgreement.payments = this.payments;
@@ -205,7 +205,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
           this.paymentAgreement.sale = response.sale;
           this.paymentAgreement.interestRate = this.interestRate;
           this.paymentAgreement.totalPayments = this.paymentAgreement.payments.length;
-          console.log(this.paymentAgreement);
+          // console.log(this.paymentAgreement);
 
           this.paymentAgreementService.create(this.paymentAgreement).subscribe(
             res => {
@@ -214,7 +214,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
                 `Se ha creado con éxito el acuerdo de pagos`, 'success');
             }
           );
-          console.log(response);
+          // console.log(response);
         }
       );
     }
@@ -226,5 +226,9 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       sum = sum + e.paymentTotal;
     });
     return sum;
+  }
+
+  reloadPage(): void{
+    window.location.reload();
   }
 }

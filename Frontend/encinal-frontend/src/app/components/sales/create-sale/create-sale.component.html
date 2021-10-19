@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <label for="terrain" class="labels">Lote</label>
                         <select name="terrain" id="terrain" class="form-control inputs" [(ngModel)]="sale.terrain"
-                            (ngModelChange)="mostrarTotal($event)">
+                            (ngModelChange)="mostrarTotal($event)" [disabled]="payments?.length > 0">
                             <option [ngValue]="undefined">Elija un lote</option>
                             <option *ngFor="let terrain of terrains" [ngValue]="terrain">
                                 {{'Lote: ' + terrain.terrainNumber + ' | Manzana: ' + terrain.block.blockNumber}}
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <label for="sale-type" class="labels">Tipo de Venta</label>
                         <select name="sale-type" id="sale-type" class="form-control inputs" [(ngModel)]="sale.saleType"
-                            (ngModelChange)="setSaleType($event)">
+                            (ngModelChange)="setSaleType($event)" [disabled]="payments?.length > 0">
                             <option [ngValue]="undefined">Elige un tipo de venta</option>
                             <option *ngFor="let saleType of saleTypes" [ngValue]="saleType">
                                 {{saleType.saleType}}
@@ -90,6 +90,8 @@
 
         <button class="btn bg-gradient-success" *ngIf="saleType?.saleTypeId === 1"
             [disabled]="!terrain || !customer || !seller" (click)="createSale()">
+
+            <i class="fas fa-cash-register"></i>
             Vender
         </button>
     </div>
@@ -131,7 +133,8 @@
                 </div>
                 <div class="row container">
                     <div class="col">
-                        <button class="btn bg-gradient-info" (click)="calculateMonthlyFee()">
+                        <button class="btn bg-gradient-info" (click)="calculateMonthlyFee()"
+                            [disabled]="payments?.length > 0">
                             <i class="fas fa-calculator"></i>
                             Calcular
                         </button>
@@ -143,9 +146,16 @@
             <div class="col-sm">
                 <div>
                     <h4>Cuota Mensual {{monthlyFee | currency: "Q" : "symbol"}}</h4>
-                    <button class="btn bg-gradient-danger" *ngIf="payments?.length > 0" (click)="createFeesSale()">
+                    <button class="btn bg-gradient-danger" *ngIf="payments?.length > 0" (click)="createFeesSale()"
+                        [disabled]="!terrain || !customer || !seller">
+
                         <i class="fas fa-cash-register"></i>
                         Vender
+                    </button>&nbsp;
+
+                    <button class="btn bg-gradient-warning" *ngIf="payments?.length > 0" (click)="reloadPage()">
+                        <i class="fas fa-snowplow"></i>
+                        Limpiar
                     </button>
                 </div>
 
