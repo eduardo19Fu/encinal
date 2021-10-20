@@ -13,8 +13,8 @@ import Swal from 'sweetalert2';
 })
 export class CreateSellerComponent implements OnInit {
 
-  title: string;
-  seller: Seller;
+  public title: string;
+  public seller: Seller;
 
   constructor(
     private sellerService: SellerService,

@@ -13,9 +13,9 @@ import Swal from 'sweetalert2';
 })
 export class CreateUserComponent implements OnInit {
 
-  title: string;
+  public title: string;
 
-  user: User;
+  public user: User;
 
   constructor(
     private userService: UserService,

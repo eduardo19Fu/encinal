@@ -14,8 +14,8 @@ import Swal from 'sweetalert2';
 })
 export class UpdateItemComponent implements OnInit {
 
-  title: string;
-  item: Item;
+  public title: string;
+  public item: Item;
 
   constructor(
     private itemService: ItemService,

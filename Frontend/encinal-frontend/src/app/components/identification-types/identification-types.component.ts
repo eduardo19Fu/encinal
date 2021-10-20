@@ -21,12 +21,12 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 export class IdentificationTypesComponent implements OnInit {
 
-  title: string;
-  identificationTypes: IdentificationType[];
+  public title: string;
+  public identificationTypes: IdentificationType[];
 
-  jqueryConfigs: JqueryConfigs;
+  public jqueryConfigs: JqueryConfigs;
 
-  identificationType: IdentificationType;
+  public identificationType: IdentificationType;
 
   constructor(
     private identificationTypeService: IdentificationTypeService

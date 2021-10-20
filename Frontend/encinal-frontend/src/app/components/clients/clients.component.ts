@@ -12,9 +12,9 @@ import { JqueryConfigs } from '../../utils/jquery-utils';
 
 export class ClientsComponent implements OnInit, AfterViewInit{
 
-  title: string;
-  clients: Client[];
-  client: Client;
+  public title: string;
+  public clients: Client[];
+  public client: Client;
 
   jqueryConfigs: JqueryConfigs;
 

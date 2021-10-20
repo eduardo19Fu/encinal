@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class CreateIdentificationTypeComponent implements OnInit {
 
-  title: string;
-  @Input() identificationType: IdentificationType;
+  public title: string;
+  @Input() public identificationType: IdentificationType;
 
   constructor(
     private identificationTypeService: IdentificationTypeService,

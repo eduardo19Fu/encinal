@@ -15,8 +15,8 @@ import Swal from 'sweetalert2';
 })
 export class CreateItemComponent implements OnInit {
 
-  @Input() item: Item;
-  title: string;
+  @Input() public item: Item;
+  public title: string;
 
   constructor(
     private itemService: ItemService,

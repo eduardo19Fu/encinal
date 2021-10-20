@@ -12,10 +12,10 @@ import { UserService } from '../../services/users/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  terrains: number;
-  blocks: number;
-  sales: number;
-  users: number;
+  public terrains: number;
+  public blocks: number;
+  public sales: number;
+  public users: number;
 
   constructor(
     private saleService: SaleService,

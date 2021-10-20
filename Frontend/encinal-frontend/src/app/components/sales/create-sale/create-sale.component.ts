@@ -26,33 +26,33 @@ import Swal from 'sweetalert2';
 })
 export class CreateSaleComponent implements OnInit, OnDestroy {
 
-  title: string;
-  contado: boolean;
-  cuotas: boolean;
+  public title: string;
+  public contado: boolean;
+  public cuotas: boolean;
 
-  terrains: Terrain[];
-  sellers: Seller[];
-  customers: Client[];
-  saleTypes: SaleType[];
-  payments: Payment[] = [];
+  public terrains: Terrain[];
+  public sellers: Seller[];
+  public customers: Client[];
+  public saleTypes: SaleType[];
+  public payments: Payment[] = [];
 
-  customer: Client;
-  saleType: SaleType;
-  seller: Seller;
-  sale: Sale;
-  terrain: Terrain;
-  paymentAgreement: PaymentAgreement;
-  payment: Payment;
+  public customer: Client;
+  public saleType: SaleType;
+  public seller: Seller;
+  public sale: Sale;
+  public terrain: Terrain;
+  public paymentAgreement: PaymentAgreement;
+  public payment: Payment;
 
   saleTypeSubscription: Subscription;
 
-  paymentDate: Date;
-  years: number;
-  interestRate: number;
-  hitch: number; // Enganche
-  monthlyFee: number;
+  public paymentDate: Date;
+  public years: number;
+  public interestRate: number;
+  public hitch: number; // Enganche
+  public monthlyFee: number;
 
-  jqueryConfigs: JqueryConfigs = new JqueryConfigs();
+  public jqueryConfigs: JqueryConfigs = new JqueryConfigs();
 
   constructor(
     private saleService: SaleService,

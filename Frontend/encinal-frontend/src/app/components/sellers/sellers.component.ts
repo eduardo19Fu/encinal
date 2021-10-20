@@ -11,10 +11,11 @@ import { JqueryConfigs } from '../../utils/jquery-utils';
 })
 export class SellersComponent implements OnInit, AfterViewInit {
 
-  title: string;
+  public title: string;
 
-  sellers: Seller[];
-  seller: Seller;
+  public sellers: Seller[];
+  public seller: Seller;
+
   jqueryConfigs: JqueryConfigs;
 
   constructor(

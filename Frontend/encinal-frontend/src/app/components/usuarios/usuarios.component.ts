@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class UsuariosComponent implements OnInit {
 
-  title: string;
-  users: User[];
+  public title: string;
+  public users: User[];
 
   jqueryConfigs: JqueryConfigs;
 

@@ -15,10 +15,10 @@ import Swal from 'sweetalert2';
 })
 export class CreateTerrainComponent implements OnInit {
 
-  title: string;
+  public title: string;
 
-  terrain: Terrain;
-  blocks: Block[];
+  public terrain: Terrain;
+  public blocks: Block[];
 
   constructor(
     private terrainService: TerrainService,

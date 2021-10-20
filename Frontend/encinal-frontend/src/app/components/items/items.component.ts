@@ -11,10 +11,10 @@ import { AuthService } from '../../services/users/auth.service';
 })
 export class ItemsComponent implements OnInit {
 
-  title: string;
-  items: Item[];
+  public title: string;
+  public items: Item[];
 
-  item: Item;
+  public item: Item;
 
   constructor(
     private itemService: ItemService,

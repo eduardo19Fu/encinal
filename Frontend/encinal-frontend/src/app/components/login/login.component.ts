@@ -13,9 +13,9 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
 
-  title: string;
-  usernameTitle: string;
-  passwordTitle: string;
+  public title: string;
+  public usernameTitle: string;
+  public passwordTitle: string;
 
   user: User;
 

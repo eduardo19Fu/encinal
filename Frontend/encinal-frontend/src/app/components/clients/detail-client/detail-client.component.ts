@@ -8,8 +8,8 @@ import { Client } from '../../../models/client';
 })
 export class DetailClientComponent implements OnInit {
 
-  title: string;
-  @Input() client: Client;
+  public title: string;
+  @Input() public client: Client;
 
   constructor() {
     this.title = 'Detalle de Cliente';

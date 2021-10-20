@@ -22,9 +22,9 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 export class BlocksComponent implements OnInit {
 
-  title: string;
-  blocks: Block[];
-  block: Block;
+  public title: string;
+  public blocks: Block[];
+  public block: Block;
 
   jqueryConfigs: JqueryConfigs;
 

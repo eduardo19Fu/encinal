@@ -17,12 +17,12 @@ import Swal from 'sweetalert2';
 })
 export class CreateClientComponent implements OnInit, AfterViewInit {
 
-  title: string;
-  client: Client;
+  public title: string;
+  public client: Client;
 
-  identificationTypes: IdentificationType[];
+  public identificationTypes: IdentificationType[];
 
-  jqueryConfigs: JqueryConfigs;
+  public jqueryConfigs: JqueryConfigs;
 
   constructor(
     private clientService: ClientService,

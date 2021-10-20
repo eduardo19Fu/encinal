@@ -10,13 +10,13 @@ import { JqueryConfigs } from '../../utils/jquery-utils';
 })
 export class SalesComponent implements OnInit {
 
-  title: string;
-  sales: Sale[];
+  public title: string;
+  public sales: Sale[];
 
-  iniDate: Date;
-  endDate: Date;
+  public iniDate: Date;
+  public endDate: Date;
 
-  jqueryConfigs: JqueryConfigs;
+  public jqueryConfigs: JqueryConfigs;
 
   constructor(
     private saleService: SaleService

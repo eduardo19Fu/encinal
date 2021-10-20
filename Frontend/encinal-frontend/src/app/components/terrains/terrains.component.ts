@@ -12,8 +12,8 @@ import { JqueryConfigs } from '../../utils/jquery-utils';
 })
 export class TerrainsComponent implements OnInit {
 
-  title: string;
-  terrains: Terrain[];
+  public title: string;
+  public terrains: Terrain[];
 
   jqueryConfigs: JqueryConfigs;
 

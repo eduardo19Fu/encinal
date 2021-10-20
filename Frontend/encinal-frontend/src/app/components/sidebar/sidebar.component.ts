@@ -10,7 +10,7 @@ import { AuthService } from '../../services/users/auth.service';
 })
 export class SidebarComponent implements OnInit {
 
-  user: User;
+  public user: User;
 
   constructor(
     public router: Router,

@@ -15,7 +15,7 @@ export class CreateBlockComponent implements OnInit {
 
   title: string;
 
-  @Input() block: Block;
+  @Input() public block: Block;
 
   constructor(
     private blockService: BlockService,

@@ -13,10 +13,10 @@ export class SellerSearchingComponent implements OnInit {
 
   @Output() seller = new EventEmitter<Seller>();
 
-  title: string;
-  jqueryConfigs: JqueryConfigs = new JqueryConfigs();
+  public title: string;
+  public jqueryConfigs: JqueryConfigs = new JqueryConfigs();
 
-  sellers: Seller[];
+  public sellers: Seller[];
 
   constructor(
     private sellerService: SellerService

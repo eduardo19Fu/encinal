@@ -14,10 +14,10 @@ export class CustomerSearchingComponent implements OnInit {
   @ViewChild('myModalClose') modalClose;
   @Output() customer = new EventEmitter<Client>();
 
-  title: string;
+  public title: string;
   jqueryConfigs: JqueryConfigs = new JqueryConfigs();
 
-  customers: Client[];
+  public customers: Client[];
 
   constructor(
     private clientService: ClientService
