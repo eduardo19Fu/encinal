@@ -33,7 +33,6 @@
               "node_modules/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
               "node_modules/admin-lte/dist/css/adminlte.min.css",
               "node_modules/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
-              "node_modules/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
               "node_modules/admin-lte/plugins/summernote/summernote-bs4.min.css"
             ],
             "scripts": [
