@@ -14,7 +14,7 @@
 	<name>encinalbackend</name>
 	<description>Backend application for El Encinal</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -50,18 +50,18 @@
 		</dependency>
 
 		<!-- JASPER REPORTS DEPENDENCY -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 			<version>6.12.2</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- JASPER REPORT FONTS -->
-		<dependency>
+		<!--<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
 			<version>6.16.0</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- SPRING SECURITY -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
