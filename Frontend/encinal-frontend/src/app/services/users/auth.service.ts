@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   login(user: User): Observable<any>{
-    const urlEndpoint = 'http://localhost:8180/oauth/token';
+    const urlEndpoint = 'https://encinal-bakend-2.herokuapp.com/oauth/token';
     const credentials = btoa('encinalfrontend' + ':' + 'pangosoftfees2021');
     const httpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', Authorization: 'Basic ' + credentials });
 
