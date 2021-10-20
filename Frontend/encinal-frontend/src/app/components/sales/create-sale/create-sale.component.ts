@@ -200,6 +200,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       // console.log(this.sale);
       this.saleService.create(this.sale).subscribe(
         response => {
+          this.paymentAgreement.hitch = this.hitch;
           this.paymentAgreement.payments = this.payments;
           this.paymentAgreement.totalAgreement = this.calcularTotal(this.paymentAgreement);
           this.paymentAgreement.sale = response.sale;

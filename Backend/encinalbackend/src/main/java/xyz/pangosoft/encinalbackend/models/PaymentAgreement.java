@@ -17,6 +17,7 @@ public class PaymentAgreement implements Serializable {
     private Double interestRate;
     private Double totalAgreement;
     private Integer totalPayments;
+    private Double hitch;
 
     @OneToOne
     @JoinColumn(name = "sale_id")
@@ -93,15 +94,12 @@ public class PaymentAgreement implements Serializable {
         this.payments = payments;
     }
 
-    @Override
-    public String toString() {
-        return "PaymentAgreement{" +
-                "paymentAgreementId=" + paymentAgreementId +
-                ", interestRate=" + interestRate +
-                ", totalAgreement=" + totalAgreement +
-                ", totalPayments=" + totalPayments +
-                ", sale=" + sale +
-                '}';
+    public Double getHitch() {
+        return hitch;
+    }
+
+    public void setHitch(Double hitch) {
+        this.hitch = hitch;
     }
 
     private static final long serialVersionUID = 1L;

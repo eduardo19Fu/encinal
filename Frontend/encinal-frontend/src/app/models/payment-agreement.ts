@@ -6,6 +6,7 @@ export class PaymentAgreement {
 
     paymentAgreementId: number;
     interestRate: number;
+    hitch: number;
     totalAgreement: number;
     totalPayments: number;
 
