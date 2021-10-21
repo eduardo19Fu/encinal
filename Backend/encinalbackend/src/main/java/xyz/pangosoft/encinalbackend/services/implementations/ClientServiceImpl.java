@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import xyz.pangosoft.encinalbackend.models.Client;
+import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.repositories.IClientRepository;
 import xyz.pangosoft.encinalbackend.services.IClientService;
 
@@ -19,6 +20,11 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public List<Client> listClients() {
         return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
+
+    @Override
+    public List<Client> listActiveClients(Status status) {
+        return clientRepository.findByStatusNot(status);
     }
 
     @Override

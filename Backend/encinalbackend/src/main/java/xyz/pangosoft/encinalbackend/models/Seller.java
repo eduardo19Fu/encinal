@@ -1,6 +1,9 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +18,9 @@ public class Seller implements Serializable {
     private String middleName;
     private String lastName;
 
+    @NotNull(message = "El campo teléfono es obligatorio!")
+    private String telNumber;
+
     @Temporal(TemporalType.DATE)
     private Date contractDate;
 
@@ -23,6 +29,7 @@ public class Seller implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
 
     public Integer getSellerId() {
@@ -65,6 +72,14 @@ public class Seller implements Serializable {
         this.contractDate = contractDate;
     }
 
+    public String getTelNumber() {
+        return telNumber;
+    }
+
+    public void setTelNumber(String telNumber) {
+        this.telNumber = telNumber;
+    }
+
     public Double getBaseSalary() {
         return baseSalary;
     }
@@ -87,6 +102,12 @@ public class Seller implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Integer calculateSalesQuiantity(Seller seller, Integer newSale){
+        Integer actualSales = seller.getSalesQuantity();
+        Integer newSales = actualSales + newSale;
+        return newSales;
     }
 
     private static final long serialVersionUID = 1L;

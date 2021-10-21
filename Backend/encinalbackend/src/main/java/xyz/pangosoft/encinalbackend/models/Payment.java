@@ -16,6 +16,8 @@ public class Payment implements Serializable {
     private Integer paymentNumber;
     private Double principalValue;
     private Double interestRateGenerated;
+    private Double remainingBalance;
+    private Double paymentTotal;
 
     @Temporal(TemporalType.DATE)
     private Date expireDate;
@@ -71,6 +73,36 @@ public class Payment implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Double getRemainingBalance() {
+        return remainingBalance;
+    }
+
+    public void setRemainingBalance(Double remainingBalance) {
+        this.remainingBalance = remainingBalance;
+    }
+
+    public Double getPaymentTotal() {
+        return paymentTotal;
+    }
+
+    public void setPaymentTotal(Double paymentTotal) {
+        this.paymentTotal = paymentTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", paymentNumber=" + paymentNumber +
+                ", principalValue=" + principalValue +
+                ", interestRateGenerated=" + interestRateGenerated +
+                ", remainingBalance=" + remainingBalance +
+                ", paymentTotal=" + paymentTotal +
+                ", expireDate=" + expireDate +
+                ", status=" + status +
+                '}';
     }
 
     private static final long serialVersionUID = 1L;

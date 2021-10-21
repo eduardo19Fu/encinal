@@ -1,0 +1,57 @@
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header header-color">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="width: auto;">
+                    <ul class="list-group list-group-flush" *ngIf="seller.sellerId">
+                        <li class="list-group-item active">
+                            <strong>ID: </strong>
+                            {{seller.sellerId}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Primer Nombre: </strong>
+                            {{seller.firstName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Segundo Nombre: </strong>
+                            {{seller.middleName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Apellido (s): </strong>
+                            {{seller.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Fecha de Contratación: </strong>
+                            {{seller.contractDate | date: 'dd/MM/yyyy'}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Teléfono: </strong>
+                            {{seller.telNumber}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Sueldo Base: </strong>
+                            {{seller.baseSalary}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Ventas Realizadas: </strong>
+                            {{seller.salesQuantity}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Estado: </strong>
+                            {{seller.status.status}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -18,8 +18,9 @@ public class Sale implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date saleDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -102,6 +103,14 @@ public class Sale implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
     private static final long serialVersionUID = 1L;

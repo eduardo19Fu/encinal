@@ -2,6 +2,7 @@ package xyz.pangosoft.encinalbackend.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.models.Terrain;
 import xyz.pangosoft.encinalbackend.repositories.ITerrainRepository;
 import xyz.pangosoft.encinalbackend.services.ITerrainService;
@@ -17,6 +18,11 @@ public class TerrainServiceImpl implements ITerrainService {
     @Override
     public List<Terrain> listTerrains() {
         return terrainRepository.findAll();
+    }
+
+    @Override
+    public List<Terrain> listTerrainsOnSale(Status status) {
+        return this.terrainRepository.findByStatusIs(status);
     }
 
     @Override

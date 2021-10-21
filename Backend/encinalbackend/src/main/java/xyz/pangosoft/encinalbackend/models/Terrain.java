@@ -1,6 +1,9 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -10,17 +13,25 @@ public class Terrain implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer terrainId;
+    @NotNull(message = "El número de Lote es obligatorio.")
     private String terrainNumber;
+    @NotNull(message = "El precio del Lote es obligatorio.")
     private Double price;
-    private Double height;
-    private Double weight;
+    @NotNull(message = "El largo del Lote es obligatorio.")
+    private Double length;
+    @NotNull(message = "El ancho del Lote es obligatorio.")
+    private Double width;
+    @NotNull(message = "El área del Lote es obligatorio.")
+    private Double area;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Block block;
 
     public Integer getTerrainId() {
@@ -47,20 +58,28 @@ public class Terrain implements Serializable {
         this.price = price;
     }
 
-    public Double getHeight() {
-        return height;
+    public Double getLength() {
+        return length;
     }
 
-    public void setHeight(Double height) {
-        this.height = height;
+    public void setLength(Double length) {
+        this.length = length;
     }
 
-    public Double getWeight() {
-        return weight;
+    public Double getWidth() {
+        return width;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getArea() {
+        return area;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
     }
 
     public Status getStatus() {

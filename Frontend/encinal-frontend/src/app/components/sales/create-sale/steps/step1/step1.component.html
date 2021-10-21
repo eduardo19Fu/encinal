@@ -1,0 +1,61 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/sales/create']">Elegir Tipo de Venta</a></li>
+                    <li class="breadcrumb-item active">{{title}}</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="container">
+    <h3 class="display-3"><strong>Paso</strong> <img src="assets/images/steps/step-1.png" alt="" class="img-fluid steps-images"></h3>
+    <p class="lead">Elija un cliente para continuar.</p>
+
+    <div class="table-responsive">
+        <table id="customers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm" role="grid"
+            *ngIf="customers?.length > 0">
+            <thead>
+                <tr>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellido (s)</th>
+                    <th>Identificación</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers">
+                    <td>{{customer.firstName}}</td>
+                    <td>{{customer.middleName}}</td>
+                    <td>{{customer.lastName}}</td>
+                    <td>{{customer.id}}</td>
+                    <td>
+                        <button class="btn bg-gradient-cyan" (click)="chooseCustomer(customer)" [routerLink]="['/sales/create/step-2']">
+                            <i class="fas fa-bullseye"></i>
+                            Elegir
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Apellido (s)</th>
+                    <th>Identificación</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div> <!--./ end Step 1 -->

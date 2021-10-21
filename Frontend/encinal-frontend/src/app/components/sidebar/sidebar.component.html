@@ -1,0 +1,159 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-warning elevation-4">
+    <!-- Brand Logo -->
+    <a [routerLink]="['/home']" class="brand-link">
+        <img src="assets/images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">Encinal</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="info">
+                <a [routerLink]="['/admin/users/index']" class="d-block">Bienvenido, {{user.username}}</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <!-- MENUS CONTAINER -->
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                
+                <!-- SALES AND TERRAINS MENUS -->
+                <!-- TERRAINS ITEM -->
+                <li class="nav-header">
+                    Lotes
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/terrains/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/terrains')}">
+                        <i class="nav-icon fas fa-bacteria"></i>
+                        <p>
+                            Lotes
+                        </p>
+                    </a>
+                </li>
+
+                <!-- SALES ITEM -->
+                <li class="nav-header">
+                    Ventas y Pagos
+                </li>
+                <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/sales')}">
+                    <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/sales')}">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p>
+                            Ventas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a [routerLink]="['/sales/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/sales/index')}">
+
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ventas Realizadas</p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a [routerLink]="['/sales/payments/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/sales/payments')}">
+
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pagos</p>
+                            </a>
+                        </li> -->
+                    </ul>
+                </li>
+
+                <!-- ADMIN MENU -->
+                <li class="nav-header">
+                    Items Administrativos
+                </li>
+                <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/admin')}">
+                    <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin')}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administración
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/users/index']"
+                                class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/users')}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/clients/index']"
+                                class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/clients')}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Clientes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/sellers/index']" 
+                                class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/sellers')}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Vendedores</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/blocks/index']"
+                            class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/blocks')}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Manzanas</p>
+                        </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/identification-types/index']"
+                            class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/identification-types')}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Tipos de Identificación</p>
+                        </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a [routerLink]="['/admin/items/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/admin/items')}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Valores</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-header">
+                    Sesión
+                </li>
+                <li class="nav-item">
+                    <a (click)="logout()" [routerLink]="['/login']" class="nav-link">
+                        <i class="nav-icon fas fa-bacteria"></i>
+                        <p>
+                            Cerrar Sesión
+                        </p>
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

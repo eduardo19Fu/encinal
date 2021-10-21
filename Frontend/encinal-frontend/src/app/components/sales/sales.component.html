@@ -1,0 +1,109 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/sales/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nueva
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Filtros
+    </div>
+    <div class="container">
+        <form action="">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-grup">
+                            <label for="init-date">Fecha Inicial</label>
+                            <input type="date" name="init-date" id="init-date" class="form-control" [(ngModel)]="iniDate">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="end-date">Fecha Final</label>
+                            <input type="date" name="end-date" id="end-date" class="form-control" [(ngModel)]="endDate">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn bg-gradient-gray" (click)="loadSalesDate()">
+                            <i class="fas fa-search"></i>
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr>
+
+<div *ngIf="sales?.length == 0" class="alert alert-info alert-dismissible">
+    <h5>
+        <i class="icon fas fa-info"></i>
+        Atención!
+    </h5>
+
+    No existe ninguna venta registrada en la Base de Datos!
+</div>
+
+<div *ngFor="let sale of sales; let i = index" class="accordion" id="accordionExample_{{i}}">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                    [attr.data-target]="'#sale_' + sale.saleId" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="fas fa-chevron-down"></i>
+                    {{sale.saleDate | date: 'dd/MM/yyyy HH:mm'}}
+                </button>
+            </h2>
+        </div>
+
+        <div id="sale_{{sale.saleId}}" class="collapse" aria-labelledby="headingOne" [attr.data-parent]="'#accordionExample_' + i">
+            <div class="card-body">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Lote No.: {{sale.terrain.terrainNumber}}</strong></h5>
+                        <p class="card-text">
+
+                        </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Vendedor: </strong>
+                            {{sale.seller.firstName + ' ' + sale.seller.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Cliente: </strong>
+                            {{sale.client.firstName + ' ' + sale.client.lastName}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Tipo de Venta: </strong>
+                            {{sale.saleType.saleType}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Estado: </strong>
+                            {{sale.status.status}}
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link" *ngIf="sale.saleType.saleTypeId === 2">Detalle</a>
+                        <a href="#" class="card-link">Anular</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

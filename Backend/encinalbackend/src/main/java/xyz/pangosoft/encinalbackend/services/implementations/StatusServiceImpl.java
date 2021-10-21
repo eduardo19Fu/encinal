@@ -25,7 +25,7 @@ public class StatusServiceImpl implements IStatusService {
     }
 
     @Override
-    public Status singleStatusName(String status) {
-        return statusRepository.findByStatus(status).orElse(null);
+    public Status singleStatusName(String status, String description) {
+        return statusRepository.findByStatusAndDescription(status, description).orElse(null);
     }
 }

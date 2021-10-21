@@ -1,0 +1,192 @@
+<!-- SERACH CUSTOMER MODAL -->
+<app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+
+<!-- SEARCH SELLER MODAL -->
+<app-seller-searching (seller)="loadSeller($event)"></app-seller-searching>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/sales/index']">Ventas</a></li>
+                    <li class="breadcrumb-item active">Registrar Venta</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<form action="">
+    <div class="card">
+        <!-- <div class="card-header">
+            <h3 class="card-title">Formulario</h3>
+        </div> -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client" class="labels">Cliente</label>
+                        <input type="text" name="client" id="client" class="form-control inputs" disabled>
+
+                        <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal"
+                            data-target="#modal-customers">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label for="seller" class="labels">Vendedor</label>
+                        <input type="text" name="seller" id="seller" class="form-control inputs" disabled>
+
+                        <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal"
+                            data-target="#modal-sellers">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="terrain" class="labels">Lote</label>
+                        <select name="terrain" id="terrain" class="form-control inputs" [(ngModel)]="sale.terrain"
+                            (ngModelChange)="mostrarTotal($event)" [disabled]="payments?.length > 0">
+                            <option [ngValue]="undefined">Elija un lote</option>
+                            <option *ngFor="let terrain of terrains" [ngValue]="terrain">
+                                {{'Lote: ' + terrain.terrainNumber + ' | Manzana: ' + terrain.block.blockNumber}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label for="sale-type" class="labels">Tipo de Venta</label>
+                        <select name="sale-type" id="sale-type" class="form-control inputs" [(ngModel)]="sale.saleType"
+                            (ngModelChange)="setSaleType($event)" [disabled]="payments?.length > 0">
+                            <option [ngValue]="undefined">Elige un tipo de venta</option>
+                            <option *ngFor="let saleType of saleTypes" [ngValue]="saleType">
+                                {{saleType.saleType}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <h4 style="float: right;">Total: <span *ngIf="terrain" id="total">{{terrain.price | currency: 'Q' :
+                    'symbol'}}</span></h4>
+        </div>
+
+        <button class="btn bg-gradient-success" *ngIf="saleType?.saleTypeId === 1"
+            [disabled]="!terrain || !customer || !seller" (click)="createSale()">
+
+            <i class="fas fa-cash-register"></i>
+            Vender
+        </button>
+    </div>
+
+    <div *ngIf="saleType?.saleTypeId === 2 && terrain" class="container">
+        <h4>Ingrese los valores para calcular</h4>
+        <div class="card">
+            <div class="card-body">
+                <div class="row container">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="hitch">Enganche</label>
+                            <input type="number" name="hitch" id="hitch" class="form-control" [(ngModel)]="hitch">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="interest-rate">Interés</label>
+                            <input type="number" name="interes-rate" id="interest-rate" class="form-control"
+                                [(ngModel)]="interestRate">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="years">Años</label>
+                            <input type="number" name="years" id="years" class="form-control" [(ngModel)]="years">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="payment-day">Fecha de Pago</label>
+                            <input type="date" name="payment-date" id="payment-date" class="form-control"
+                                [(ngModel)]="paymentDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <div class="col">
+                        <button class="btn bg-gradient-info" (click)="calculateMonthlyFee()"
+                            [disabled]="payments?.length > 0">
+                            <i class="fas fa-calculator"></i>
+                            Calcular
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div>
+                    <h4>Cuota Mensual {{monthlyFee | currency: "Q" : "symbol"}}</h4>
+                    <button class="btn bg-gradient-danger" *ngIf="payments?.length > 0" (click)="createFeesSale()"
+                        [disabled]="!terrain || !customer || !seller">
+
+                        <i class="fas fa-cash-register"></i>
+                        Vender
+                    </button>&nbsp;
+
+                    <button class="btn bg-gradient-warning" *ngIf="payments?.length > 0" (click)="reloadPage()">
+                        <i class="fas fa-snowplow"></i>
+                        Limpiar
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        <table name="fees" id="fees" *ngIf="payments?.length > 0"
+                            class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Mes</th>
+                                    <th>Interes</th>
+                                    <th>Capital</th>
+                                    <th>Cuota</th>
+                                    <th>Saldo</th>
+                                    <th>Fecha de Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let payment of payments">
+                                    <td>{{payment.paymentNumber}}</td>
+                                    <td>{{payment.interestRateGenerated | currency: 'Q' : 'symbol'}}</td>
+                                    <td>{{payment.principalValue | currency: 'Q' : 'symbol'}}</td>
+                                    <td>{{payment.paymentTotal | currency: 'Q' : 'symbol'}}</td>
+                                    <td>{{payment.remainingBalance | currency: 'Q' : 'symbol'}}</td>
+                                    <td>{{payment.expireDate | date: 'dd-MM-yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

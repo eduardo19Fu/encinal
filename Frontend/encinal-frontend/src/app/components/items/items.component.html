@@ -1,0 +1,81 @@
+<!-- CREATE ITEM MODAL-->
+<app-create-item [item]="item"></app-create-item>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a *ngIf="authService.hasRole('ROLE_SUPERADMIN')" class="btn bg-gradient-success" 
+                data-toggle="modal" data-target="#modal-lg">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Valores Configurables
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="items?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún item registrado en la Base de Datos!
+        </div>
+
+        <table id="clients" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="items?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Valor</th>
+                    <th>Fecha de Creación</th>
+                    <th>Creado Por</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let item of items">
+                    <td>{{item.itemId}}</td>
+                    <td>{{item.itemName}}</td>
+                    <td>{{item.itemValue + '%'}}</td>
+                    <td>{{item.createdAt | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+                    <td>{{item.createdBy}}</td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-warning" type="button" name="edit"
+                            [routerLink]="['/admin/items/update', item.itemId]">
+                            
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>&nbsp;
+
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Valor</th>
+                    <th>Fecha de Creación</th>
+                    <th>Creado Por</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

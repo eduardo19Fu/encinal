@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ public class PaymentAgreement implements Serializable {
     private Double interestRate;
     private Double totalAgreement;
     private Integer totalPayments;
+    private Double hitch;
 
     @OneToOne
     @JoinColumn(name = "sale_id")
@@ -27,10 +29,14 @@ public class PaymentAgreement implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_agreement_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<Payment> payments;
+
+    public PaymentAgreement(){
+        this.payments = new ArrayList<>();
+    }
 
     public Integer getPaymentAgreementId() {
         return paymentAgreementId;
@@ -86,6 +92,14 @@ public class PaymentAgreement implements Serializable {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public Double getHitch() {
+        return hitch;
+    }
+
+    public void setHitch(Double hitch) {
+        this.hitch = hitch;
     }
 
     private static final long serialVersionUID = 1L;

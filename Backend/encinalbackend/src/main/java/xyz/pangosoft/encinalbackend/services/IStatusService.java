@@ -10,5 +10,5 @@ public interface IStatusService {
 
     public Status singleStatus(Integer idStatus);
 
-    public Status singleStatusName(String status);
+    public Status singleStatusName(String status, String description);
 }

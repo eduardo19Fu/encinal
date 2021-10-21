@@ -1,0 +1,134 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/admin/sellers/index']">Vendedores</a></li>
+                    <li class="breadcrumb-item active">Registrar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<hr>
+<!-- /.content-header -->
+
+
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #sellerForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="first-name">Primer Nombre</label>
+                            <input type="text" name="first-name" id="first-name" class="form-control"
+                                [(ngModel)]="seller.firstName" placeholder="Ingrese el primer nombre del vendedor"
+                                required #firstName="ngModel">
+                            
+                            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                                <span class="requerido" *ngIf="firstName.errors.required">
+                                    El primer nombre es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="middle-name">Segundo Nombre</label>
+                            <input type="text" name="middle-name" id="middle-name" class="form-control"
+                                [(ngModel)]="seller.middleName" placeholder="Ingrese el segundo o tercer nombre del vendedor">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last-name">Apellido (s)</label>
+                            <input type="text" name="last-name" id="last-name" class="form-control"
+                                [(ngModel)]="seller.lastName" placeholder="Ingrese el o los apellidos del vendedor"
+                                required #lastName="ngModel">
+
+                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                                <span class="requerido" *ngIf="lastName.errors.required">
+                                    El apellido (s) es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ingrese un número de teléfono"
+                                [(ngModel)]="seller.telNumber" required #telefono="ngModel">
+
+                            <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
+                                <span class="requerido" *ngIf="telefono.errors.required">
+                                    El teléfono es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="contract-date">Fecha de Contratación</label>
+                            <input type="date" name="contract-date" id="contract-date" class="form-control"
+                                [(ngModel)]="seller.contractDate" required #contractDate="ngModel">
+
+                            <div *ngIf="contractDate.invalid && (contractDate.dirty || contractDate.touched)">
+                                <span class="requerido" *ngIf="address.errors.required">
+                                    La fecha de contratación es obligatoria.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="base-salary">Sueldo Base</label>
+                            <input type="number" name="base-salary" id="base-salary" class="form-control" [(ngModel)]="seller.baseSalary"
+                                placeholder="Ingrese sueldo base del cliente"
+                                required #baseSalary="ngModel">
+
+                            <div *ngIf="baseSalary.invalid && (baseSalary.dirty || baseSalary.touched)">
+                                <span class="requerido" *ngIf="baseSalary.errors.required">
+                                    El sueldo base es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <button *ngIf="!seller.sellerId else update" type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!sellerForm.form.valid">
+
+                    Registrar
+                </button>
+
+                <ng-template #update>
+                    <button type="submit" class="btn bg-gradient-danger" 
+                        (click)="update()" [disabled]="!sellerForm.form.valid">
+
+                        Actualizar
+                    </button>
+                </ng-template>
+                
+            </div>
+        </form>
+    </div>
+
+</div>

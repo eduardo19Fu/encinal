@@ -1,0 +1,174 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/admin/clients/index']">Clientes</a></li>
+                    <li class="breadcrumb-item active">Registrar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="col-md-9">
+
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #clientForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="first-name">Primer Nombre</label>
+                            <input type="text" name="first-name" id="first-name" class="form-control"
+                                [(ngModel)]="client.firstName" placeholder="Ingrese el primer nombre del cliente"
+                                required #firstName="ngModel">
+                            
+                            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                                <span class="requerido" *ngIf="firstName.errors.required">
+                                    El primer nombre es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="middle-name">Segundo Nombre</label>
+                            <input type="text" name="middle-name" id="middle-name" class="form-control"
+                                [(ngModel)]="client.middleName" placeholder="Ingrese el segundo o tercer nombre del cliente">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last-name">Apellido (s)</label>
+                            <input type="text" name="last-name" id="last-name" class="form-control"
+                                [(ngModel)]="client.lastName" placeholder="Ingrese el o los apellidos del cliente"
+                                required #lastName="ngModel">
+
+                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                                <span class="requerido" *ngIf="lastName.errors.required">
+                                    El apellido (s) es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" name="address" id="address" class="form-control"
+                                [(ngModel)]="client.address" placeholder="Ingrese dirección del cliente"
+                                required #address="ngModel">
+
+                            <div *ngIf="address.invalid && (address.dirty || address.touched)">
+                                <span class="requerido" *ngIf="address.errors.required">
+                                    La dirección es obligatoria.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="nit">NIT</label>
+                            <input type="text" name="nit" id="nit" class="form-control" [(ngModel)]="client.nit"
+                                placeholder="Ingrese NIT del cliente"
+                                required #nit="ngModel">
+
+                            <div *ngIf="nit.invalid && (nit.dirty || nit.touched)">
+                                <span class="requerido" *ngIf="nit.errors.required">
+                                    El NIT es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input type="text" name="id" id="id" class="form-control" [(ngModel)]="client.id"
+                                placeholder="Ingrese número de identificación"
+                                required #id="ngModel">
+
+                            <div *ngIf="id.invalid && (id.dirty || id.touched)">
+                                <span class="requerido" *ngIf="id.errors.required">
+                                    La identificación es obligatoria.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="identification-type">Tipo de Identificación</label>
+                            <select name="identification-type" id="identification-type" class="form-control" [compareWith]="compareIdentification"
+                                [(ngModel)]="client.identificationType">
+                                <option [ngValue]="undefined">Seleccionar Tipo de Documento</option>
+                                <option *ngFor="let identification of identificationTypes" [ngValue]="identification">
+                                    {{identification.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="tel-number">Teléfono</label>
+                            <input type="text" name="tel-number" id="tel-number" class="form-control" [(ngModel)]="client.telNumber"
+                                placeholder="Ingrese número de teléfono">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Ingrese un correo electrónico"
+                            [(ngModel)]="client.email">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="birth-date">Fecha de Nacimiento</label>
+                            <input type="date" name="birth-date" id="birth-date" class="form-control" [(ngModel)]="client.birthDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button *ngIf="!client.clientId else update" type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!clientForm.form.valid">
+                    
+                    Registrar
+                </button>
+
+                <ng-template #update>
+                    <button type="submit" class="btn bg-gradient-danger" 
+                        (click)="update()" [disabled]="!clientForm.form.valid">
+                    
+                        Actualizar
+                    </button>
+                </ng-template>
+                
+            </div>
+        </form>
+    </div>
+
+</div>
