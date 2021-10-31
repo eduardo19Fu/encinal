@@ -45,6 +45,9 @@ public class Client implements Serializable {
     private String address;
     private Double amountOutstanding;
 
+    @Transient
+    private boolean underage;
+
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
@@ -176,6 +179,14 @@ public class Client implements Serializable {
 
     public void setIdentificationType(IdentificationType identificationType) {
         this.identificationType = identificationType;
+    }
+
+    public boolean isUnderage() {
+        return underage;
+    }
+
+    public void setUnderage(boolean underage) {
+        this.underage = underage;
     }
 
     private static final long serialVersionUID = 1L;

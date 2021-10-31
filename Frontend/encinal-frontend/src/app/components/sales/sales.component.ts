@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
 import { Sale } from 'src/app/models/sale';
 import { SaleService } from '../../services/sale-service/sale.service';
+
 import { JqueryConfigs } from '../../utils/jquery-utils';
 
 @Component({
@@ -18,11 +21,16 @@ export class SalesComponent implements OnInit {
 
   public jqueryConfigs: JqueryConfigs;
 
+  iniDateValue: string;
+  endDateValue: string;
+
   constructor(
     private saleService: SaleService
   ) {
     this.title = 'Ventas Realizadas';
     this.jqueryConfigs = new JqueryConfigs();
+    this.iniDateValue = new Date().toISOString().slice(0, 10);
+    this.endDateValue = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit(): void {
@@ -39,6 +47,9 @@ export class SalesComponent implements OnInit {
   }
 
   loadSalesDate(): void{
+    this.iniDate = (document.getElementById('init-date') as HTMLInputElement).valueAsDate;
+    this.endDate = (document.getElementById('end-date') as HTMLInputElement).valueAsDate;
+    // console.log(this.endDate);
     this.saleService.getSalesByDate(this.iniDate, this.endDate).subscribe(
       sales => {
         this.sales = sales;

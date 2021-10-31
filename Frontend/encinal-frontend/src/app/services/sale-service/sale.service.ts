@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 import { Sale } from 'src/app/models/sale';
 import { SaleType } from 'src/app/models/sale-type';
@@ -28,9 +29,17 @@ export class SaleService {
   }
 
   getSalesByDate(initDate: Date, endDate: Date): Observable<Sale[]> {
+    const datepipe: DatePipe = new DatePipe('es');
+
+    const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
+    const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+
+    console.log(date1);
+    console.log(date2);
+
     const httpParams = new HttpParams()
-      .set('initDate', initDate.toString())
-      .set('endDate', endDate.toString());
+      .set('initDate', date1)
+      .set('endDate', date2);
 
     return this.httpClient.get<Sale[]>(`${this.url}/sales`, { params: httpParams });
   }

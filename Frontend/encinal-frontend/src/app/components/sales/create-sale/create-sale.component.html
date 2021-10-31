@@ -1,5 +1,8 @@
 <!-- SERACH CUSTOMER MODAL -->
-<app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+<!-- <app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+<app-create-customer (customer)="loadCustomer($event)"></app-create-customer> -->
+
+<app-principal (customer)="loadCustomer($event)"></app-principal>
 
 <!-- SEARCH SELLER MODAL -->
 <app-seller-searching (seller)="loadSeller($event)"></app-seller-searching>
@@ -35,7 +38,7 @@
                         <input type="text" name="client" id="client" class="form-control inputs" disabled>
 
                         <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal"
-                            data-target="#modal-customers">
+                            data-target="#modal-principal">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
