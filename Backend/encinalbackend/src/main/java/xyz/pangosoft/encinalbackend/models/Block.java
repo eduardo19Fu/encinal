@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "blocks")
@@ -30,6 +31,10 @@ public class Block implements Serializable {
     @JoinColumn(name = "status_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Status status;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "block")
+    @JsonIgnoreProperties({"block", "hibernateLazyInitializer", "handler"})
+    private List<Terrain> terrains;
 
     public Integer getBlockId() {
         return blockId;
@@ -61,6 +66,14 @@ public class Block implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<Terrain> getTerrains() {
+        return terrains;
+    }
+
+    public void setTerrains(List<Terrain> terrains) {
+        this.terrains = terrains;
     }
 
     private static final long serialVersionUID = 1L;

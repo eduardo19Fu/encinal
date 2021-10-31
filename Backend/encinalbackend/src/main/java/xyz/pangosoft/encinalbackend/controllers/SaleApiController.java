@@ -42,21 +42,26 @@ public class SaleApiController {
     private ISellerService sellerService;
 
     @GetMapping("/sales")
-    public List<Sale> index(@RequestParam(required = false) String initDate, @RequestParam(required = false) String endDate) throws ParseException {
+    public List<Sale> index(
+            @RequestParam(required = false) String initDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) Integer idManzana) throws ParseException {
 
         Date date1;
         Date date2;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        if(initDate == null || endDate == null)
+        if(initDate == null || endDate == null || idManzana == null)
             return saleService.listSales();
-        else{
+        else if(idManzana == null){
             System.out.println(initDate);
             System.out.println(endDate);
             date1 = format.parse(initDate);
             date2 = format.parse(endDate);
             return saleService.listSalesByDate(date1, date2);
+        }else {
+            return null;
         }
     }
 
