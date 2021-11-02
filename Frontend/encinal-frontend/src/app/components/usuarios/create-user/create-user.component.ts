@@ -5,6 +5,8 @@ import { UserService } from '../../../services/users/user.service';
 import { User } from '../../../models/user';
 
 import Swal from 'sweetalert2';
+import { Role } from '../../../models/role';
+import { UserAuxiliar } from '../../../models/user-auxiliar';
 
 @Component({
   selector: 'app-create-user',
@@ -16,6 +18,9 @@ export class CreateUserComponent implements OnInit {
   public title: string;
 
   public user: User;
+  public userAuxiliar: UserAuxiliar;
+  public roles: Role[];
+  filas: Role[] = [];
 
   constructor(
     private userService: UserService,
@@ -24,10 +29,12 @@ export class CreateUserComponent implements OnInit {
   ) {
     this.title = 'Registrar Usuario';
     this.user = new User();
+    this.userAuxiliar = new UserAuxiliar();
   }
 
   ngOnInit(): void {
     this.loadUser();
+    this.getRoles();
   }
 
   loadUser(): void{
@@ -37,7 +44,8 @@ export class CreateUserComponent implements OnInit {
         if (id){
           this.userService.getUser(id).subscribe(
             user => {
-              this.user = user;
+              this.userAuxiliar = user;
+              this.filas = this.userAuxiliar.roles;
             }
           );
         }
@@ -46,7 +54,9 @@ export class CreateUserComponent implements OnInit {
   }
 
   create(): void{
-    this.userService.create(this.user).subscribe(
+    this.userAuxiliar.roles = this.filas;
+
+    this.userService.create(this.userAuxiliar).subscribe(
       response => {
         this.router.navigate(['/admin/users/index']);
         Swal.fire('Usuario Registrado', `El usuario ${response.message} fué creado con éxito`, 'success');
@@ -55,12 +65,31 @@ export class CreateUserComponent implements OnInit {
   }
 
   update(): void{
-    this.userService.update(this.user).subscribe(
+    this.userService.update(this.userAuxiliar).subscribe(
       response => {
         this.router.navigate(['/admin/users/index']);
         Swal.fire('Usuario Actualizado', `${response.message}`, 'success');
       }
     );
+  }
+
+  getRoles(): void{
+    this.userService.getRoles().subscribe(
+      roles => this.roles = roles
+    );
+  }
+
+  loadRole(event): void {
+    this.roles.forEach(role => {
+      // tslint:disable-next-line: triple-equals
+      if (role.roleId == event){
+        this.filas.push(role);
+      }
+    });
+  }
+
+  deleteFila(index: number): void{
+    this.filas.splice(index, 1);
   }
 
 }

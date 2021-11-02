@@ -47,6 +47,7 @@ import { UpdateItemComponent } from './components/items/update-item/update-item.
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CreateCustomerComponent } from './components/sales/modals/create-customer/create-customer.component';
 import { PrincipalComponent } from './components/sales/modals/principal/principal.component';
+import { DetailUserComponent } from './components/usuarios/detail-user/detail-user.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { PrincipalComponent } from './components/sales/modals/principal/principa
     CreateItemComponent,
     UpdateItemComponent,
     CreateCustomerComponent,
-    PrincipalComponent
+    PrincipalComponent,
+    DetailUserComponent
   ],
   imports: [
     BrowserModule,
