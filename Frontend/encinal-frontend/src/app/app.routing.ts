@@ -50,6 +50,7 @@ const appRoutes: Routes = [
     // Payments
     {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},
     {path: 'sales/payments/create', component: CreatePaymentComponent, canActivate: [AuthGuard]},
+    {path: 'sales/payments/create/:terrainId', component: CreatePaymentComponent, canActivate: [AuthGuard]},
 
     /*********** PATH FOR ADMIN PAGES  *************/
     // Users

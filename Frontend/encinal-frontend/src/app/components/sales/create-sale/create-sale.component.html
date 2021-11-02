@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <label for="interest-rate">Interés</label>
                             <input type="number" name="interes-rate" id="interest-rate" class="form-control"
-                                [(ngModel)]="interestRate">
+                                [(ngModel)]="interestRate" [disabled]="interestRate">
                         </div>
                     </div>
 
@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <label for="payment-day">Fecha de Pago</label>
                             <input type="date" name="payment-date" id="payment-date" class="form-control"
-                                [(ngModel)]="paymentDate">
+                                [value]="paymentDateValue">
                         </div>
                     </div>
                 </div>

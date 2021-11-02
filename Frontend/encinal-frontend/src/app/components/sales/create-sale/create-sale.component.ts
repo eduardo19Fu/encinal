@@ -15,9 +15,11 @@ import { Sale } from '../../../models/sale';
 import { Payment } from '../../../models/payment';
 import { PaymentAgreement } from '../../../models/payment-agreement';
 import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
+import { ItemService } from '../../../services/items/item.service';
 
 import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-sale',
@@ -47,6 +49,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   saleTypeSubscription: Subscription;
 
   public paymentDate: Date;
+  public paymentDateValue: string;
   public years: number;
   public interestRate: number;
   public hitch: number; // Enganche
@@ -61,18 +64,21 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     private customerService: ClientService,
     private saleTypeService: SaleTypeService,
     private paymentAgreementService: PaymentAgreementService,
+    private itemService: ItemService,
     private router: Router
   ) {
     this.title = 'Venta';
     this.sale = new Sale();
     this.paymentAgreement = new PaymentAgreement();
     this.payments = [];
+    this.paymentDateValue = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit(): void {
     this.loadSaleTypes();
     this.loadTarrains();
     this.loadSellers();
+    this.loadInterestRate();
   }
 
   ngOnDestroy(): void {
@@ -80,6 +86,14 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   }
 
   create(): void { }
+
+  loadInterestRate(): void{
+    this.itemService.getItem(2).subscribe(
+      item => {
+        this.interestRate = item.itemValue;
+      }
+    );
+  }
 
   loadSaleTypes(): void {
     this.saleTypeService.getSaleTypes().subscribe(
@@ -153,8 +167,6 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
 
       interest = (this.interestRate / 12) / 100;
       months = this.years * 12;
-      console.log(this.years);
-      console.log(months);
       let pv: number = this.terrain.price - this.hitch;
 
       const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);
@@ -168,12 +180,9 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         this.payment.principalValue = pmt - this.payment.interestRateGenerated;
         this.payment.paymentTotal = this.monthlyFee;
 
-        if (i === 1) {
-          this.payment.expireDate = this.paymentDate;
-        } else {
-          const newDate = new Date(this.paymentDate).setMonth(new Date(this.paymentDate).getMonth() + (i - 1));
-          this.payment.expireDate = new Date(newDate);
-        }
+        const newDate = new Date(this.paymentDateValue).setMonth(new Date(this.paymentDateValue).getMonth() + (i));
+        this.payment.expireDate = new Date(newDate);
+
         pv = pv - this.payment.principalValue;
         if (pv < 0) {
           this.payment.remainingBalance = 0;
