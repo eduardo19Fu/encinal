@@ -15,6 +15,10 @@ public interface ISaleService {
 
     public List<Sale> listSalesByDate(Date initDate, Date endDate);
 
+    public List<Sale> listSalesByBlock(Integer blockId);
+
+    public List<Sale> listSalesByBlockAndDate(Integer blockId, Date initDate, Date endDate);
+
     public Sale singleSale(Integer saleId);
 
     public Sale save(Sale sale);

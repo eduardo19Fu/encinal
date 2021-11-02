@@ -23,7 +23,17 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <div class="from-grup">
+                        <div class="form-group">
+                            <label for="block">Manzana</label>
+                            <select name="blocks" id="blocks" class="form-control">
+                                <option *ngFor="let block of blocks" [value]="block.blockId">{{block.blockNumber}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
                             <label for="init-date">Fecha Inicial</label>
                             <input type="date" name="init-date" id="init-date" class="form-control" [value]="iniDateValue">
                         </div>
@@ -38,7 +48,7 @@
 
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn bg-gradient-gray" (click)="loadSalesDate()">
+                        <button type="submit" class="btn bg-gradient-gray" (click)="searchSalesByBlockAndDate()">
                             <i class="fas fa-search"></i>
                             Buscar
                         </button>
@@ -96,6 +106,10 @@
                         <li class="list-group-item">
                             <strong>Estado: </strong>
                             {{sale.status.status}}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Total: </strong>
+                            {{sale.total | currency:"Q":"symbol"}}
                         </li>
                     </ul>
                     <div class="card-body">

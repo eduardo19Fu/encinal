@@ -44,6 +44,28 @@ export class SaleService {
     return this.httpClient.get<Sale[]>(`${this.url}/sales`, { params: httpParams });
   }
 
+  getSalesByBlock(blockId: number): Observable<Sale[]>{
+    const httpParams = new HttpParams()
+      .set('idManzana', blockId.toString());
+
+    return this.httpClient.get<Sale[]>(`${this.url}/sales`, { params: httpParams });
+  }
+
+  getSalesByBlockAndDate(blockId: number, initDate: Date, endDate: Date): Observable<Sale[]>{
+    const datepipe: DatePipe = new DatePipe('es');
+
+    const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
+    const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+
+    const httpParams = new HttpParams()
+      .set('idManzana', blockId.toString())
+      .set('initDate', date1)
+      .set('endDate', date2);
+
+    return this.httpClient.get<Sale[]>(`${this.url}/sales`, { params: httpParams });
+  }
+
+
   create(sale: Sale): Observable<any> {
     return this.httpClient.post<any>(`${this.url}/sales`, sale).pipe(
       catchError(e => {

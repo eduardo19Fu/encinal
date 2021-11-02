@@ -15,10 +15,7 @@ import xyz.pangosoft.encinalbackend.services.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {"http://localhost:4200", "https://encinal5.web.app"})
@@ -41,6 +38,9 @@ public class SaleApiController {
     @Autowired
     private ISellerService sellerService;
 
+    @Autowired
+    private IBlockService blockService;
+
     @GetMapping("/sales")
     public List<Sale> index(
             @RequestParam(required = false) String initDate,
@@ -52,16 +52,18 @@ public class SaleApiController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        if(initDate == null || endDate == null || idManzana == null)
-            return saleService.listSales();
-        else if(idManzana == null){
-            System.out.println(initDate);
-            System.out.println(endDate);
+        if((initDate == null || endDate == null) && idManzana != null) {
+            return saleService.listSalesByBlock(idManzana);
+        } else if(idManzana == null && (initDate != null || endDate != null)){
             date1 = format.parse(initDate);
             date2 = format.parse(endDate);
             return saleService.listSalesByDate(date1, date2);
-        }else {
-            return null;
+        } else if(idManzana != null && (initDate != null || endDate != null)){
+            date1 = format.parse(initDate);
+            date2 = format.parse(endDate);
+            return saleService.listSalesByBlockAndDate(idManzana, date1, date2);
+        } else{
+            return saleService.listSales();
         }
     }
 
@@ -141,6 +143,11 @@ public class SaleApiController {
         response.put("message", "¡Venta realizada con éxito!");
         response.put("sale", newSale);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+
+    public ResponseEntity<?> cancel(){
+        return null;
     }
 
     @Secured(value = {"ROLE_ADMIN"})

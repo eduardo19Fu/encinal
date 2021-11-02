@@ -34,6 +34,16 @@ public class SaleServiceImpl implements ISaleService {
     }
 
     @Override
+    public List<Sale> listSalesByBlock(Integer blockId) {
+        return this.saleRepository.findByBlock(blockId);
+    }
+
+    @Override
+    public List<Sale> listSalesByBlockAndDate(Integer blockId, Date initDate, Date endDate) {
+        return this.saleRepository.findByBlockAndDate(blockId, initDate, endDate);
+    }
+
+    @Override
     public Sale singleSale(Integer saleId) {
         return saleRepository.findById(saleId).orElse(null);
     }

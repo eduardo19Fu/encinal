@@ -31,7 +31,7 @@ public class Terrain implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"terrains", "hibernateLazyInitializer", "handler"})
     private Block block;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "terrain")
