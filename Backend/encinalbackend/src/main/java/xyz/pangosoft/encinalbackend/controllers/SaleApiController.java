@@ -41,6 +41,12 @@ public class SaleApiController {
     @Autowired
     private IBlockService blockService;
 
+    @Autowired
+    private IPaymentAgreementService paymentAgreementService;
+
+    @Autowired
+    private IPaymentService paymentService;
+
     @GetMapping("/sales")
     public List<Sale> index(
             @RequestParam(required = false) String initDate,
@@ -67,13 +73,13 @@ public class SaleApiController {
         }
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sales/page/{page}")
     public Page<Sale> indexPaginate(@PathVariable("page") Integer page){
         return saleService.listSales(PageRequest.of(page, 5));
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sales/{id}")
     public ResponseEntity<?> findSale(@PathVariable("id") Integer id){
 
@@ -96,7 +102,7 @@ public class SaleApiController {
         return new ResponseEntity<Sale>(sale, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/sales")
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 
@@ -146,8 +152,65 @@ public class SaleApiController {
     }
 
 
-    public ResponseEntity<?> cancel(){
-        return null;
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO", "ROLE_SUPERADMIN"})
+    @DeleteMapping("/sales/cancel/{id}")
+    public ResponseEntity<?> cancel(@PathVariable("id") Integer saleId){
+
+        Sale saleToCancel = null;
+        PaymentAgreement paymentAgreementToCancel = null;
+        Terrain terrain = null;
+
+        Status statusSale = null;
+        Status statusPaymentAgreement = null;
+        Status statusPayment = null;
+        Status statusTerrain = null;
+
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            saleToCancel = saleService.singleSale(saleId);
+            statusSale = statusService.singleStatusName("Anulado", "Sale");
+            statusTerrain = statusService.singleStatusName("En Venta", "Terrain");
+
+            if(saleToCancel.getPaymentAgreement() == null){
+                saleToCancel.setStatus(statusSale);
+
+                terrain = saleToCancel.getTerrain();
+                terrain.setStatus(statusTerrain);
+
+                saleService.save(saleToCancel);
+                terrainService.save(terrain);
+            } else {
+                statusPaymentAgreement = statusService.singleStatusName("Anulado", "Payment Agreement");
+                statusPayment = statusService.singleStatusName("Anulado", "Payment");
+
+                saleToCancel.setStatus(statusSale);
+
+                terrain = saleToCancel.getTerrain();
+                terrain.setStatus(statusTerrain);
+
+                paymentAgreementToCancel = saleToCancel.getPaymentAgreement();
+                paymentAgreementToCancel.setStatus(statusPaymentAgreement);
+
+                saleService.save(saleToCancel);
+                terrainService.save(terrain);
+                paymentAgreementService.save(paymentAgreementToCancel);
+
+                for(Payment paymentToCancel : paymentAgreementToCancel.getPayments()){
+                    paymentToCancel.setStatus(statusPayment);
+                    paymentService.save(paymentToCancel);
+                }
+
+            }
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("message", "¡La venta ha sido anulada con éxito!");
+        response.put("sale", saleToCancel);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     @Secured(value = {"ROLE_ADMIN"})

@@ -43,6 +43,10 @@ public class Sale implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Terrain terrain;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "sale")
+    @JsonIgnoreProperties({ "sale","hibernateLazyInitializer", "handler" })
+    private PaymentAgreement paymentAgreement;
+
 
     @PrePersist
     public void saleDate(){
@@ -111,6 +115,14 @@ public class Sale implements Serializable {
 
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
+    }
+
+    public PaymentAgreement getPaymentAgreement() {
+        return paymentAgreement;
+    }
+
+    public void setPaymentAgreement(PaymentAgreement paymentAgreement) {
+        this.paymentAgreement = paymentAgreement;
     }
 
     private static final long serialVersionUID = 1L;

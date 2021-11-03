@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import { Sale } from 'src/app/models/sale';
+import { Block } from '../../models/block';
 import { SaleService } from '../../services/sale-service/sale.service';
+import { BlockService } from '../../services/block-service/block.service';
 
 import { JqueryConfigs } from '../../utils/jquery-utils';
-import { BlockService } from '../../services/block-service/block.service';
-import { Block } from '../../models/block';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sales',
@@ -26,6 +27,14 @@ export class SalesComponent implements OnInit {
 
   iniDateValue: string;
   endDateValue: string;
+
+  swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: true
+  });
 
   constructor(
     private saleService: SaleService,
@@ -93,4 +102,47 @@ export class SalesComponent implements OnInit {
   }
 
   searchAllSales(): void{}
+
+  cancel(sale: Sale): void{
+    this.swalWithBootstrapButtons.fire({
+      title: '¿Está seguro?',
+      text: `¿Seguro que desea anular la factura No. ${sale.saleId}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '¡Si, anular!',
+      cancelButtonText: '¡No, cancelar!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        // aqui va el codigo de confirmación para anular factura
+        this.saleService.cancel(sale.saleId).subscribe(
+          response => {
+            this.swalWithBootstrapButtons.fire(
+              `${response.mensaje}`,
+              `La venta No. ${sale.saleId} ha sido anulada con éxito`,
+              'success'
+            );
+          }
+        );
+
+        // this.sales.map(oldSale => {
+        //   if (facturaVieja.idFactura === factura.idFactura) {
+        //     facturaVieja.estado = factura.estado;
+        //   }
+        //   return factura;
+        // });
+
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        this.swalWithBootstrapButtons.fire(
+          'Proceso Cancelado',
+          `La venta No. ${sale.saleId} no fué anulada.`,
+          'error'
+        );
+      }
+    });
+  }
 }
