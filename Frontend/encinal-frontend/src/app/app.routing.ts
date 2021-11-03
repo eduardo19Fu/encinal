@@ -43,6 +43,7 @@ const appRoutes: Routes = [
     // Sales
     {path: 'sales/index', component: SalesComponent, canActivate: [AuthGuard]},
     {path: 'sales/create', component: CreateSaleComponent, canActivate: [AuthGuard]},
+    {path: 'sales/create/:terrainId', component: CreateSaleComponent, canActivate: [AuthGuard]},
     {path: 'sales/create/step-1', component: Step1Component, canActivate: [AuthGuard]},
     {path: 'sales/create/step-2', component: Step2Component, canActivate: [AuthGuard]},
     {path: 'sales/create/step-3', component: Step3Component, canActivate: [AuthGuard]},
@@ -50,7 +51,6 @@ const appRoutes: Routes = [
     // Payments
     {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},
     {path: 'sales/payments/create', component: CreatePaymentComponent, canActivate: [AuthGuard]},
-    {path: 'sales/payments/create/:terrainId', component: CreatePaymentComponent, canActivate: [AuthGuard]},
 
     /*********** PATH FOR ADMIN PAGES  *************/
     // Users

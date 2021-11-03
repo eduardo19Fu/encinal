@@ -61,21 +61,22 @@
                     </td>
                     <td class="center-options">
 
-                        <!-- <button class="btn bg-gradient-secondary" type="button" name="info"
-                            data-toggle="modal" data-target="#modal-detail">
+                        <button class="btn bg-gradient-secondary" type="button" name="info"
+                            [routerLink]="['/sales/create', terrain.terrainId]" [disabled]="terrain.status.status != 'En Venta'">
 
                             <i class="fas fa-share-square"></i>
                             Vender
-                        </button>&nbsp; -->
+                        </button>&nbsp;
 
                         <button class="btn bg-gradient-warning" type="button" name="edit" 
-                                [routerLink]="['/terrains/create', terrain.terrainId]">
+                                [routerLink]="['/terrains/create', terrain.terrainId]" [disabled]="terrain.status.status != 'En Venta'">
 
                             <i class="fas fa-edit"></i>
                             Editar
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger" type="button" name="delete" (click)="delete(seller)">
+                        <button class="btn bg-gradient-danger" type="button" name="delete" (click)="delete(seller)"
+                            [disabled]="terrain.status.status != 'En Venta'">
 
                             <i class="fas fa-trash-alt"></i>
                             Inactivar

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { SellerService } from '../../../services/seller-service/seller.service';
 import { TerrainService } from '../../../services/terrain-service/terrain.service';
@@ -65,7 +65,8 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     private saleTypeService: SaleTypeService,
     private paymentAgreementService: PaymentAgreementService,
     private itemService: ItemService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.title = 'Venta';
     this.sale = new Sale();
@@ -79,6 +80,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     this.loadTarrains();
     this.loadSellers();
     this.loadInterestRate();
+    this.loadTerrain();
   }
 
   ngOnDestroy(): void {
@@ -86,6 +88,22 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   }
 
   create(): void { }
+
+  loadTerrain(): void{
+    this.activatedRoute.params.subscribe(
+      params => {
+        const id = params.terrainId;
+
+        if (id){
+          this.terrainService.getTerrain(id).subscribe(
+            terrain => {
+              this.sale.terrain = terrain;
+            }
+          );
+        }
+      }
+    );
+  }
 
   loadInterestRate(): void{
     this.itemService.getItem(2).subscribe(
@@ -236,6 +254,13 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       sum = sum + e.paymentTotal;
     });
     return sum;
+  }
+
+  compareTerrain(o1: Terrain, o2: Terrain): boolean{
+    if (o1 === undefined && o2 === undefined) {
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.terrainId === o2.terrainId;
   }
 
   reloadPage(): void{
