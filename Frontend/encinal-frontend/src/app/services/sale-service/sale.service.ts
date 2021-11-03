@@ -84,6 +84,15 @@ export class SaleService {
     );
   }
 
+  reportDailySales(): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/sales/daily-sales`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   // List Sale Types
   getSaleTypes(): Observable<SaleType[]> {
     return this.httpClient.get<SaleType[]>(`${this.url}/sales/sales-types`);

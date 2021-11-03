@@ -47,6 +47,14 @@ public class SaleApiController {
     @Autowired
     private IPaymentService paymentService;
 
+    @GetMapping("/sales/daily-sales")
+    public Double dailySales(){
+        if(this.saleService.reporDailySales() == null){
+            return 0.00;
+        }
+        return this.saleService.reporDailySales();
+    }
+
     @GetMapping("/sales")
     public List<Sale> index(
             @RequestParam(required = false) String initDate,

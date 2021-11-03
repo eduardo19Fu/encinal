@@ -52,4 +52,9 @@ public class SaleServiceImpl implements ISaleService {
     public Sale save(Sale sale) {
         return saleRepository.save(sale);
     }
+
+    @Override
+    public Double reporDailySales() {
+        return this.saleRepository.dailyTotalSales();
+    }
 }

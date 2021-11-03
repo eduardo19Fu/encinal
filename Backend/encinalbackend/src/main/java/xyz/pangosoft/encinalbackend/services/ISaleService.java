@@ -22,4 +22,6 @@ public interface ISaleService {
     public Sale singleSale(Integer saleId);
 
     public Sale save(Sale sale);
+
+    public Double reporDailySales();
 }

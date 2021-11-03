@@ -24,4 +24,9 @@ public interface ISaleRepository extends JpaRepository<Sale, Integer> {
             "order by sa.sale_id desc", nativeQuery = true)
     List<Sale> findByBlockAndDate(Integer blockId, Date iniDate, Date endDate);
 
+
+    @Query(value = "Select ifnull(sum(sa.total), 0.00) from sales sa " +
+            "where date(sa.sale_date) = current_date()", nativeQuery = true)
+    Double dailyTotalSales();
+
 }
