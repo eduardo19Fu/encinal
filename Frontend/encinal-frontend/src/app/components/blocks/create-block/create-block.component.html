@@ -22,7 +22,18 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="capacity">Capacidad</label>
-                                <input class="form-control" type="number" name="capacity" id="capacity" [(ngModel)]="block.capacity">
+                                <input class="form-control" type="number" name="capacity" id="capacity" (keyup)="setRemaining($event.target.value)"
+                                    [(ngModel)]="block.capacity">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="remaining">Restantes</label>
+                                <input type="text" name="remaining" id="remaining" class="form-control" 
+                                    [(ngModel)]="block.remaining" disabled>
                             </div>
                         </div>
                     </div>

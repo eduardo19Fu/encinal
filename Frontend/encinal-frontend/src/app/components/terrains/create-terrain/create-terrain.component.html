@@ -92,7 +92,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="weight">Ancho</label>
-                            <input type="number" name="weight" id="weight" class="form-control" (blur)="showArea()"
+                            <input type="number" name="weight" id="weight" class="form-control" (keyup)="showArea($event.target.value)"
                                 [(ngModel)]="terrain.width" placeholder="Ingrese el ancho del lote."
                                 required #weight="ngModel">
                             

@@ -70,11 +70,7 @@ public class UserApiController {
         List<Role> roles = new ArrayList<>();
 
         try{
-            roles.add(roleService.singleRole(1));
-
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRoles(roles);
-
             newUser = this.userService.create(user);
         } catch(DataAccessException e){
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");

@@ -7,6 +7,8 @@ import { SaleService } from '../../services/sale-service/sale.service';
 import { BlockService } from '../../services/block-service/block.service';
 
 import { JqueryConfigs } from '../../utils/jquery-utils';
+
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -42,8 +44,9 @@ export class SalesComponent implements OnInit {
   ) {
     this.title = 'Ventas Realizadas';
     this.jqueryConfigs = new JqueryConfigs();
-    this.iniDateValue = new Date().toISOString().slice(0, 10);
-    this.endDateValue = new Date().toISOString().slice(0, 10);
+    // this.iniDateValue = new Date().toISOString().slice(0, 10);
+    this.iniDateValue = moment(new Date()).format('yyyy-MM-DD');
+    this.endDateValue = moment(new Date()).format('yyyy-MM-DD');
   }
 
   ngOnInit(): void {
@@ -61,9 +64,9 @@ export class SalesComponent implements OnInit {
   }
 
   searchSalesDate(): void{
-    this.iniDate = (document.getElementById('init-date') as HTMLInputElement).valueAsDate;
-    this.endDate = (document.getElementById('end-date') as HTMLInputElement).valueAsDate;
-    console.log(this.endDate);
+    this.iniDate = moment((document.getElementById('init-date') as HTMLInputElement).value).toDate();
+    this.endDate = moment((document.getElementById('end-date') as HTMLInputElement).value).toDate();
+
     this.saleService.getSalesByDate(this.iniDate, this.endDate).subscribe(
       sales => {
         this.sales = sales;
@@ -90,8 +93,8 @@ export class SalesComponent implements OnInit {
   }
 
   searchSalesByBlockAndDate(): void{
-    this.iniDate = (document.getElementById('init-date') as HTMLInputElement).valueAsDate;
-    this.endDate = (document.getElementById('end-date') as HTMLInputElement).valueAsDate;
+    this.iniDate = moment((document.getElementById('init-date') as HTMLInputElement).value).toDate();
+    this.endDate = moment((document.getElementById('end-date') as HTMLInputElement).value).toDate();
     const blockId = +(document.getElementById('blocks') as HTMLSelectElement).value;
 
     this.saleService.getSalesByBlockAndDate(blockId, this.iniDate, this.endDate).subscribe(
@@ -118,6 +121,7 @@ export class SalesComponent implements OnInit {
         // aqui va el codigo de confirmación para anular factura
         this.saleService.cancel(sale.saleId).subscribe(
           response => {
+            sale.status = response.sale.status;
             this.swalWithBootstrapButtons.fire(
               `${response.mensaje}`,
               `La venta No. ${sale.saleId} ha sido anulada con éxito`,

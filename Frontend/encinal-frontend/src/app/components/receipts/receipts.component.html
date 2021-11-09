@@ -1,5 +1,3 @@
-<!-- CLIENT DETAIL MODAL -->
-<app-detail-client [client]="client"></app-detail-client>
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -8,7 +6,7 @@
             <div class="col-sm-6">
                 <h1>{{title}}</h1>
                 <br>
-                <a class="btn bg-gradient-success" [routerLink]="['/admin/clients/create']">
+                <a class="btn bg-gradient-success" [routerLink]="['/receipts/create']">
                     <i class="fas fa-plus-circle"></i>
                     Nuevo
                 </a>
@@ -19,40 +17,38 @@
 
 <div class="card">
     <div class="card-header">
-        Listado de Clientes
+        Listado de Pagos
     </div>
     <div class="card-body table-responsive">
 
-        <div *ngIf="clients?.length == 0" class="alert alert-info alert-dismissible">
+        <div *ngIf="receipts?.length == 0" class="alert alert-info alert-dismissible">
             <h5>
                 <i class="icon fas fa-info"></i>
                 Atención!
             </h5>
 
-            No existe ningún cliente registrada en la Base de Datos!
+            No existe ningún pago registrado en la Base de Datos!
         </div>
 
-        <table id="clients" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
-            role="grid" *ngIf="clients?.length > 0">
+        <table id="receipts" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="receipts?.length > 0">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Apellido (s)</th>
-                    <th>Dirección</th>
+                    <th>Número de Abono</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cobrador</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let client of clients">
-                    <td>{{client.clientId}}</td>
-                    <td>{{client.firstName}}</td>
-                    <td>{{client.middleName}}</td>
-                    <td>{{client.lastName}}</td>
-                    <td>{{client.address}}</td>
+                <tr *ngFor="let receipt of receipts">
+                    <td>{{receipt.receiptId}}</td>
+                    <td>{{receipt.receiptNumber}}</td>
+                    <td>{{receipt.createdAt}}</td>
+                    <td>{{receipt.seller.firstName}}</td>
                     <td>
                         <span class="badge" [ngClass]="{'badge-danger': client.status.status === 'Moroso', 
                                                         'badge-success': client.status.status === 'Activo',
@@ -76,8 +72,8 @@
                             Editar
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger" type="button" name="disable"
-                            (click)="disable(client)" 
+                        <button class="btn bg-gradient-danger" type="button" name="delete"
+                            (click)="delete(marca)" 
                             [disabled]="client.status.status == 'Inactivo' || client.status.status == 'Moroso'">
                             
                             <i class="fas fa-ban"></i>
@@ -90,10 +86,9 @@
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Apellido (s)</th>
-                    <th>Dirección</th>
+                    <th>Número de Abono</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cobrador</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

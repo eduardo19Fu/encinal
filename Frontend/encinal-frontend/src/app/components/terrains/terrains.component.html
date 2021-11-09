@@ -8,7 +8,12 @@
                 <a class="btn bg-gradient-success" [routerLink]="['/terrains/create']">
                     <i class="fas fa-plus-circle"></i>
                     Nuevo
-                </a>
+                </a>&nbsp;
+                
+                <button class="btn btn-outline-warning" onclick="location.reload()">
+                    <i class="fas fa-sync"></i>
+                    Cargar
+                </button>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -20,6 +25,22 @@
     </div>
     <div class="card-body table-responsive">
 
+        <div class="row">
+            <form action="">
+                <div class="form-group">
+                    <label for="block">Manzana</label>
+                    <select name="block" id="block" class="form-control" (change)="loadTerrainsByBlock($event.target.value)">
+                        <option value="null">Elije una Manazana</option>
+                        <option *ngFor="let block of blocks" value="{{block.blockId}}">
+                            {{block.blockNumber}}
+                        </option>
+                    </select>
+                </div>
+                
+            </form>
+        </div>
+        
+        
         <div *ngIf="terrains?.length == 0" class="alert alert-info alert-dismissible">
             <h5>
                 <i class="icon fas fa-info"></i>

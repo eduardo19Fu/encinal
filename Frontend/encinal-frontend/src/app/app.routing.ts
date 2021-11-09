@@ -27,6 +27,8 @@ import { ItemsComponent } from './components/items/items.component';
 import { CreateItemComponent } from './components/items/create-item/create-item.component';
 import { RoleGuard } from './guards/role.guard';
 import { UpdateItemComponent } from './components/items/update-item/update-item.component';
+import { ReceiptsComponent } from './components/receipts/receipts.component';
+import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
@@ -47,6 +49,10 @@ const appRoutes: Routes = [
     {path: 'sales/create/step-1', component: Step1Component, canActivate: [AuthGuard]},
     {path: 'sales/create/step-2', component: Step2Component, canActivate: [AuthGuard]},
     {path: 'sales/create/step-3', component: Step3Component, canActivate: [AuthGuard]},
+
+    // Receips
+    {path: 'receipts/index', component: ReceiptsComponent, canActivate: [AuthGuard]},
+    {path: 'receipts/create', component: CreateReceiptComponent, canActivate: [AuthGuard]},
 
     // Payments
     {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},

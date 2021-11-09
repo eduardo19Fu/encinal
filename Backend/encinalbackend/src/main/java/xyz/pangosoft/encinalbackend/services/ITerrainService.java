@@ -1,5 +1,6 @@
 package xyz.pangosoft.encinalbackend.services;
 
+import xyz.pangosoft.encinalbackend.models.Block;
 import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.models.Terrain;
 
@@ -10,6 +11,8 @@ public interface ITerrainService {
     public List<Terrain> listTerrains();
 
     public List<Terrain> listTerrainsOnSale(Status status);
+
+    public List<Terrain> listTerrainsByBlock(Block block);
 
     public Terrain singleTerrain(Integer idTerrain);
 

@@ -60,4 +60,17 @@ export class ClientService {
       })
     );
   }
+
+  disable(client: Client): Observable<any>{
+    return this.httpClient.put<any>(`${this.url}/clients/disable/${client.clientId}`, client).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
+  delete(client: Client): Observable<any>{
+    return null;
+  }
 }

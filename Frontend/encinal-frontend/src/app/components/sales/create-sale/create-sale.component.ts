@@ -19,7 +19,7 @@ import { ItemService } from '../../../services/items/item.service';
 
 import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
-import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-sale',
@@ -72,7 +72,8 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     this.sale = new Sale();
     this.paymentAgreement = new PaymentAgreement();
     this.payments = [];
-    this.paymentDateValue = new Date().toISOString().slice(0, 10);
+    // this.paymentDateValue = new Date().toISOString().slice(0, 10);
+    this.paymentDateValue = moment(new Date()).format('yyyy-MM-DD');
   }
 
   ngOnInit(): void {
@@ -98,6 +99,8 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
           this.terrainService.getTerrain(id).subscribe(
             terrain => {
               this.sale.terrain = terrain;
+              this.terrain = terrain;
+              console.log(this.terrain);
             }
           );
         }
@@ -198,7 +201,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         this.payment.principalValue = pmt - this.payment.interestRateGenerated;
         this.payment.paymentTotal = this.monthlyFee;
 
-        const newDate = new Date(this.paymentDateValue).setMonth(new Date(this.paymentDateValue).getMonth() + (i));
+        const newDate = moment(this.paymentDateValue).add(i, 'months').toDate();
         this.payment.expireDate = new Date(newDate);
 
         pv = pv - this.payment.principalValue;

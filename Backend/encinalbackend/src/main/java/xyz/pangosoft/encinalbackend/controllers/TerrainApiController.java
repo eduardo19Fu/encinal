@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import xyz.pangosoft.encinalbackend.models.Block;
 import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.models.Terrain;
+import xyz.pangosoft.encinalbackend.services.IBlockService;
 import xyz.pangosoft.encinalbackend.services.IStatusService;
 import xyz.pangosoft.encinalbackend.services.ITerrainService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,9 @@ public class TerrainApiController {
 
     @Autowired
     private IStatusService statusService;
+
+    @Autowired
+    private IBlockService blockService;
 
     @GetMapping("/terrains")
     public List<Terrain> index(){
@@ -75,12 +81,42 @@ public class TerrainApiController {
         return new ResponseEntity<Terrain>(terrain, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/terrains/blocks/{id}")
+    public ResponseEntity<?> listByBloc(@PathVariable("id") Integer blockId){
+
+        Map<String, Object> response = new HashMap<>();
+        Block block = null;
+        List<Terrain> terrains = new ArrayList<>();
+
+        try{
+            block = blockService.singleBlock(blockId);
+            // terrains = block.getTerrains();
+            terrains = terrainService.listTerrainsByBlock(block);
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(block == null){
+            response.put("message", "¡La manzana no se encuentra registrada en la Base de Datos!");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        } else if(block.getTerrains().size() <= 0){
+            response.put("message", "No existen ningún Lote asignado a esta manzana.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<List<Terrain>>(terrains, HttpStatus.OK);
+    }
+
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/terrains")
     public ResponseEntity<?> create(@RequestBody Terrain terrain, BindingResult result){
 
         Map<String, Object> response = new HashMap<>();
         Terrain newTerrain = null;
+        Block block = null;
         Status status = null;
 
         if(result.hasErrors()){
@@ -93,9 +129,23 @@ public class TerrainApiController {
         }
 
         try{
-            status = this.statusService.singleStatus(10);
-            terrain.setStatus(status);
-            newTerrain = this.terrainService.save(terrain);
+            block = blockService.singleBlock(terrain.getBlock().getBlockId());
+            System.out.println(block);
+
+            if(block.getRemaining() != 0){
+                status = this.statusService.singleStatus(10);
+                terrain.setStatus(status);
+                newTerrain = this.terrainService.save(terrain);
+
+                block.setRemaining(block.decreaseRemaining());
+                System.out.println(block);
+                blockService.save(block);
+            } else{
+                response.put("message", "Sin capacidad");
+                response.put("error", "¡No existe más espacio disponible en la manzana para registrar un nuevo lote!");
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+            }
+
         } catch(DataAccessException e){
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

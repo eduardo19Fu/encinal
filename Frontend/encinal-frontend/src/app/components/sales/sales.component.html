@@ -35,13 +35,13 @@
                     <div class="col">
                         <div class="from-group">
                             <label for="init-date">Fecha Inicial</label>
-                            <input type="date" name="init-date" id="init-date" class="form-control" [value]="iniDateValue">
+                            <input type="date" lang="es-GT" name="init-date" id="init-date" class="form-control" [value]="iniDateValue">
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="end-date">Fecha Final</label>
-                            <input type="date" name="end-date" id="end-date" class="form-control" [value]="endDateValue">
+                            <input type="date" lang="es-GT" name="end-date" id="end-date" class="form-control" [value]="endDateValue">
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,8 @@
                             Detalle
                         </button>&nbsp;
 
-                        <button type="button" class="btn bg-gradient-danger margin" name="cancel" (click)="cancel(sale)">
+                        <button type="button" class="btn bg-gradient-danger margin" name="cancel" (click)="cancel(sale)"
+                            [disabled]="sale.status.status === 'Anulado'">
                             <i class="fas fa-ban"></i>
                             Anular
                         </button>

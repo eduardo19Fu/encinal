@@ -141,6 +141,29 @@ public class ClientApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @PutMapping("/clients/disable/{id}")
+    public ResponseEntity<?> disable(@PathVariable("id") Integer id, @RequestBody Client client){
+
+        Client customerToDisable = null;
+        Status status = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            status = statusService.singleStatusName("Inactivo", "Client");
+            client.setStatus(status);
+            customerToDisable = clientService.save(client);
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("message", "¡Cliente desactivado con éxito!");
+        response.put("client", customerToDisable);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
     @Secured(value = {"ROLE_ADMIN"})
     @DeleteMapping("/clients/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {

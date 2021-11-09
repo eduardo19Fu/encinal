@@ -1,6 +1,7 @@
 import { Seller } from './seller';
 import { Status } from './status';
 import { ReceiptDetail } from './receipt-detail';
+import { PaymentAgreement } from './payment-agreement';
 
 export class Receipt {
 
@@ -10,5 +11,5 @@ export class Receipt {
 
     seller: Seller;
     status: Status;
-    items: ReceiptDetail[] = [];
+    paymentAgreement: PaymentAgreement;
 }

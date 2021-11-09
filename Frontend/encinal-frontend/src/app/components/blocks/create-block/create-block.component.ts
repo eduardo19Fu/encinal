@@ -31,7 +31,7 @@ export class CreateBlockComponent implements OnInit {
   create(): void{
     this.blockService.create(this.block).subscribe(
       response => {
-        this.router.navigate(['/admin/blocks/index']);
+        // this.router.navigate(['/admin/blocks/index']);
         Swal.fire('Manzana registrada', `${response.message}: ${response.block.blockNumber}`, 'success');
       }
     );
@@ -44,6 +44,10 @@ export class CreateBlockComponent implements OnInit {
         Swal.fire('Manzana Actualizada', `${response.message}`, 'success');
       }
     );
+  }
+
+  setRemaining(event): void{
+    this.block.remaining = event;
   }
 
 }

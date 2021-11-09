@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { DatePipe } from '@angular/common';
+// import { DatePipe } from '@angular/common';
 
 import { Sale } from 'src/app/models/sale';
 import { SaleType } from 'src/app/models/sale-type';
 import { global } from '../global';
 
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,13 @@ export class SaleService {
   }
 
   getSalesByDate(initDate: Date, endDate: Date): Observable<Sale[]> {
-    const datepipe: DatePipe = new DatePipe('es');
+    // const datepipe: DatePipe = new DatePipe('es');
 
-    const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
-    const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+    // const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
+    // const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+
+    const date1 = moment(initDate).format('yyyy-MM-DD');
+    const date2 = moment(endDate).format('yyyy-MM-DD');
 
     console.log(date1);
     console.log(date2);
@@ -52,10 +56,13 @@ export class SaleService {
   }
 
   getSalesByBlockAndDate(blockId: number, initDate: Date, endDate: Date): Observable<Sale[]>{
-    const datepipe: DatePipe = new DatePipe('es');
+    // const datepipe: DatePipe = new DatePipe('es');
 
-    const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
-    const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+    // const date1 = datepipe.transform(initDate, 'yyyy-MM-dd');
+    // const date2 = datepipe.transform(endDate, 'yyyy-MM-dd');
+
+    const date1 = moment(initDate).format('yyyy-MM-DD');
+    const date2 = moment(endDate).format('yyyy-MM-DD');
 
     const httpParams = new HttpParams()
       .set('idManzana', blockId.toString())

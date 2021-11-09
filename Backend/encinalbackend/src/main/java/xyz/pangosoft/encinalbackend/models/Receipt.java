@@ -29,15 +29,11 @@ public class Receipt implements Serializable {
     @JoinColumn(name = "status_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "receipt_id")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private List<ReceiptDetail> items;
-
-    public Receipt(){
-        this.items = new ArrayList<>();
-    }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_agreement_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private PaymentAgreement paymentAgreement;
 
     @PrePersist
     public void prepersist(){
@@ -82,6 +78,14 @@ public class Receipt implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public PaymentAgreement getPaymentAgreement() {
+        return paymentAgreement;
+    }
+
+    public void setPaymentAgreement(PaymentAgreement paymentAgreement) {
+        this.paymentAgreement = paymentAgreement;
     }
 
     private static final long serialVersionUID = 1L;

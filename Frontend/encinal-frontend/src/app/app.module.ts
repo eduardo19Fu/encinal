@@ -48,6 +48,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CreateCustomerComponent } from './components/sales/modals/create-customer/create-customer.component';
 import { PrincipalComponent } from './components/sales/modals/principal/principal.component';
 import { DetailUserComponent } from './components/usuarios/detail-user/detail-user.component';
+import { ReceiptsComponent } from './components/receipts/receipts.component';
+import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +88,9 @@ import { DetailUserComponent } from './components/usuarios/detail-user/detail-us
     UpdateItemComponent,
     CreateCustomerComponent,
     PrincipalComponent,
-    DetailUserComponent
+    DetailUserComponent,
+    ReceiptsComponent,
+    CreateReceiptComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +100,7 @@ import { DetailUserComponent } from './components/usuarios/detail-user/detail-us
   ],
   providers: [
     appRoutingProviders,
-    { provide: LOCALE_ID, useValue: 'es' },
+    // { provide: LOCALE_ID, useValue: 'es' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],

@@ -82,8 +82,8 @@ export class CreateTerrainComponent implements OnInit {
     return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.blockId === o2.blockId;
   }
 
-  showArea(): void{
-    (document.getElementById('area') as HTMLInputElement).value = this.terrain.getArea().toString();
+  showArea(event): void{
+    this.terrain.area = this.terrain.getArea();
   }
 
 }

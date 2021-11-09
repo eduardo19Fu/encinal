@@ -44,6 +44,8 @@ public class Client implements Serializable {
     private String email;
     private String address;
     private Double amountOutstanding;
+    private Double principalOutstanding;
+    private Double interestOutstanding;
 
     @Transient
     private boolean underage;
@@ -187,6 +189,22 @@ public class Client implements Serializable {
 
     public void setUnderage(boolean underage) {
         this.underage = underage;
+    }
+
+    public Double getPrincipalOutstanding() {
+        return principalOutstanding;
+    }
+
+    public void setPrincipalOutstanding(Double principalOutstanding) {
+        this.principalOutstanding = principalOutstanding;
+    }
+
+    public Double getInterestOutstanding() {
+        return interestOutstanding;
+    }
+
+    public void setInterestOutstanding(Double interestOutstanding) {
+        this.interestOutstanding = interestOutstanding;
     }
 
     private static final long serialVersionUID = 1L;
