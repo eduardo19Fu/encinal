@@ -73,6 +73,29 @@ public class ClientApiController {
         return new ResponseEntity<Client>(client, HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/cleintes/receipt/{identification}")
+    public ResponseEntity<?> findClientByIdentification(@PathVariable("identification") String id){
+        Map<String, Object> response = new HashMap<>();
+        Client client = null;
+
+        try {
+            // Get the client that find by its identification number
+            client = clientService.singleClient(id);
+        } catch(DataAccessException e) {
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(client == null) {
+            response.put("message", "¡El cliente con ID: ".concat(id.toString()).concat(", no se encuentra registrado en la Base de Datos!"));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Client>(client, HttpStatus.OK);
+    }
+
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping("/clients")
     public ResponseEntity<?> create(@RequestBody Client client, BindingResult result) {

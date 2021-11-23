@@ -4,6 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { PaymentAgreement } from 'src/app/models/payment-agreement';
+import { Client } from 'src/app/models/client';
+
 import { global } from '../global';
 import Swal from 'sweetalert2';
 
@@ -27,7 +29,16 @@ export class PaymentAgreementService {
   }
 
   getPaymentAgreement(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.url}/payment-agreements/${id}`).pipe(
+    return this.httpClient.get<any>(`${this.url}/payment-agreement/${id}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
+  getActivePaymentAgreements(client: Client): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/payment-agreements/client/${client.clientId}`).pipe(
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);

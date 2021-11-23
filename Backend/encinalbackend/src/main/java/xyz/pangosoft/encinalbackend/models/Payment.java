@@ -17,6 +17,7 @@ public class Payment implements Serializable {
     private Double principalValue;
     private Double interestRateGenerated;
     private Double remainingBalance;
+    private Double arrears;
     private Double paymentTotal;
 
     @Temporal(TemporalType.DATE)
@@ -81,6 +82,14 @@ public class Payment implements Serializable {
 
     public void setRemainingBalance(Double remainingBalance) {
         this.remainingBalance = remainingBalance;
+    }
+
+    public Double getArrears() {
+        return arrears;
+    }
+
+    public void setArrears(Double arrears) {
+        this.arrears = arrears;
     }
 
     public Double getPaymentTotal() {

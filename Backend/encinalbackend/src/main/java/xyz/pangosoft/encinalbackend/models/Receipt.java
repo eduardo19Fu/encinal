@@ -16,24 +16,39 @@ public class Receipt implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer receiptId;
     private String receiptNumber;
+    private Double total;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Seller seller;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receipt_type_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private ReceiptType receiptType;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "receipt_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private List<ReceiptDetail> items;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "register_by")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private User registerBy;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_agreement_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PaymentAgreement paymentAgreement;
+
+    public Receipt(){
+        this.items = new ArrayList<>();
+    }
 
     @PrePersist
     public void prepersist(){
@@ -56,6 +71,14 @@ public class Receipt implements Serializable {
         this.receiptNumber = receiptNumber;
     }
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -64,20 +87,36 @@ public class Receipt implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public ReceiptType getReceiptType() {
+        return receiptType;
+    }
+
+    public void setReceiptType(ReceiptType receiptType) {
+        this.receiptType = receiptType;
+    }
+
+    public List<ReceiptDetail> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ReceiptDetail> items) {
+        this.items = items;
+    }
+
+    public User getRegisterBy() {
+        return registerBy;
+    }
+
+    public void setRegisterBy(User registerBy) {
+        this.registerBy = registerBy;
     }
 
     public PaymentAgreement getPaymentAgreement() {

@@ -8,6 +8,7 @@ export class Payment {
     interestRateGenerated: number;
     expireDate: Date;
     remainingBalance: number;
+    arrears: number;
     paymentTotal: number;
 
     status: Status;

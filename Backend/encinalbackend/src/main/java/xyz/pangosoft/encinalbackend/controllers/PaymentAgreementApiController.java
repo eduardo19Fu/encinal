@@ -7,13 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import xyz.pangosoft.encinalbackend.models.Client;
 import xyz.pangosoft.encinalbackend.models.PaymentAgreement;
 import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.models.Terrain;
+import xyz.pangosoft.encinalbackend.services.IClientService;
 import xyz.pangosoft.encinalbackend.services.IPaymentAgreementService;
 import xyz.pangosoft.encinalbackend.services.IStatusService;
 import xyz.pangosoft.encinalbackend.services.ITerrainService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +35,48 @@ public class PaymentAgreementApiController {
     @Autowired
     private ITerrainService terrainService;
 
+    @Autowired
+    private IClientService clientService;
+
     @GetMapping("/payment-agreements")
     public List<PaymentAgreement> index(){
         return this.paymentAgreementService.listPaymentAgreements();
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/payment-agreements/client/{id}")
+    public List<PaymentAgreement> findByClient(@PathVariable("id") Integer id){
+        return this.paymentAgreementService.listPaymentAgreementsByClient(id);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/payment-agreements/client-two/{id}")
+    public ResponseEntity<?> findByClient2(@PathVariable("id") Integer id){
+
+        Client client = null;
+        Status status = null;
+        Map<String, Object> response = new HashMap<>();
+        List<PaymentAgreement> paymentAgreements = new ArrayList<>();
+
+        try{
+            client = this.clientService.singleClient(id);
+            status = this.statusService.singleStatusName("Activo", "Payment Agreement");
+            paymentAgreements = this.paymentAgreementService.listPaymentAgreementsByClient(client, status);
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(paymentAgreements.size() <= 0){
+            response.put("message","¡No existen acuerdos de pago relacionados al cliente elegido!");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<List<PaymentAgreement>>(paymentAgreements, HttpStatus.OK);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/payment-agreement/{id}")
     public ResponseEntity<?> findPaymentAgreement(@PathVariable("id") Integer id){
 
@@ -60,7 +99,7 @@ public class PaymentAgreementApiController {
         return new ResponseEntity<PaymentAgreement>(paymentAgreement, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/payment-agreements")
     public ResponseEntity<?> create(@RequestBody PaymentAgreement paymentAgreement, BindingResult result){
 

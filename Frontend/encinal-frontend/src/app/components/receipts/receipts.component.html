@@ -35,9 +35,10 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Número de Abono</th>
                     <th>Fecha de Pago</th>
+                    <th>Cliente</th>
                     <th>Cobrador</th>
+                    <th>Acuerdo de Pagos</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -46,39 +47,41 @@
             <tbody>
                 <tr *ngFor="let receipt of receipts">
                     <td>{{receipt.receiptId}}</td>
-                    <td>{{receipt.receiptNumber}}</td>
-                    <td>{{receipt.createdAt}}</td>
-                    <td>{{receipt.seller.firstName}}</td>
+                    <td>{{receipt.createdAt | date: "dd-MM-yyyy HH:mm"}}</td>
                     <td>
-                        <span class="badge" [ngClass]="{'badge-danger': client.status.status === 'Moroso', 
-                                                        'badge-success': client.status.status === 'Activo',
-                                                        'badge-dark': client.status.status === 'Inactivo'}">
-                            {{client.status.status}}
+                        {{receipt.paymentAgreement.sale.client.firstName + ' ' + receipt.paymentAgreement.sale.client.lastName}}
+                    </td>
+                    <td>{{receipt.registerBy.firstName}}</td>
+                    <td>{{receipt.paymentAgreement.paymentAgreementId}}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{'badge-danger': receipt.status.status === 'Anulado', 
+                                                        'badge-success': receipt.status.status === 'Pagado'}">
+                            {{receipt.status.status}}
                         </span>
                     </td>
                     <td class="center-options">
 
                         <button class="btn bg-gradient-info" type="button" name="info" data-toggle="modal"
-                            data-target="#modal-detail" (click)="clientDetail(client)">
+                            data-target="#modal-detail">
                             <i class="fas fa-info-circle"></i>
                             Detalle
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-warning" type="button" name="edit"
+                        <!-- <button class="btn bg-gradient-warning" type="button" name="edit"
                             [routerLink]="['/admin/clients/create', client.clientId]"
                             [disabled]="client.status.status == 'Inactivo'">
                             
                             <i class="fas fa-edit"></i>
                             Editar
-                        </button>&nbsp;
+                        </button>&nbsp; -->
 
-                        <button class="btn bg-gradient-danger" type="button" name="delete"
+                        <!-- <button class="btn bg-gradient-danger" type="button" name="delete"
                             (click)="delete(marca)" 
-                            [disabled]="client.status.status == 'Inactivo' || client.status.status == 'Moroso'">
+                            [disabled]="receipt.status.status == 'Inactivo' || client.status.status == 'Moroso'">
                             
                             <i class="fas fa-ban"></i>
                             Desactivar
-                        </button>
+                        </button> -->
                     </td>
                 </tr>
             </tbody>
@@ -86,9 +89,10 @@
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Número de Abono</th>
                     <th>Fecha de Pago</th>
+                    <th>Cliente</th>
                     <th>Cobrador</th>
+                    <th>Acuerdo de Pagos</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

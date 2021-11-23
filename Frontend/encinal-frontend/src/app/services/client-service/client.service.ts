@@ -34,6 +34,15 @@ export class ClientService {
     );
   }
 
+  getClientByIdentification(identification: string): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/clients/receipt/${identification}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, 'No se pudo encontrar el registro deseado', 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   getActiveCustomers(): Observable<any>{
     return this.httpClient.get<any>(`${this.url}/clients/active`).pipe(
       catchError(e => {

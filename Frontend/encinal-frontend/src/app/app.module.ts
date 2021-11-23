@@ -50,6 +50,8 @@ import { PrincipalComponent } from './components/sales/modals/principal/principa
 import { DetailUserComponent } from './components/usuarios/detail-user/detail-user.component';
 import { ReceiptsComponent } from './components/receipts/receipts.component';
 import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
+import { SearchClientModalComponent } from './components/receipts/search-client-modal/search-client-modal.component';
+import { ReceiptDetailModalComponent } from './components/receipts/receipt-detail-modal/receipt-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,9 @@ import { CreateReceiptComponent } from './components/receipts/create-receipt/cre
     PrincipalComponent,
     DetailUserComponent,
     ReceiptsComponent,
-    CreateReceiptComponent
+    CreateReceiptComponent,
+    SearchClientModalComponent,
+    ReceiptDetailModalComponent
   ],
   imports: [
     BrowserModule,
