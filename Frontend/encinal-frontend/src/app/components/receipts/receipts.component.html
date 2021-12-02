@@ -1,0 +1,102 @@
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/receipts/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nuevo
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Pagos
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="receipts?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún pago registrado en la Base de Datos!
+        </div>
+
+        <table id="receipts" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="receipts?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cliente</th>
+                    <th>Cobrador</th>
+                    <th>Acuerdo de Pagos</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let receipt of receipts">
+                    <td>{{receipt.receiptId}}</td>
+                    <td>{{receipt.createdAt | date: "dd-MM-yyyy HH:mm"}}</td>
+                    <td>
+                        {{receipt.paymentAgreement.sale.client.firstName + ' ' + receipt.paymentAgreement.sale.client.lastName}}
+                    </td>
+                    <td>{{receipt.registerBy.firstName}}</td>
+                    <td>{{receipt.paymentAgreement.paymentAgreementId}}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{'badge-danger': receipt.status.status === 'Anulado', 
+                                                        'badge-success': receipt.status.status === 'Pagado'}">
+                            {{receipt.status.status}}
+                        </span>
+                    </td>
+                    <td class="center-options">
+
+                        <button class="btn bg-gradient-info" type="button" name="info" data-toggle="modal"
+                            data-target="#modal-detail">
+                            <i class="fas fa-info-circle"></i>
+                            Detalle
+                        </button>&nbsp;
+
+                        <!-- <button class="btn bg-gradient-warning" type="button" name="edit"
+                            [routerLink]="['/admin/clients/create', client.clientId]"
+                            [disabled]="client.status.status == 'Inactivo'">
+                            
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>&nbsp; -->
+
+                        <!-- <button class="btn bg-gradient-danger" type="button" name="delete"
+                            (click)="delete(marca)" 
+                            [disabled]="receipt.status.status == 'Inactivo' || client.status.status == 'Moroso'">
+                            
+                            <i class="fas fa-ban"></i>
+                            Desactivar
+                        </button> -->
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cliente</th>
+                    <th>Cobrador</th>
+                    <th>Acuerdo de Pagos</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

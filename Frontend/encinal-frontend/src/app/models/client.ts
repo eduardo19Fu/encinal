@@ -12,9 +12,12 @@ export class Client {
     telNumber: string;
     email: string;
     address: string;
-    birthDate: Date;
+    birthDate: Date = new Date();
     createdAt: Date;
     amountOutstanding: number;
+    principalOutstanding: number;
+    interestOutstanding: number;
+    underage: boolean;
 
     status: Status;
     identificationType: IdentificationType;

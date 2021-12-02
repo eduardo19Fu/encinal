@@ -79,3 +79,11 @@
     <!-- ./col -->
 </div>
 <!-- /.row -->
+<hr>
+
+<div *ngIf="authService.hasRole('ROLE_ADMIN')" class="row">
+    <div>
+        <h3>Ventas del Día:</h3>
+        <h3>{{totalSales | currency: "Q" : "symbol"}}</h3>
+    </div>
+</div>

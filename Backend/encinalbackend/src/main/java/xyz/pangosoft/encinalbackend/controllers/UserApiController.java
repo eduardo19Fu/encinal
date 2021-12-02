@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
 @RestController
 @RequestMapping("/api")
 public class UserApiController {
@@ -70,11 +70,7 @@ public class UserApiController {
         List<Role> roles = new ArrayList<>();
 
         try{
-            roles.add(roleService.singleRole(1));
-
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRoles(roles);
-
             newUser = this.userService.create(user);
         } catch(DataAccessException e){
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");

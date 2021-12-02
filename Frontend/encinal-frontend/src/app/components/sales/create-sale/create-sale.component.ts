@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { SellerService } from '../../../services/seller-service/seller.service';
 import { TerrainService } from '../../../services/terrain-service/terrain.service';
@@ -15,9 +15,11 @@ import { Sale } from '../../../models/sale';
 import { Payment } from '../../../models/payment';
 import { PaymentAgreement } from '../../../models/payment-agreement';
 import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
+import { ItemService } from '../../../services/items/item.service';
 
 import { JqueryConfigs } from '../../../utils/jquery-utils';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-sale',
@@ -47,6 +49,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   saleTypeSubscription: Subscription;
 
   public paymentDate: Date;
+  public paymentDateValue: string;
   public years: number;
   public interestRate: number;
   public hitch: number; // Enganche
@@ -61,18 +64,24 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     private customerService: ClientService,
     private saleTypeService: SaleTypeService,
     private paymentAgreementService: PaymentAgreementService,
-    private router: Router
+    private itemService: ItemService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.title = 'Venta';
     this.sale = new Sale();
     this.paymentAgreement = new PaymentAgreement();
     this.payments = [];
+    // this.paymentDateValue = new Date().toISOString().slice(0, 10);
+    this.paymentDateValue = moment(new Date()).format('yyyy-MM-DD');
   }
 
   ngOnInit(): void {
     this.loadSaleTypes();
     this.loadTarrains();
     this.loadSellers();
+    this.loadInterestRate();
+    this.loadTerrain();
   }
 
   ngOnDestroy(): void {
@@ -80,6 +89,32 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
   }
 
   create(): void { }
+
+  loadTerrain(): void{
+    this.activatedRoute.params.subscribe(
+      params => {
+        const id = params.terrainId;
+
+        if (id){
+          this.terrainService.getTerrain(id).subscribe(
+            terrain => {
+              this.sale.terrain = terrain;
+              this.terrain = terrain;
+              console.log(this.terrain);
+            }
+          );
+        }
+      }
+    );
+  }
+
+  loadInterestRate(): void{
+    this.itemService.getItem(2).subscribe(
+      item => {
+        this.interestRate = item.itemValue;
+      }
+    );
+  }
 
   loadSaleTypes(): void {
     this.saleTypeService.getSaleTypes().subscribe(
@@ -153,8 +188,6 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
 
       interest = (this.interestRate / 12) / 100;
       months = this.years * 12;
-      console.log(this.years);
-      console.log(months);
       let pv: number = this.terrain.price - this.hitch;
 
       const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);
@@ -168,12 +201,9 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         this.payment.principalValue = pmt - this.payment.interestRateGenerated;
         this.payment.paymentTotal = this.monthlyFee;
 
-        if (i === 1) {
-          this.payment.expireDate = this.paymentDate;
-        } else {
-          const newDate = new Date(this.paymentDate).setMonth(new Date(this.paymentDate).getMonth() + (i - 1));
-          this.payment.expireDate = new Date(newDate);
-        }
+        const newDate = moment(this.paymentDateValue).add(i, 'months').toDate();
+        this.payment.expireDate = new Date(newDate);
+
         pv = pv - this.payment.principalValue;
         if (pv < 0) {
           this.payment.remainingBalance = 0;
@@ -227,6 +257,13 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       sum = sum + e.paymentTotal;
     });
     return sum;
+  }
+
+  compareTerrain(o1: Terrain, o2: Terrain): boolean{
+    if (o1 === undefined && o2 === undefined) {
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.terrainId === o2.terrainId;
   }
 
   reloadPage(): void{

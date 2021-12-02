@@ -13,6 +13,8 @@ public interface IClientService {
 
     public Client singleClient(Integer idClient);
 
+    public Client singleClient(String identification);
+
     public Client save(Client client);
 
     public void delete(Integer idClient);

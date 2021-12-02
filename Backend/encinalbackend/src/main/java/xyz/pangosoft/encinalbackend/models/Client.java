@@ -44,6 +44,11 @@ public class Client implements Serializable {
     private String email;
     private String address;
     private Double amountOutstanding;
+    private Double principalOutstanding;
+    private Double interestOutstanding;
+
+    @Transient
+    private boolean underage;
 
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -176,6 +181,30 @@ public class Client implements Serializable {
 
     public void setIdentificationType(IdentificationType identificationType) {
         this.identificationType = identificationType;
+    }
+
+    public boolean isUnderage() {
+        return underage;
+    }
+
+    public void setUnderage(boolean underage) {
+        this.underage = underage;
+    }
+
+    public Double getPrincipalOutstanding() {
+        return principalOutstanding;
+    }
+
+    public void setPrincipalOutstanding(Double principalOutstanding) {
+        this.principalOutstanding = principalOutstanding;
+    }
+
+    public Double getInterestOutstanding() {
+        return interestOutstanding;
+    }
+
+    public void setInterestOutstanding(Double interestOutstanding) {
+        this.interestOutstanding = interestOutstanding;
     }
 
     private static final long serialVersionUID = 1L;

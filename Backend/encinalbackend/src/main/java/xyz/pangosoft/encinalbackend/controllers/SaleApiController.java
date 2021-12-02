@@ -15,13 +15,10 @@ import xyz.pangosoft.encinalbackend.services.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
 @RestController
 @RequestMapping("/api")
 public class SaleApiController {
@@ -41,32 +38,56 @@ public class SaleApiController {
     @Autowired
     private ISellerService sellerService;
 
+    @Autowired
+    private IBlockService blockService;
+
+    @Autowired
+    private IPaymentAgreementService paymentAgreementService;
+
+    @Autowired
+    private IPaymentService paymentService;
+
+    @GetMapping("/sales/daily-sales")
+    public Double dailySales(){
+        if(this.saleService.reporDailySales() == null){
+            return 0.00;
+        }
+        return this.saleService.reporDailySales();
+    }
+
     @GetMapping("/sales")
-    public List<Sale> index(@RequestParam(required = false) String initDate, @RequestParam(required = false) String endDate) throws ParseException {
+    public List<Sale> index(
+            @RequestParam(required = false) String initDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) Integer idManzana) throws ParseException {
 
         Date date1;
         Date date2;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        if(initDate == null || endDate == null)
-            return saleService.listSales();
-        else{
-            System.out.println(initDate);
-            System.out.println(endDate);
+        if((initDate == null || endDate == null) && idManzana != null) {
+            return saleService.listSalesByBlock(idManzana);
+        } else if(idManzana == null && (initDate != null || endDate != null)){
             date1 = format.parse(initDate);
             date2 = format.parse(endDate);
             return saleService.listSalesByDate(date1, date2);
+        } else if(idManzana != null && (initDate != null || endDate != null)){
+            date1 = format.parse(initDate);
+            date2 = format.parse(endDate);
+            return saleService.listSalesByBlockAndDate(idManzana, date1, date2);
+        } else{
+            return saleService.listSales();
         }
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sales/page/{page}")
     public Page<Sale> indexPaginate(@PathVariable("page") Integer page){
         return saleService.listSales(PageRequest.of(page, 5));
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sales/{id}")
     public ResponseEntity<?> findSale(@PathVariable("id") Integer id){
 
@@ -89,7 +110,7 @@ public class SaleApiController {
         return new ResponseEntity<Sale>(sale, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/sales")
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 
@@ -136,6 +157,68 @@ public class SaleApiController {
         response.put("message", "¡Venta realizada con éxito!");
         response.put("sale", newSale);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO", "ROLE_SUPERADMIN"})
+    @DeleteMapping("/sales/cancel/{id}")
+    public ResponseEntity<?> cancel(@PathVariable("id") Integer saleId){
+
+        Sale saleToCancel = null;
+        PaymentAgreement paymentAgreementToCancel = null;
+        Terrain terrain = null;
+
+        Status statusSale = null;
+        Status statusPaymentAgreement = null;
+        Status statusPayment = null;
+        Status statusTerrain = null;
+
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            saleToCancel = saleService.singleSale(saleId);
+            statusSale = statusService.singleStatusName("Anulado", "Sale");
+            statusTerrain = statusService.singleStatusName("En Venta", "Terrain");
+
+            if(saleToCancel.getPaymentAgreement() == null){
+                saleToCancel.setStatus(statusSale);
+
+                terrain = saleToCancel.getTerrain();
+                terrain.setStatus(statusTerrain);
+
+                saleService.save(saleToCancel);
+                terrainService.save(terrain);
+            } else {
+                statusPaymentAgreement = statusService.singleStatusName("Anulado", "Payment Agreement");
+                statusPayment = statusService.singleStatusName("Anulado", "Payment");
+
+                saleToCancel.setStatus(statusSale);
+
+                terrain = saleToCancel.getTerrain();
+                terrain.setStatus(statusTerrain);
+
+                paymentAgreementToCancel = saleToCancel.getPaymentAgreement();
+                paymentAgreementToCancel.setStatus(statusPaymentAgreement);
+
+                saleService.save(saleToCancel);
+                terrainService.save(terrain);
+                paymentAgreementService.save(paymentAgreementToCancel);
+
+                for(Payment paymentToCancel : paymentAgreementToCancel.getPayments()){
+                    paymentToCancel.setStatus(statusPayment);
+                    paymentService.save(paymentToCancel);
+                }
+
+            }
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("message", "¡La venta ha sido anulada con éxito!");
+        response.put("sale", saleToCancel);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     @Secured(value = {"ROLE_ADMIN"})

@@ -14,9 +14,15 @@ export class AuthService {
   // tslint:disable-next-line: variable-name
   private _token: string;
 
+  url: string;
+
   constructor(
     private httpClient: HttpClient
-  ) {}
+  ) {
+    // this.url = 'https://encinal-bakend-2.herokuapp.com';
+    // this.url = 'http://localhost:8180';
+    this.url = 'https://encinal-oficial.herokuapp.com';
+  }
 
   public get user(): User{
     if (this._user != null){
@@ -39,7 +45,7 @@ export class AuthService {
   }
 
   login(user: User): Observable<any>{
-    const urlEndpoint = 'https://encinal-bakend-2.herokuapp.com/oauth/token';
+    const urlEndpoint = this.url + '/oauth/token';
     const credentials = btoa('encinalfrontend' + ':' + 'pangosoftfees2021');
     const httpHeaders = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', Authorization: 'Basic ' + credentials });
 

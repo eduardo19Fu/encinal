@@ -38,6 +38,7 @@ export class CreateClientComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loadIdentificationTypes();
     this.loadClient();
+    this.loadCurrentDate();
   }
 
   ngAfterViewInit(): void {
@@ -84,6 +85,12 @@ export class CreateClientComponent implements OnInit, AfterViewInit {
       return true;
     }
     return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.identificationTypeId === o2.identificationTypeId;
+  }
+
+  loadCurrentDate(): void{
+    (document.getElementById('birth-date') as HTMLInputElement).value = new Date().toISOString();
+    (document.getElementById('first-name') as HTMLInputElement).value = 'Ramiro';
+    (document.getElementById('email') as HTMLInputElement).value = 'ramieduar@gmail.com';
   }
 
 }

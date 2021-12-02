@@ -1,4 +1,37 @@
-<div class="modal fade" id="modal-customers">
+<div class="modal-body table-responsive">
+    <table id="customers" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+    role="grid" *ngIf="customers?.length > 0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>Identificación</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of customers">
+                <td>{{customer.clientId}}</td>
+                <td>{{customer.firstName + ' ' + customer.lastName}}</td>
+                <td>{{customer.id}}</td>
+                <td>
+                    <button class="btn bg-gradient-cyan" (click)="chooseCustomer(customer)">
+                        Elegir
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>Identificación</th>
+                <th>Opciones</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- <div class="modal fade" id="modal-customers">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,9 +74,9 @@
                 </table>
             </div>
         </div>
-        <!-- /.modal-content -->
+       /.modal-content 
     </div>
-    <!-- /.modal-dialog -->
+     /.modal-dialog 
 </div>
-<!-- /.modal -->
+/.modal -->
 

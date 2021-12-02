@@ -12,4 +12,8 @@ export class Terrain {
 
     status: Status;
     block: Block;
+
+    getArea(): number{
+        return this.length * this.width;
+    }
 }

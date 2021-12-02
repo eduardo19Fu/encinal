@@ -2,6 +2,7 @@ import { SaleType } from './sale-type';
 import { Client } from './client';
 import { Seller } from './seller';
 import { Terrain } from './terrain';
+import { Status } from './status';
 
 export class Sale {
 
@@ -13,4 +14,5 @@ export class Sale {
     client: Client;
     seller: Seller;
     terrain: Terrain;
+    status: Status;
 }

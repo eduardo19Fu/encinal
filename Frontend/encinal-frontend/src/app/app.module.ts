@@ -1,9 +1,13 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { appRoutingProviders, routing } from './app.routing';
+
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs, 'es');
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -40,6 +44,14 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ItemsComponent } from './components/items/items.component';
 import { CreateItemComponent } from './components/items/create-item/create-item.component';
 import { UpdateItemComponent } from './components/items/update-item/update-item.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { CreateCustomerComponent } from './components/sales/modals/create-customer/create-customer.component';
+import { PrincipalComponent } from './components/sales/modals/principal/principal.component';
+import { DetailUserComponent } from './components/usuarios/detail-user/detail-user.component';
+import { ReceiptsComponent } from './components/receipts/receipts.component';
+import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
+import { SearchClientModalComponent } from './components/receipts/search-client-modal/search-client-modal.component';
+import { ReceiptDetailModalComponent } from './components/receipts/receipt-detail-modal/receipt-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +87,14 @@ import { UpdateItemComponent } from './components/items/update-item/update-item.
     CreatePaymentComponent,
     ItemsComponent,
     CreateItemComponent,
-    UpdateItemComponent
+    UpdateItemComponent,
+    CreateCustomerComponent,
+    PrincipalComponent,
+    DetailUserComponent,
+    ReceiptsComponent,
+    CreateReceiptComponent,
+    SearchClientModalComponent,
+    ReceiptDetailModalComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +104,9 @@ import { UpdateItemComponent } from './components/items/update-item/update-item.
   ],
   providers: [
     appRoutingProviders,
+    // { provide: LOCALE_ID, useValue: 'es' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

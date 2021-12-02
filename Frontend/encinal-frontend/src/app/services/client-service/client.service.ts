@@ -34,6 +34,15 @@ export class ClientService {
     );
   }
 
+  getClientByIdentification(identification: string): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/clients/receipt/${identification}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, 'No se pudo encontrar el registro deseado', 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   getActiveCustomers(): Observable<any>{
     return this.httpClient.get<any>(`${this.url}/clients/active`).pipe(
       catchError(e => {
@@ -59,5 +68,18 @@ export class ClientService {
         return throwError(e);
       })
     );
+  }
+
+  disable(client: Client): Observable<any>{
+    return this.httpClient.put<any>(`${this.url}/clients/disable/${client.clientId}`, client).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
+  delete(client: Client): Observable<any>{
+    return null;
   }
 }

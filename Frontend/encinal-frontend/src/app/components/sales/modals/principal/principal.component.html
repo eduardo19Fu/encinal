@@ -1,0 +1,30 @@
+<div class="modal fade" id="modal-principal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header header-modal">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" id="button-x" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div *ngIf="flag === 1 else elseblock" class="card-body">
+                <button class="btn bg-gradient-green" (click)="decideFlag(2)">
+                    Nuevo
+                </button>
+                <app-customer-searching (customer)="catchCustomer($event)"></app-customer-searching>
+            </div>
+
+            <ng-template #elseblock>
+                <a (click)="decideFlag(1)" style="cursor: pointer; color: cadetblue; margin-left: 25px;">
+                    Atrás
+                </a>
+                <app-create-customer (customer)="catchCustomer($event)"></app-create-customer>
+            </ng-template>
+            
+            
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

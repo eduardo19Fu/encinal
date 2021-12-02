@@ -33,6 +33,11 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
+    public Client singleClient(String identification) {
+        return clientRepository.findByIdentification(identification).orElse(null);
+    }
+
+    @Override
     public Client save(Client client) {
         return clientRepository.save(client);
     }

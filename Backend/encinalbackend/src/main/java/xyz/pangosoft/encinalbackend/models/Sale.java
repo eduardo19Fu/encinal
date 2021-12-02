@@ -18,7 +18,7 @@ public class Sale implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date saleDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Client client;
@@ -38,10 +38,14 @@ public class Sale implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Status status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "terrain_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Terrain terrain;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "sale")
+    @JsonIgnoreProperties(value = { "sale","hibernateLazyInitializer", "handler" }, allowSetters = true)
+    private PaymentAgreement paymentAgreement;
 
 
     @PrePersist
@@ -111,6 +115,14 @@ public class Sale implements Serializable {
 
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
+    }
+
+    public PaymentAgreement getPaymentAgreement() {
+        return paymentAgreement;
+    }
+
+    public void setPaymentAgreement(PaymentAgreement paymentAgreement) {
+        this.paymentAgreement = paymentAgreement;
     }
 
     private static final long serialVersionUID = 1L;

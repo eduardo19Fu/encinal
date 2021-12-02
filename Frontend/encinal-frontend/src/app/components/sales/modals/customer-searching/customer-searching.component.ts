@@ -41,7 +41,7 @@ export class CustomerSearchingComponent implements OnInit {
   chooseCustomer(customer: Client): void{
     this.customer.emit(customer);
     // console.log(customer);
-    (document.getElementById('button-x')).click();
+    // (document.getElementById('button-x')).click();
   }
 
 }

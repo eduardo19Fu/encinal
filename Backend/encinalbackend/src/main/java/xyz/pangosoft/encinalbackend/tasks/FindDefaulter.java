@@ -30,7 +30,7 @@ public class FindDefaulter {
     @Autowired
     private IPaymentAgreementService paymentAgreementService;
 
-    @Scheduled(cron = "0 0 23 * * ?" /*fixedDelay = TimeConstants.MINUTE*/)
+    // @Scheduled(cron = "0 0 23 * * ?" /*fixedDelay = TimeConstants.MINUTE*/)
     public void adjustDefaulters(){
         this.currentDate = new Date();
 

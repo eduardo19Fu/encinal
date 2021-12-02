@@ -92,7 +92,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="weight">Ancho</label>
-                            <input type="number" name="weight" id="weight" class="form-control"
+                            <input type="number" name="weight" id="weight" class="form-control" (keyup)="showArea($event.target.value)"
                                 [(ngModel)]="terrain.width" placeholder="Ingrese el ancho del lote."
                                 required #weight="ngModel">
                             
@@ -106,7 +106,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="area">Área</label>
-                            <input type="number" name="area" id="area" class="form-control"
+                            <input type="number" name="area" id="area" class="form-control" disabled
                                 [(ngModel)]="terrain.area" placeholder="Ingrese área del lote."
                                 required #area="ngModel">
                             

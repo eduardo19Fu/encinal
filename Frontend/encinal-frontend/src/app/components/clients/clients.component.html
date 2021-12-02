@@ -76,8 +76,8 @@
                             Editar
                         </button>&nbsp;
 
-                        <button class="btn bg-gradient-danger" type="button" name="delete"
-                            (click)="delete(marca)" 
+                        <button class="btn bg-gradient-danger" type="button" name="disable"
+                            (click)="disable(client)" 
                             [disabled]="client.status.status == 'Inactivo' || client.status.status == 'Moroso'">
                             
                             <i class="fas fa-ban"></i>

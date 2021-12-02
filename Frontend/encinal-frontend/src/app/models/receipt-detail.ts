@@ -6,4 +6,8 @@ export class ReceiptDetail {
     subtotal: number;
 
     payment: Payment;
+
+    public calcularSubTotal(): number{
+        return this.payment.paymentTotal + this.payment.arrears;
+    }
 }

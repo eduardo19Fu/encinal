@@ -4,11 +4,11 @@ import { SaleService } from '../../services/sale-service/sale.service';
 import { TerrainService } from '../../services/terrain-service/terrain.service';
 import { BlockService } from '../../services/block-service/block.service';
 import { UserService } from '../../services/users/user.service';
+import { AuthService } from '../../services/users/auth.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
 
@@ -16,12 +16,14 @@ export class HomeComponent implements OnInit {
   public blocks: number;
   public sales: number;
   public users: number;
+  public totalSales: number;
 
   constructor(
     private saleService: SaleService,
     private terrainService: TerrainService,
     private blockService: BlockService,
-    private userService: UserService
+    private userService: UserService,
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
     this.getCountTerrains();
     this.getCountBlocks();
     this.getCountUsers();
+    this.getTotalSales();
   }
 
   getCountTerrains(): void{
@@ -56,6 +59,14 @@ export class HomeComponent implements OnInit {
   getCountUsers(): void{
     this.userService.getUsers().subscribe(
       users => this.users = users.length
+    );
+  }
+
+  getTotalSales(): void{
+    this.saleService.reportDailySales().subscribe(
+      response => {
+        this.totalSales = response;
+      }
     );
   }
 

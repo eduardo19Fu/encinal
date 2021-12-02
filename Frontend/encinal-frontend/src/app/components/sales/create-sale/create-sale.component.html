@@ -1,5 +1,8 @@
 <!-- SERACH CUSTOMER MODAL -->
-<app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+<!-- <app-customer-searching (customer)="loadCustomer($event)"></app-customer-searching>
+<app-create-customer (customer)="loadCustomer($event)"></app-create-customer> -->
+
+<app-principal (customer)="loadCustomer($event)"></app-principal>
 
 <!-- SEARCH SELLER MODAL -->
 <app-seller-searching (seller)="loadSeller($event)"></app-seller-searching>
@@ -35,7 +38,7 @@
                         <input type="text" name="client" id="client" class="form-control inputs" disabled>
 
                         <button class="btn bg-gradient-fuchsia search-buttons" data-toggle="modal"
-                            data-target="#modal-customers">
+                            data-target="#modal-principal">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
@@ -59,7 +62,8 @@
                     <div class="form-group">
                         <label for="terrain" class="labels">Lote</label>
                         <select name="terrain" id="terrain" class="form-control inputs" [(ngModel)]="sale.terrain"
-                            (ngModelChange)="mostrarTotal($event)" [disabled]="payments?.length > 0">
+                            (ngModelChange)="mostrarTotal($event)" [disabled]="payments?.length > 0"
+                            [compareWith]="compareTerrain">
                             <option [ngValue]="undefined">Elija un lote</option>
                             <option *ngFor="let terrain of terrains" [ngValue]="terrain">
                                 {{'Lote: ' + terrain.terrainNumber + ' | Manzana: ' + terrain.block.blockNumber}}
@@ -84,7 +88,7 @@
         </div>
 
         <div class="card-footer">
-            <h4 style="float: right;">Total: <span *ngIf="terrain" id="total">{{terrain.price | currency: 'Q' :
+            <h4 style="float: right;">Total: <span *ngIf="sale.terrain" id="total">{{sale.terrain.price | currency: 'Q' :
                     'symbol'}}</span></h4>
         </div>
 
@@ -112,7 +116,7 @@
                         <div class="form-group">
                             <label for="interest-rate">Interés</label>
                             <input type="number" name="interes-rate" id="interest-rate" class="form-control"
-                                [(ngModel)]="interestRate">
+                                [(ngModel)]="interestRate" [disabled]="interestRate">
                         </div>
                     </div>
 
@@ -127,7 +131,7 @@
                         <div class="form-group">
                             <label for="payment-day">Fecha de Pago</label>
                             <input type="date" name="payment-date" id="payment-date" class="form-control"
-                                [(ngModel)]="paymentDate">
+                                [value]="paymentDateValue">
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,83 @@
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header header-modal">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="container">
+                    <h4>Datos Generales</h4>
+                    <div class="row">
+                        <div class="col-sm">
+
+                            <ul *ngIf="user" class="list-group mb-3">
+                                <li class="list-group-item">
+                                    <strong>Primer Nombre: </strong>
+                                    {{user.firstName}}
+                                </li>
+                                <li class="list-group-item" *ngIf="user.middleName">
+                                    <strong>Segundo Nombre: </strong>
+                                    {{user.middleName}}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Apellidos: </strong>
+                                    {{user.lastName}}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Usuario: </strong>
+                                    {{user.username}}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Fecha Registro: </strong>
+                                    {{user.createdAt | date: 'dd/MM/yyyy - hh:mm'}}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Estado: </strong>
+                                    <span class="badge" [ngClass]="{'badge-danger': user.enabled === false, 
+                                                        'badge-success': user.enabled === true}">
+                                        {{user.enabled === true ? 'Activo' : 'Inactivo'}}
+                                    </span>
+
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-sm">
+                            <h4>Roles</h4>&nbsp;
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ROL</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let role of user.roles">
+                                        <td>{{role.roleId}}</td>
+                                        <td>{{role.roleName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" id="cerrar-button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

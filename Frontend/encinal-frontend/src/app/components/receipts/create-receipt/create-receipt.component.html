@@ -1,0 +1,204 @@
+<!-- SERACH CUSTOMER MODAL -->
+<app-principal (customer)="loadClient($event)"></app-principal>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/receipts/index']">Pagos</a></li>
+                    <li class="breadcrumb-item active">Crear Pago</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+
+<div class="col-md-12">
+    <div class="card card-primary">
+        <!-- <div class="card-header">
+                <h3 class="card-title">Ingrese los datos</h3>
+            </div> -->
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="usuario">Cobrador</label>
+                            <input class="form-control" type="text" name="usuario"
+                                value="{{user.firstName + ' ' + user.lastName}}" [disabled]="user">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <label for="buscar" style="display: block;">Buscar</label>
+                        <input type="text" id="buscar" name="buscar" class="form-control"
+                            style="width: 70%; display: inline; margin-right: 10px;" autofocus>
+
+                        <button type="submit" role="button" class="btn bg-fuchsia" data-toggle="modal"
+                            data-target="#modal-principal">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <hr *ngIf="client">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="name">Nombre:</label>
+                            <input type="text" class="form-control" name="name"
+                                value="{{client ? client.firstName + ' ' + client.lastName : ''}}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="id">Identificación:</label>
+                            <input type="text" class="form-control" name="id" (blur)="searchClient()"
+                                value="{{client ? client.id : ''}}" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="address">Dirección:</label>
+                            <input type="text" class="form-control" name="address"
+                                value="{{client ? client.address : ''}}" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <hr *ngIf="client">
+                <div *ngIf="client" class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="receipt-type">Tipo de Pago</label>
+                            <select name="receipt-type" id="receipt-type" class="form-control"
+                                [(ngModel)]="receipt.receiptType" (ngModelChange)="setReceiptType($event)">
+                                <option [ngValue]="undefined">Elija un Tipo de Pago</option>
+                                <option *ngFor="let type of receiptTypes" [ngValue]="type">
+                                    {{type.description}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group" *ngIf="receiptType.receiptTypeId === 1 else abono">
+                            <label for="payment-agreement">Acuerdo de Pagos</label>
+                            <select name="payment-agreements" id="payment-agreements" class="form-control"
+                                (change)="loadPayments($event)">
+                                <option [ngValue]="undefined">Elija un Acuerdo de Pagos</option>
+                                <option *ngFor="let agreement of paymentAgreements" [ngValue]="agreement">
+                                    {{agreement.paymentAgreementId}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <ng-template #abono>
+                            <div class="form-group" *ngIf="receiptType.receiptTypeId === 2">
+                                <label for="payment-agreement">Acuerdo de Pagos</label>
+                                <select name="payment-agreements" id="payment-agreements" class="form-control"
+                                    (change)="loadPayments($event)">
+                                    <option [ngValue]="undefined">Elija un Acuerdo de Pagos</option>
+                                    <option *ngFor="let agreement of paymentAgreements" [ngValue]="agreement">
+                                        {{agreement.paymentAgreementId}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" *ngIf="receiptType.receiptTypeId === 2">
+                                <label for="payment-agreement">Abono</label>
+                                <input type="number" name="abono" id="abono" class="form-control">
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="client">
+                    <div class="col">
+                        <input type="submit" role="button" class="btn btn-primary" value="Pagar"
+                            (click)="createPayment()">
+                    </div>
+                </div>
+
+                <hr *ngIf="receiptType.receiptTypeId === 1">
+                <div class="row" *ngIf="receiptType.receiptTypeId === 1 && payments?.length > 0">
+                    <div class="col">
+                        <h4>Total: {{receipt.calcularTotal() | currency: 'Q':'symbol'}}</h4>
+                    </div>
+                </div>
+                <div class="row" *ngIf="receiptType.receiptTypeId === 1">
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="card card-body table-responsive" *ngIf="payments?.length > 0">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Seleccionar</th>
+                                            <th>Número de Pago</th>
+                                            <th>Fecha Vencimiento</th>
+                                            <th>Mora</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngFor="let payment of payments; let i = index">
+                                            <td class="center-options"
+                                                *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
+                                                <input class="form-check-input" type="checkbox"
+                                                    (change)="paymentOnCheck(payment, $event)">
+                                            </td>
+                                            <td
+                                                *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
+                                                {{payment.paymentNumber}}
+                                            </td>
+                                            <td
+                                                *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
+                                                {{payment.expireDate}}
+                                            </td>
+                                            <td
+                                                *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
+                                                {{payment.arrears | currency: "Q": "symbol"}}
+                                            </td>
+                                            <td
+                                                *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
+                                                {{payment.paymentTotal | currency: "Q":"symbol"}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                        (change)="paymentOnCheck(payment, $event)">
+                                    <label class="form-check-label">
+                                        Pago No. {{payment.paymentNumber}}
+                                    </label>&nbsp;
+                                    <label class="form-check-label">
+                                        Por un total de {{payment.paymentTotal}}
+                                    </label>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </form>
+    </div>
+    <!-- /.card -->
+</div>

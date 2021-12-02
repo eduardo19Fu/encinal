@@ -40,6 +40,8 @@
                     <th>ID</th>
                     <th>Número de Manzana</th>
                     <th>Capacidad</th>
+                    <th>Restantes</th>
+                    <th>Fecha de Registro</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -50,6 +52,8 @@
                     <td>{{block.blockId}}</td>
                     <td>{{block.blockNumber}}</td>
                     <td>{{block.capacity}}</td>
+                    <td>{{block.remaining}}</td>
+                    <td>{{block.createdAt | date: 'dd-MM-yyyy HH:mm'}}</td>
                     <td>{{block.status.status}}</td>
                     <td class="center-options">
 
@@ -74,6 +78,8 @@
                     <th>ID</th>
                     <th>Número de Manzana</th>
                     <th>Capacidad</th>
+                    <th>Restantes</th>
+                    <th>Fecha de Registro</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

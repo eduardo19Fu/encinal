@@ -21,7 +21,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/terrains", "/api/sale-types", "/api/sellers", "/api/sales").permitAll()
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/terrains", "/api/sale-types", "/api/sellers", "/api/sales", "/api/sales/daily-sales").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/clients").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/payment-agreements").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/blocks", "/api/blocks/**").permitAll()
@@ -33,7 +33,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://encinal4.web.app", "https://encinal5.web.app", "https://encinal6.web.app"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://encinal5-808d5.web.app", "https://encinal5.web.app", "https://condadoelencinal.com"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowCredentials(true);
         config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));

@@ -19,7 +19,7 @@ public class PaymentAgreement implements Serializable {
     private Integer totalPayments;
     private Double hitch;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Sale sale;
@@ -29,13 +29,19 @@ public class PaymentAgreement implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_agreement_id")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<Payment> payments;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentAgreement")
+    @JsonIgnoreProperties(value = { "paymentAgreement", "hibernateLazyInitializer", "handler" }, allowSetters = true)
+    private List<Receipt> receipts;
+
+
     public PaymentAgreement(){
         this.payments = new ArrayList<>();
+        this.receipts = new ArrayList<>();
     }
 
     public Integer getPaymentAgreementId() {
@@ -100,6 +106,14 @@ public class PaymentAgreement implements Serializable {
 
     public void setHitch(Double hitch) {
         this.hitch = hitch;
+    }
+
+    public List<Receipt> getReceipts() {
+        return receipts;
+    }
+
+    public void setReceipts(List<Receipt> receipts) {
+        this.receipts = receipts;
     }
 
     private static final long serialVersionUID = 1L;

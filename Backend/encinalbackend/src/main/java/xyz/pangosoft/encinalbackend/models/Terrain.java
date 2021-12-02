@@ -31,8 +31,12 @@ public class Terrain implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"terrains", "hibernateLazyInitializer", "handler"})
     private Block block;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "terrain")
+    @JsonIgnoreProperties(value = {"terrain","hibernateLazyInitializer", "handler"}, allowSetters = true)
+    private Sale sale;
 
     public Integer getTerrainId() {
         return terrainId;
@@ -96,6 +100,14 @@ public class Terrain implements Serializable {
 
     public void setBlock(Block block) {
         this.block = block;
+    }
+
+    public Sale getSale() {
+        return sale;
+    }
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
     }
 
     private static final long serialVersionUID = 1L;
