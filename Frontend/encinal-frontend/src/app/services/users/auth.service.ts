@@ -20,7 +20,8 @@ export class AuthService {
     private httpClient: HttpClient
   ) {
     // this.url = 'https://encinal-bakend-2.herokuapp.com';
-    this.url = 'http://localhost:8180';
+    // this.url = 'http://localhost:8180';
+    this.url = 'https://encinal-oficial.herokuapp.com';
   }
 
   public get user(): User{

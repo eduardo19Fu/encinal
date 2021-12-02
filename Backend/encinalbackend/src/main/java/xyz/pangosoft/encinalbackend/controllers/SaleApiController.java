@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
 @RestController
 @RequestMapping("/api")
 public class SaleApiController {

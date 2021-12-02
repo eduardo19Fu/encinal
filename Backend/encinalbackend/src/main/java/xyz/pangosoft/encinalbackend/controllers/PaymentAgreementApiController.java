@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
 @RestController
 @RequestMapping("/api")
 public class PaymentAgreementApiController {
