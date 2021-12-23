@@ -79,13 +79,34 @@
                     </ul>
                 </li>
 
-                <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/receipts')}">
-                    <a [routerLink]="['/receipts/index']" class="nav-link" [ngClass]="{'active': router.url.startsWith('/receipts')}">
+                <li class="nav-item" [ngClass]="{'menu-open': router.url.startsWith('/receipts') || router.url.startsWith('/correlatives')}">
+                    <a href="#" class="nav-link" [ngClass]="{'active': router.url.startsWith('/receipts') || router.url.startsWith('/correlatives')}">
+                                                            
                         <i class="fas fa-money-bill-wave"></i>
                         <p>
                             Pagos
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a [routerLink]="['/receipts/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/receipts/index')}">
+
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pagos Realizados</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a [routerLink]="['/correlatives/index']" class="nav-link"
+                                [ngClass]="{'active': router.url.startsWith('/correlatives')}">
+
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Correlativos</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- ADMIN MENU -->

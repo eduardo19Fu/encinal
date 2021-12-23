@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class TerrainApiController {
@@ -39,7 +39,7 @@ public class TerrainApiController {
         return this.terrainService.listTerrains();
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/terrains/on-sale")
     public ResponseEntity<?> listOnSale(){
 
@@ -58,7 +58,7 @@ public class TerrainApiController {
         return new ResponseEntity<List<Terrain>>(this.terrainService.listTerrainsOnSale(status), HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/terrains/{id}")
     public ResponseEntity<?> findTerrain(@PathVariable("id") Integer id){
 
@@ -110,7 +110,7 @@ public class TerrainApiController {
         return new ResponseEntity<List<Terrain>>(terrains, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/terrains")
     public ResponseEntity<?> create(@RequestBody Terrain terrain, BindingResult result){
 
@@ -162,7 +162,7 @@ public class TerrainApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PutMapping("/terrains")
     public ResponseEntity<?> update(@RequestBody Terrain terrain, BindingResult result){
 

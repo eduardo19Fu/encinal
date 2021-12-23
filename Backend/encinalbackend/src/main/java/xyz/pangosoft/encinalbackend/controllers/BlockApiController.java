@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping(value = "/api")
 public class BlockApiController {
@@ -34,7 +34,7 @@ public class BlockApiController {
         return this.blockService.listAll();
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/blocks/{id}")
     public ResponseEntity<?> blockById(@PathVariable("id") Integer id){
 
@@ -57,7 +57,7 @@ public class BlockApiController {
         return new ResponseEntity<Block>(block, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/blocks")
     public ResponseEntity<?> create(@RequestBody Block block, BindingResult result) {
 
@@ -95,7 +95,7 @@ public class BlockApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PutMapping("/blocks")
     public ResponseEntity<?> update(@RequestBody Block block, BindingResult result){
 
@@ -130,7 +130,7 @@ public class BlockApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @DeleteMapping("/blocks/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 

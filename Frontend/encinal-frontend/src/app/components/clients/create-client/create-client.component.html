@@ -86,14 +86,13 @@
                         <div class="form-group">
                             <label for="nit">NIT</label>
                             <input type="text" name="nit" id="nit" class="form-control" [(ngModel)]="client.nit"
-                                placeholder="Ingrese NIT del cliente"
-                                required #nit="ngModel">
+                                placeholder="Ingrese NIT del cliente" #nit="ngModel">
 
-                            <div *ngIf="nit.invalid && (nit.dirty || nit.touched)">
+                            <!-- <div *ngIf="nit.invalid && (nit.dirty || nit.touched)">
                                 <span class="requerido" *ngIf="nit.errors.required">
                                     El NIT es obligatorio.
                                 </span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col">

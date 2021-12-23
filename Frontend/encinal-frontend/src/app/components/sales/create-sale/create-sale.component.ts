@@ -90,12 +90,12 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
 
   create(): void { }
 
-  loadTerrain(): void{
+  loadTerrain(): void {
     this.activatedRoute.params.subscribe(
       params => {
         const id = params.terrainId;
 
-        if (id){
+        if (id) {
           this.terrainService.getTerrain(id).subscribe(
             terrain => {
               this.sale.terrain = terrain;
@@ -108,7 +108,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     );
   }
 
-  loadInterestRate(): void{
+  loadInterestRate(): void {
     this.itemService.getItem(2).subscribe(
       item => {
         this.interestRate = item.itemValue;
@@ -243,9 +243,30 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
               this.router.navigate(['/sales/index']);
               Swal.fire('Venta Realizada con éxito',
                 `Se ha creado con éxito el acuerdo de pagos`, 'success');
+
+              // Generate PDF
+              this.paymentAgreementService.getPaymentAgreementPDF(res.paymentAgreement.paymentAgreementId).subscribe(
+                r => {
+                  const url = window.URL.createObjectURL(r.data);
+                  const a = document.createElement('a');
+                  document.body.appendChild(a);
+                  a.setAttribute('style', 'display: none');
+                  a.setAttribute('target', 'blank');
+                  a.href = url;
+                  /*
+                    opcion para pedir descarga de la respuesta obtenida
+                    a.download = response.filename;
+                  */
+                  window.open(a.toString(), '_blank');
+                  window.URL.revokeObjectURL(url);
+                  a.remove();
+                },
+                error => {
+                  console.log(error);
+                }
+              );
             }
           );
-          // console.log(response);
         }
       );
     }
@@ -259,14 +280,14 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     return sum;
   }
 
-  compareTerrain(o1: Terrain, o2: Terrain): boolean{
+  compareTerrain(o1: Terrain, o2: Terrain): boolean {
     if (o1 === undefined && o2 === undefined) {
       return true;
     }
     return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.terrainId === o2.terrainId;
   }
 
-  reloadPage(): void{
+  reloadPage(): void {
     window.location.reload();
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { PaymentAgreement } from 'src/app/models/payment-agreement';
 import { Client } from 'src/app/models/client';
@@ -51,6 +51,22 @@ export class PaymentAgreementService {
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
+      })
+    );
+  }
+
+  /*********** PAYMENT AGREEMENT PDF **************/
+  getPaymentAgreementPDF(id: number): Observable<any>{
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/pdf');
+    const requestOptions: any = { headers, responseType: 'blob' };
+
+    return this.httpClient.get<any>(`${this.url}/payment-agreements/generate/${id}`, requestOptions).pipe(
+      map((response: any) => {
+        return{
+          filename: 'payment-agreement.pdf',
+          data: new Blob([response], { type: 'application/pdf' })
+        };
       })
     );
   }

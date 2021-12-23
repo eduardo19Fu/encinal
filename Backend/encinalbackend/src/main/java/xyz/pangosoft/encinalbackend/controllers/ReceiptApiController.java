@@ -1,5 +1,6 @@
 package xyz.pangosoft.encinalbackend.controllers;
 
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -10,9 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.*;
 import xyz.pangosoft.encinalbackend.services.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.*;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class ReceiptApiController {
@@ -155,6 +162,30 @@ public class ReceiptApiController {
         response.put("message", "¡El pago se ha realizado con éxito!");
         response.put("receipt", newReceipt);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+    /*************** PDF REPORTS CONTROLLERS ********************/
+
+    @GetMapping("/receipts/generate/{id}")
+    public void generateReceipt(@PathVariable("id") Integer idreceipt, HttpServletResponse httpServletResponse)
+            throws JRException, SQLException, FileNotFoundException {
+        try{
+            byte[] bytesReceipt = receiptService.rptPrintReceipt(idreceipt);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(bytesReceipt.length);
+            out.write(bytesReceipt, 0, bytesReceipt.length);
+
+            httpServletResponse.setContentType("application/pdf");
+            httpServletResponse.addHeader("Content-Disposition", "inline; filename=receipt-"+idreceipt+".pdf");
+
+            OutputStream os;
+
+            os = httpServletResponse.getOutputStream();
+            out.writeTo(os);
+            os.flush();
+            os.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})

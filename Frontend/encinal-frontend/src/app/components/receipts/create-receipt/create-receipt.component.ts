@@ -114,31 +114,26 @@ export class CreateReceiptComponent implements OnInit {
   /** */
 
   paymentOnCheck(payment: Payment, event: any): void{
-    if (event.target.checked){
+    if (this.receipt.items.length <= 0){
+      if (event.target.checked){
 
-      const item = new ReceiptDetail();
+        const item = new ReceiptDetail();
 
-      item.payment = payment;
-      item.subtotal = item.calcularSubTotal();
+        item.payment = payment;
+        item.subtotal = item.calcularSubTotal();
 
-      console.log(item);
+        this.receipt.items.push(item);
+        this.receipt.total = this.receipt.calcularTotal();
 
-      this.receipt.items.push(item);
-      this.receipt.total = this.receipt.calcularTotal();
-      console.log(this.receipt.items);
-
+      } else{
+        this.receipt.items.forEach((item: ReceiptDetail, i: number) => {
+          if (item.payment.paymentId === payment.paymentId){
+            this.receipt.items.splice(i, 1);
+          }
+        });
+      }
     } else{
-      this.receipt.items.forEach((item: ReceiptDetail, i: number) => {
-        if (item.payment.paymentId === payment.paymentId){
-          this.receipt.items.splice(i, 1);
-        }
-      });
-      // this.paymentsChecked.forEach((item: Payment, i: number) => {
-      //   if (payment.paymentId === item.paymentId){
-      //     this.paymentsChecked.splice(i, 1);
-      //   }
-      // });
-      console.log(this.receipt.items);
+      Swal.fire('¡Acción no Permitida!', 'No se puede cobrar más de una cuota en un mismo recibo.', 'warning');
     }
   }
 

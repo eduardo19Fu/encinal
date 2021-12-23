@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { Receipt } from 'src/app/models/receipt';
 
@@ -53,6 +53,22 @@ export class ReceiptService {
       catchError(e => {
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
+      })
+    );
+  }
+
+  /*********** RECEIPT PDF **************/
+  getReceiptPDF(id: number): Observable<any>{
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/pdf');
+    const requestOptions: any = { headers, responseType: 'blob' };
+
+    return this.httpClient.get<any>(`${this.url}/receipts/generate/${id}`, requestOptions).pipe(
+      map((response: any) => {
+        return{
+          filename: 'receipt.pdf',
+          data: new Blob([response], { type: 'application/pdf' })
+        };
       })
     );
   }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class ItemApiController {
@@ -89,7 +89,7 @@ public class ItemApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_SUPERADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_SECRETARIO"})
     @PutMapping("/items")
     public ResponseEntity<?> update(@RequestBody Item item, BindingResult result){
 

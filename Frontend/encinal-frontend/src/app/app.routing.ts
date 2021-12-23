@@ -29,6 +29,8 @@ import { RoleGuard } from './guards/role.guard';
 import { UpdateItemComponent } from './components/items/update-item/update-item.component';
 import { ReceiptsComponent } from './components/receipts/receipts.component';
 import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
+import { CorrelativesComponent } from './components/correlatives/correlatives.component';
+import { CreateCorrelativeComponent } from './components/correlatives/create-correlative/create-correlative.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
@@ -53,6 +55,11 @@ const appRoutes: Routes = [
     // Receips
     {path: 'receipts/index', component: ReceiptsComponent, canActivate: [AuthGuard]},
     {path: 'receipts/create', component: CreateReceiptComponent, canActivate: [AuthGuard]},
+
+    // Correlatives
+    {path: 'correlatives/index', component: CorrelativesComponent, canActivate: [AuthGuard]},
+    {path: 'correlatives/create', component: CreateCorrelativeComponent, canActivate: [AuthGuard]},
+    {path: 'correlatives/create/{id}', component: CreateCorrelativeComponent, canActivate: [AuthGuard]},
 
     // Payments
     {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},

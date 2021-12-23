@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class SellerApiController {
@@ -33,7 +33,7 @@ public class SellerApiController {
         return sellerService.listSellers();
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sellers/{id}")
     public ResponseEntity<?> findSeller(@PathVariable("id") Integer id) {
 
@@ -56,7 +56,7 @@ public class SellerApiController {
         return new ResponseEntity<Seller>(seller, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/sellers")
     public ResponseEntity<?> create(@RequestBody Seller seller, BindingResult result) {
 
@@ -94,7 +94,7 @@ public class SellerApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PutMapping("/sellers")
     public ResponseEntity<?> update(@RequestBody Seller seller, BindingResult result) {
 
@@ -128,7 +128,7 @@ public class SellerApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @DeleteMapping("/sellers/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 
