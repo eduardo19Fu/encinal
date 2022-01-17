@@ -1,3 +1,6 @@
+<!-- MODAL THAT SHOWS DE SALE DETAILS -->
+<app-sale-detail [sale]="sale" *ngIf="sale"></app-sale-detail>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -116,7 +119,8 @@
                         <!-- <a href="#" class="card-link" *ngIf="sale.saleType.saleTypeId === 2">Detalle</a> -->
                         <!-- <a href="#" class="card-link">Anular</a> -->
 
-                        <button class="btn bg-gradient-success margin" name="detail" type="button" *ngIf="sale.saleType.saleTypeId === 2">
+                        <button class="btn bg-gradient-success margin" name="detail" type="button" *ngIf="sale.saleType.saleTypeId === 2"
+                            (click)="loadSale(sale)" data-toggle="modal" data-target="#modal-lg">
                             <i class="fas fa-asterisk"></i>
                             Detalle
                         </button>&nbsp;

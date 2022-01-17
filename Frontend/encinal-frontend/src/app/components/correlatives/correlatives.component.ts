@@ -58,15 +58,18 @@ export class CorrelativesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        // aqui va el codigo de confirmación para anular factura
+        // aqui va el codigo de confirmación para anular correlativo
         this.correlativeService.cancel(correlative.correlativeId).subscribe(
           response => {
+            // console.log(response);
             correlative.status = response.correlative.status;
             this.swalWithBootstrapButtons.fire(
               `${response.mensaje}`,
               `El correlativo ${correlative.correlativeId} ha sido anulado con éxito`,
               'success'
             );
+          }, error => {
+            Swal.fire('Ha ocurrido un error', error, 'error');
           }
         );
 

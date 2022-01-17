@@ -26,7 +26,7 @@ public class SaleTypeApiController {
         return this.saleTypeService.listSaleTypes();
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/sale-types/{id}")
     public ResponseEntity<?> findSaleType(@PathVariable("id") Integer id){
 

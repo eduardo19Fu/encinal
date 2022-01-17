@@ -52,6 +52,11 @@ export class CorrelativeService {
   }
 
   cancel(id: number): Observable<any>{
-    return null;
+    return this.httpClient.delete<any>(`${this.url}/correlatives/${id}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
   }
 }

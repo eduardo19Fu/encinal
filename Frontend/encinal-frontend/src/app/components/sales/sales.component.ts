@@ -19,6 +19,8 @@ import Swal from 'sweetalert2';
 export class SalesComponent implements OnInit {
 
   public title: string;
+  public sale: Sale;
+
   public sales: Sale[];
   public blocks: Block[];
 
@@ -47,6 +49,7 @@ export class SalesComponent implements OnInit {
     // this.iniDateValue = new Date().toISOString().slice(0, 10);
     this.iniDateValue = moment(new Date()).format('yyyy-MM-DD');
     this.endDateValue = moment(new Date()).format('yyyy-MM-DD');
+    // this.sale = new Sale();
   }
 
   ngOnInit(): void {
@@ -105,6 +108,10 @@ export class SalesComponent implements OnInit {
   }
 
   searchAllSales(): void{}
+
+  loadSale(sale: Sale): void{
+    this.sale = sale;
+  }
 
   cancel(sale: Sale): void{
     this.swalWithBootstrapButtons.fire({

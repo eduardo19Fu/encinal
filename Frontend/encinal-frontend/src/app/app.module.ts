@@ -54,6 +54,7 @@ import { SearchClientModalComponent } from './components/receipts/search-client-
 import { ReceiptDetailModalComponent } from './components/receipts/receipt-detail-modal/receipt-detail-modal.component';
 import { CorrelativesComponent } from './components/correlatives/correlatives.component';
 import { CreateCorrelativeComponent } from './components/correlatives/create-correlative/create-correlative.component';
+import { SaleDetailComponent } from './components/sales/modals/sale-detail/sale-detail.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { CreateCorrelativeComponent } from './components/correlatives/create-cor
     SearchClientModalComponent,
     ReceiptDetailModalComponent,
     CorrelativesComponent,
-    CreateCorrelativeComponent
+    CreateCorrelativeComponent,
+    SaleDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -85,7 +85,34 @@ public class CorrelativeApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<?> cancel(){
-        return null;
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @DeleteMapping("/correlatives/{id}")
+    public ResponseEntity<?> cancel(@PathVariable("id") Integer id) {
+
+        Correlative correlative = null;
+        Correlative correlativeToCancel = null;
+        Status status = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            correlativeToCancel = this.correlativeService.singleCorrelative(id);
+            status = this.statusService.singleStatusName("Anulado", "Correlative");
+
+            correlativeToCancel.setStatus(status);
+            correlative = this.correlativeService.save(correlativeToCancel);
+        } catch (DataAccessException e) {
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(correlativeToCancel == null){
+            response.put("message", "¡No se encontró el correaltivo a anular!");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        response.put("message", "¡Correlativo anulado con éxito!");
+        response.put("correlative", correlative);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }

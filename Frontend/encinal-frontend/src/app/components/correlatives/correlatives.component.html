@@ -69,7 +69,7 @@
                     <td>
                         <!-- Aquí va el botón de eliminar -->
                         <button class="btn bg-gradient-danger margin" name="delete"
-                            type="button" (click)="cancelCorrelative(correlative)">
+                            type="button" (click)="cancelCorrelative(correlative)" [disabled]="correlative.status.status !== 'Activo'">
                             <i class="fas fa-ban"></i>
                         </button>
                     </td>
