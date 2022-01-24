@@ -24,6 +24,7 @@ BEGIN
                 FROM clients AS cl
                 INNER JOIN sales AS s ON s.client_id = cl.client_id
                 INNER JOIN payments_agreements AS pa ON pa.sale_id = s.sale_id
+                WHERE 
             );
         END;
     END;

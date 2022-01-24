@@ -55,6 +55,7 @@ import { ReceiptDetailModalComponent } from './components/receipts/receipt-detai
 import { CorrelativesComponent } from './components/correlatives/correlatives.component';
 import { CreateCorrelativeComponent } from './components/correlatives/create-correlative/create-correlative.component';
 import { SaleDetailComponent } from './components/sales/modals/sale-detail/sale-detail.component';
+import { RangesComponent } from './components/ranges/ranges.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { SaleDetailComponent } from './components/sales/modals/sale-detail/sale-
     ReceiptDetailModalComponent,
     CorrelativesComponent,
     CreateCorrelativeComponent,
-    SaleDetailComponent
+    SaleDetailComponent,
+    RangesComponent
   ],
   imports: [
     BrowserModule,

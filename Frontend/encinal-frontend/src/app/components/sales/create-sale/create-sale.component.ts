@@ -2,18 +2,19 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { SellerService } from '../../../services/seller-service/seller.service';
-import { TerrainService } from '../../../services/terrain-service/terrain.service';
-import { SaleService } from '../../../services/sale-service/sale.service';
 import { Terrain } from '../../../models/terrain';
 import { Seller } from 'src/app/models/seller';
 import { Client } from '../../../models/client';
-import { ClientService } from '../../../services/client-service/client.service';
-import { SaleTypeService } from '../../../services/sale-types-service/sale-type.service';
-import { SaleType } from '../../../models/sale-type';
-import { Sale } from '../../../models/sale';
 import { Payment } from '../../../models/payment';
 import { PaymentAgreement } from '../../../models/payment-agreement';
+import { SaleType } from '../../../models/sale-type';
+import { Sale } from '../../../models/sale';
+
+import { SellerService } from '../../../services/seller-service/seller.service';
+import { TerrainService } from '../../../services/terrain-service/terrain.service';
+import { SaleService } from '../../../services/sale-service/sale.service';
+import { ClientService } from '../../../services/client-service/client.service';
+import { SaleTypeService } from '../../../services/sale-types-service/sale-type.service';
 import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
 import { ItemService } from '../../../services/items/item.service';
 
@@ -201,7 +202,9 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
         this.payment.principalValue = pmt - this.payment.interestRateGenerated;
         this.payment.paymentTotal = this.monthlyFee;
 
-        const newDate = moment(this.paymentDateValue).add(i, 'months').toDate();
+        const date = moment((document.getElementById('payment-date') as HTMLInputElement).value).toDate();
+        const newDate = moment(date).add(i, 'months').toDate();
+
         this.payment.expireDate = new Date(newDate);
 
         pv = pv - this.payment.principalValue;

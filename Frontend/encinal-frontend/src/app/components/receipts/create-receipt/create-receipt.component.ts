@@ -171,12 +171,16 @@ export class CreateReceiptComponent implements OnInit {
     } else if (this.receipt.receiptType.receiptTypeId === 2) {
       this.receipt.total = +(document.getElementById('abono') as HTMLInputElement).value;
 
-      this.receiptService.create(this.receipt).subscribe(
-        response => {
-          this.router.navigate(['/receipts/index']);
-          Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
-        }
-      );
+      if (this.receipt.total >= 5000){
+        this.receiptService.create(this.receipt).subscribe(
+          response => {
+            this.router.navigate(['/receipts/index']);
+            Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
+          }
+        );
+      } else{
+        Swal.fire('Monto Inválido', 'No se pueden efectuar abonos a capital menores a Q. 5,000.00', 'warning');
+      }
     }
   }
 

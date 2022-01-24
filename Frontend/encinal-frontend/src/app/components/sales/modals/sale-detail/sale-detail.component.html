@@ -59,10 +59,10 @@
                                 <tbody>
                                     <tr *ngFor="let payment of sale.paymentAgreement.payments">
                                         <td>{{payment.paymentNumber}}</td>
-                                        <td>{{payment.principalValue}}</td>
-                                        <td>{{payment.interestRateGenerated}}</td>
-                                        <td>{{payment.arrears}}</td>
-                                        <td>{{payment.remainingBalance}}</td>
+                                        <td>{{payment.principalValue | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.interestRateGenerated | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.arrears | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.remainingBalance | currency: "Q" : "symbol"}}</td>
                                         <td>{{payment.status.status}}</td>
                                     </tr>
                                 </tbody>

@@ -29,6 +29,7 @@
                         <div class="form-group">
                             <label for="block">Manzana</label>
                             <select name="blocks" id="blocks" class="form-control">
+                                <option [value]="undefined">Elija una manzana</option>
                                 <option *ngFor="let block of blocks" [value]="block.blockId">{{block.blockNumber}}</option>
                             </select>
                         </div>
@@ -120,15 +121,21 @@
                         <!-- <a href="#" class="card-link">Anular</a> -->
 
                         <button class="btn bg-gradient-success margin" name="detail" type="button" *ngIf="sale.saleType.saleTypeId === 2"
-                            (click)="loadSale(sale)" data-toggle="modal" data-target="#modal-lg">
+                            (click)="loadSale(sale)" data-toggle="modal" data-target="#modal-lg" title="Detalle de Venta">
                             <i class="fas fa-asterisk"></i>
-                            Detalle
+                            
                         </button>&nbsp;
 
+                        <button class="btn bg-gradient-warning margin" name="print" type="button" *ngIf="sale.saleType.saleTypeId === 2"
+                            (click)="printAgreement(sale.paymentAgreement)" title="Imprimir Acuerdo">
+                            <i class="fas fa-print"></i>
+                            
+                        </button>
+
                         <button type="button" class="btn bg-gradient-danger margin" name="cancel" (click)="cancel(sale)"
-                            [disabled]="sale.status.status === 'Anulado'">
+                            [disabled]="sale.status.status === 'Anulado'" title="Anular Pago">
                             <i class="fas fa-ban"></i>
-                            Anular
+                            
                         </button>
                     </div>
                 </div>
