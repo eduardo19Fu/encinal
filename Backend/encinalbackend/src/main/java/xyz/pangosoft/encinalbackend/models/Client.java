@@ -207,5 +207,28 @@ public class Client implements Serializable {
         this.interestOutstanding = interestOutstanding;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientId=" + clientId +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", nit='" + nit + '\'' +
+                ", id='" + id + '\'' +
+                ", telNumber='" + telNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", amountOutstanding=" + amountOutstanding +
+                ", principalOutstanding=" + principalOutstanding +
+                ", interestOutstanding=" + interestOutstanding +
+                ", underage=" + underage +
+                ", birthDate=" + birthDate +
+                ", createdAt=" + createdAt +
+                ", status=" + status +
+                ", identificationType=" + identificationType +
+                '}';
+    }
+
     private static final long serialVersionUID = 1L;
 }

@@ -44,6 +44,15 @@ export class ReceiptService {
     );
   }
 
+  cancel(receipt: Receipt): Observable<any>{
+    return this.httpClient.delete<any>(`${this.url}/receipts/cancel/${receipt.receiptId}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   getTypes(): Observable<ReceiptType[]>{
     return this.httpClient.get<ReceiptType[]>(`${this.url}/receipts/receipt-types`);
   }

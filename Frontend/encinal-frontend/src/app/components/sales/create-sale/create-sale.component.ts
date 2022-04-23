@@ -188,7 +188,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       let months: number; // La cantidad de meses para los pagos
 
       interest = (this.interestRate / 12) / 100;
-      months = this.years * 12;
+      months = this.years;
       let pv: number = this.terrain.price - this.hitch;
 
       const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);

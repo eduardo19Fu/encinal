@@ -34,6 +34,15 @@ export class TerrainService {
     );
   }
 
+  getSoldTerrains(): Observable<any>{
+    return this.httpClient.get<any>(`${this.url}/terrains/sold`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.message, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
+  }
+
   getTerrainsByBlock(id: number): Observable<any>{
     return this.httpClient.get<any>(`${this.url}/terrains/blocks/${id}`).pipe(
       catchError(e => {

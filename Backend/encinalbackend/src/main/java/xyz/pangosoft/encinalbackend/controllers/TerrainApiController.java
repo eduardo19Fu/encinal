@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class TerrainApiController {
@@ -56,6 +56,25 @@ public class TerrainApiController {
         }
 
         return new ResponseEntity<List<Terrain>>(this.terrainService.listTerrainsOnSale(status), HttpStatus.OK);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/terrains/sold")
+    public ResponseEntity<?> listSold(){
+
+        Map<String, Object> response = new HashMap<>();
+        List<Terrain> terrains = new ArrayList<>();
+        Status status = null;
+
+        try{
+            terrains = this.terrainService.listSoldTerrains();
+        } catch(DataAccessException e){
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<List<Terrain>>(terrains, HttpStatus.OK);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
@@ -132,7 +151,7 @@ public class TerrainApiController {
             block = blockService.singleBlock(terrain.getBlock().getBlockId());
             System.out.println(block);
 
-            if(block.getRemaining() != 0){
+            // if(block.getRemaining() != 0){
                 status = this.statusService.singleStatus(10);
                 terrain.setStatus(status);
                 newTerrain = this.terrainService.save(terrain);
@@ -140,11 +159,11 @@ public class TerrainApiController {
                 block.setRemaining(block.decreaseRemaining());
                 System.out.println(block);
                 blockService.save(block);
-            } else{
-                response.put("message", "Sin capacidad");
-                response.put("error", "¡No existe más espacio disponible en la manzana para registrar un nuevo lote!");
-                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-            }
+//            } else{
+//                response.put("message", "Sin capacidad");
+//                response.put("error", "¡No existe más espacio disponible en la manzana para registrar un nuevo lote!");
+//                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+//            }
 
         } catch(DataAccessException e){
             response.put("message", "¡Ha ocurrido un error en la Base de Datos!");

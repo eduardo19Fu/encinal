@@ -43,5 +43,14 @@ public class ReceiptDetail implements Serializable {
         this.payment = payment;
     }
 
+    @Override
+    public String toString() {
+        return "ReceiptDetail{" +
+                "receiptDetailId=" + receiptDetailId +
+                ", subtotal=" + subtotal +
+                ", payment=" + payment +
+                '}';
+    }
+
     private static final long serialVersionUID = 1L;
 }

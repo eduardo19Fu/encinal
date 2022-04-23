@@ -124,7 +124,7 @@ export class SalesComponent implements OnInit {
   cancel(sale: Sale): void{
     this.swalWithBootstrapButtons.fire({
       title: '¿Está seguro?',
-      text: `¿Seguro que desea anular la factura No. ${sale.saleId}`,
+      text: `¿Seguro que desea anular la venta ${sale.saleId}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: '¡Si, anular!',
@@ -144,13 +144,6 @@ export class SalesComponent implements OnInit {
             );
           }
         );
-
-        // this.sales.map(oldSale => {
-        //   if (facturaVieja.idFactura === factura.idFactura) {
-        //     facturaVieja.estado = factura.estado;
-        //   }
-        //   return factura;
-        // });
 
       } else if (
         /* Read more about handling dismissals below */

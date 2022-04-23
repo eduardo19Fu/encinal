@@ -33,6 +33,16 @@ public class Transfer implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Client toClient;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "terrain_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Terrain terrainId;
+
+    @PrePersist
+    public void prepersist(){
+        this.createdAt = new Date();
+    }
+
     public Integer getTransferId() {
         return transferId;
     }
@@ -79,6 +89,14 @@ public class Transfer implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Terrain getTerrainId() {
+        return terrainId;
+    }
+
+    public void setTerrainId(Terrain terrainId) {
+        this.terrainId = terrainId;
     }
 
     private final static long serialVersionUID = 1L;

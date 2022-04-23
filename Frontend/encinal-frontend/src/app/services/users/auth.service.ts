@@ -21,7 +21,7 @@ export class AuthService {
   ) {
     this.url = 'http://localhost:8180';
     // this.url = 'https://encinal-oficial.herokuapp.com';
-    // this.url = 'https://83.136.219.162:8180';
+    // this.url = 'https://condadoelencinal.com:8180';
   }
 
   public get user(): User{

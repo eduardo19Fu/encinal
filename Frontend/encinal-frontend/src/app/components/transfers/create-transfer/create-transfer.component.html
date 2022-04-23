@@ -1,0 +1,88 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/transfers/index']">Traspasos</a></li>
+                    <li class="breadcrumb-item active">Realizar Traspaso</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #transferForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="first-name">Lote</label>
+                            <select class="form-control">
+                                <option *ngFor="let terrain of soldTerrains" value="">{{terrain.terrainNumber}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="middle-name">Segundo Nombre</label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last-name">Apellido (s)</label>
+                            
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="contract-date">Fecha de Contratación</label>
+                            
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="base-salary">Sueldo Base</label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!transferForm.form.valid">
+
+                    Registrar
+                </button>
+                
+            </div>
+        </form>
+    </div>
+
+</div>

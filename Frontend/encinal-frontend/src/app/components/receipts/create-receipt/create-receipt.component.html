@@ -125,6 +125,21 @@
                         </ng-template>
 
                     </div>
+
+                    <div class="col">
+                        <div class="form-group" *ngIf="receiptType.receiptTypeId === 1">
+                            <label for="total-ingresado">Ingrese Monto Depositado</label>
+                            <input type="number" name="totalIngresado" id="totalIngresado" class="form-control" [(ngModel)]="totalIngresado">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group" *ngIf="receiptType.receiptTypeId === 1">
+                            <label for="arrears-value">Mora</label>
+                            <input type="number" name="arrears-value" id="arrears-value" class="form-control" value="0" 
+                                (keyup)="cambioMora($event.target.value)">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row" *ngIf="client">

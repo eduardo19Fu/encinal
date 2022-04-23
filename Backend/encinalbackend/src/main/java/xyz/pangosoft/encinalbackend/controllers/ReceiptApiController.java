@@ -19,7 +19,7 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.*;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class ReceiptApiController {
@@ -161,6 +161,48 @@ public class ReceiptApiController {
 
         response.put("message", "¡El pago se ha realizado con éxito!");
         response.put("receipt", newReceipt);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @DeleteMapping("/receipts/cancel/{id}")
+    public ResponseEntity<?> cancelReceipt(@PathVariable("id") Integer idreceipt){
+
+        Map<String, Object> response = new HashMap<>();
+
+        Receipt receiptToCancel = null;
+        PaymentAgreement paymentAgreement = null;
+        Status cancelStatus = null;
+        Status paymentStatus = null;
+
+        try{
+            cancelStatus = statusService.singleStatusName("Anulado", "Receipt");
+            paymentStatus = statusService.singleStatusName("Activo", "Payment");
+
+            receiptToCancel = this.receiptService.singleReceipt(idreceipt);
+
+            receiptToCancel.setStatus(cancelStatus);
+
+            for(ReceiptDetail rdetail : receiptToCancel.getItems()){
+                System.out.println(rdetail);
+                Payment payment = new Payment();
+                payment = rdetail.getPayment();
+
+                payment.setStatus(paymentStatus);
+
+                this.paymentService.save(payment);
+            }
+
+            this.receiptService.create(receiptToCancel);
+
+        } catch(DataAccessException e) {
+            response.put("message", "¡Error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("message", "Anulación llevada a cabo con éxito");
+        response.put("receipt", receiptToCancel);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 

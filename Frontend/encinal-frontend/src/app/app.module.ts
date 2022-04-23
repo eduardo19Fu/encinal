@@ -56,6 +56,8 @@ import { CorrelativesComponent } from './components/correlatives/correlatives.co
 import { CreateCorrelativeComponent } from './components/correlatives/create-correlative/create-correlative.component';
 import { SaleDetailComponent } from './components/sales/modals/sale-detail/sale-detail.component';
 import { RangesComponent } from './components/ranges/ranges.component';
+import { TransfersComponent } from './components/transfers/transfers.component';
+import { CreateTransferComponent } from './components/transfers/create-transfer/create-transfer.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +104,9 @@ import { RangesComponent } from './components/ranges/ranges.component';
     CorrelativesComponent,
     CreateCorrelativeComponent,
     SaleDetailComponent,
-    RangesComponent
+    RangesComponent,
+    TransfersComponent,
+    CreateTransferComponent
   ],
   imports: [
     BrowserModule,

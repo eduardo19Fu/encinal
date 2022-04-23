@@ -47,6 +47,12 @@ public class SaleApiController {
     @Autowired
     private IPaymentService paymentService;
 
+    @Autowired
+    private IClientTerrainService clientTerrainService;
+
+    @Autowired
+    private IClientService clientService;
+
     @GetMapping("/sales/daily-sales")
     public Double dailySales(){
         if(this.saleService.reporDailySales() == null){
@@ -115,11 +121,15 @@ public class SaleApiController {
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 
         Map<String, Object> response = new HashMap<>();
+
         Sale newSale = null;
         Status status = null;
         SaleType saleType = null;
         Terrain terrain = null;
         Seller seller = null;
+
+        ClientTerrain clientTerrain = null;
+        ClientTerrain newClientTerrain = null;
 
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream()
@@ -138,6 +148,13 @@ public class SaleApiController {
                 terrainService.save(terrain);
 
                 newSale = saleService.save(sale);
+
+                /*clientTerrain.setClient(sale.getClient());
+                clientTerrain.setTerrain(sale.getTerrain());
+
+                newClientTerrain = clientTerrainService.save(clientTerrain);
+                System.out.println(newClientTerrain);*/
+
             } else {
                 sale.setStatus(statusService.singleStatus(17));
                 terrain = sale.getTerrain();
@@ -145,6 +162,14 @@ public class SaleApiController {
                 terrainService.save(terrain);
 
                 newSale = saleService.save(sale);
+
+                /*System.out.println(sale.getClient());
+
+                clientTerrain.setClient(this.clientService.singleClient(sale.getClient().getClientId()));
+                clientTerrain.setTerrain(this.terrainService.singleTerrain(sale.getTerrain().getTerrainId()));
+
+                newClientTerrain = clientTerrainService.save(clientTerrain);
+                System.out.println(newClientTerrain);*/
             }
 
 
