@@ -164,20 +164,22 @@ export class CreateReceiptComponent implements OnInit {
 
           if (this.receipt.arrearsValue > 0) {
             this.receipt.total = (this.receipt.calcularTotal() * this.receipt.arrearsValue) + this.receipt.calcularTotal();
+            console.log(this.receipt.total);
 
             // calculates the remainder between the amount paid in and the total of the payments
             restante = this.totalIngresado - this.receipt.total;
+            console.log(this.totalIngresado);
 
-            if (restante === 0){
+            if (restante === 0) {
               this.receiptService.create(this.receipt).subscribe(
                 response => {
                   this.router.navigate(['/receipts/index']);
                   Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
                 }
               );
-            } else if(restante < 0){
+            } else if (restante < 0) {
               Swal.fire('Advertencia', 'Valor ingresado no puede ser menor que el total a pagar por las cuotas.', 'warning');
-            } else{
+            } else {
               this.receiptService.getType(2).subscribe();
             }
 
@@ -196,7 +198,7 @@ export class CreateReceiptComponent implements OnInit {
           Swal.fire('Advertencia', 'No se ha marcado ninguna cuota para realizar el pago.', 'warning');
         }
 
-      } else{
+      } else {
         Swal.fire('Advertencia', 'Monto Ingresado debe ser mayor a 0.', 'warning');
       }
 
