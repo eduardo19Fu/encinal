@@ -206,6 +206,35 @@ public class ReceiptApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    /************************ TIPOS DE RECIBO ************************/
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/receipts/receipt-types")
+    public List<ReceiptType> findTypes(){
+        return this.receiptTypeService.listAll();
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping("/receipts/receipt-type/{id}")
+    public ResponseEntity<?> findType(@PathVariable("id") Integer id) {
+        Map<String, Object> response = new HashMap<>();
+        ReceiptType receiptType = null;
+
+        try{
+            receiptType = this.receiptTypeService.singleType(id);
+        } catch (DataAccessException e){
+            response.put("message", "¡Error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(receiptType == null) {
+            response.put("message", "¡El valor de recibo no existe en la base de datos!");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<ReceiptType>(receiptType, HttpStatus.OK);
+    }
+
     /*************** PDF REPORTS CONTROLLERS ********************/
 
     @GetMapping("/receipts/generate/{id}")
@@ -228,11 +257,5 @@ public class ReceiptApiController {
         } catch(IOException e){
             e.printStackTrace();
         }
-    }
-
-    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
-    @GetMapping("/receipts/receipt-types")
-    public List<ReceiptType> findTypes(){
-        return this.receiptTypeService.listAll();
     }
 }
