@@ -1,0 +1,84 @@
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header header-modal">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="container">
+                    <h4>Datos Generales</h4>
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="">
+                                Venta No.:
+                                <span>{{sale.saleId}}</span>
+                            </label>
+                            <br>
+                            <label for="">
+                                Cliente:
+                                <span>
+                                    {{sale.client.firstName + ' ' + (sale.client.middleName ? sale.client.middleName : '') + ' ' + sale.client.lastName}}
+                                </span>
+                            </label>
+                            <br>
+                            <label for="">
+                                Cantidad de Cuotas:
+                                <span>{{sale.paymentAgreement.totalPayments}}</span>
+                            </label>
+                            <br>
+                            <label for="">
+                                Total:
+                                <span>{{sale.paymentAgreement.totalAgreement | currency: "Q" : "symbol"}}</span>
+                            </label>
+                        </div>
+
+                        <div class="col-sm">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Pagos</h4>&nbsp;
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Capital</th>
+                                        <th>Interés</th>
+                                        <th>Mora</th>
+                                        <th>Saldo Pendiente</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let payment of sale.paymentAgreement.payments">
+                                        <td>{{payment.paymentNumber}}</td>
+                                        <td>{{payment.principalValue | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.interestRateGenerated | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.arrears | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.remainingBalance | currency: "Q" : "symbol"}}</td>
+                                        <td>{{payment.status.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" id="cerrar-button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

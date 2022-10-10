@@ -1,0 +1,93 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/transfers/index']">Traspasos</a></li>
+                    <li class="breadcrumb-item active">Realizar Traspaso</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #transferForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="terrain">Lote</label>
+                            <select class="form-control" name="terrain" id="terrain" [(ngModel)]="transfer.sale">
+                                <option [ngValue]="undefined">Elija terreno a transferir</option>
+                                <option *ngFor="let terrain of soldTerrains" [ngValue]="terrain">
+                                    {{sale.terrain.terrainNumber}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="from-client" style="display: block;">Cliente Original</label>
+                            <input type="text" name="from-client" id="from-client" class="form-control"
+                                style="width: 85%; display: inline; margin-right: 10px;">
+
+                            <button type="button" class="btn bg-fuchsia">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last-name" style="display: block;">Cliente Destino</label>
+                            <input type="text" name="to-cliente" id="to-client" class="form-control"
+                                style="width: 80%; display: inline; margin-right: 10px;">
+
+                            <button type="button" class="btn bg-fuchsia">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="description">Descripci&oacute;n</label>
+                            <textarea name="description" id="description" cols="10" rows="5"
+                            class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!transferForm.form.valid">
+
+                    Registrar
+                </button>
+                
+            </div>
+        </form>
+    </div>
+
+</div>

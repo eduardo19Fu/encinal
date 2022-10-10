@@ -1,5 +1,7 @@
 package xyz.pangosoft.encinalbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,10 +15,15 @@ public class Item implements Serializable {
     private Integer itemId;
     private String itemName;
     private Double itemValue;
+    private String createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    private String createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "range_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private Range range;
 
     public void prepersist(){
         this.createdAt = new Date();
@@ -60,6 +67,14 @@ public class Item implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Range getRange() {
+        return range;
+    }
+
+    public void setRange(Range range) {
+        this.range = range;
     }
 
     private static final long serialVersionUID = 1L;

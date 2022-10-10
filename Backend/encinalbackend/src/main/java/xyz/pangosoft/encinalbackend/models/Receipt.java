@@ -17,6 +17,7 @@ public class Receipt implements Serializable {
     private Integer receiptId;
     private String receiptNumber;
     private Double total;
+    private Float arrearsValue;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -38,7 +39,7 @@ public class Receipt implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_by")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"password", "roles", "hibernateLazyInitializer", "handler"})
     private User registerBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,7 +53,7 @@ public class Receipt implements Serializable {
 
     @PrePersist
     public void prepersist(){
-        this.createdAt = new Date();
+        // this.createdAt = new Date();
     }
 
     public Integer getReceiptId() {
@@ -77,6 +78,14 @@ public class Receipt implements Serializable {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public Float getArrearsValue() {
+        return arrearsValue;
+    }
+
+    public void setArrears(Float arrearsValue) {
+        this.arrearsValue = arrearsValue;
     }
 
     public Date getCreatedAt() {

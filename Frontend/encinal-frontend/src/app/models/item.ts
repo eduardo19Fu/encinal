@@ -1,3 +1,5 @@
+import { Range } from './range';
+
 export class Item {
 
     itemId: number;
@@ -5,4 +7,6 @@ export class Item {
     itemValue: number;
     createdAt: Date;
     createBy: string;
+
+    range: Range;
 }

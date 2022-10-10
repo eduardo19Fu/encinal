@@ -3,6 +3,7 @@ import { Client } from './client';
 import { Seller } from './seller';
 import { Terrain } from './terrain';
 import { Status } from './status';
+import { PaymentAgreement } from './payment-agreement';
 
 export class Sale {
 
@@ -15,4 +16,5 @@ export class Sale {
     seller: Seller;
     terrain: Terrain;
     status: Status;
+    paymentAgreement: PaymentAgreement;
 }

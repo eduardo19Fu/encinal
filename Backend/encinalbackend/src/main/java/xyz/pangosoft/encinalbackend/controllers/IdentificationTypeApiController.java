@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class IdentificationTypeApiController {
@@ -28,6 +28,7 @@ public class IdentificationTypeApiController {
         return this.identificationTypeService.listIdentifications();
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @GetMapping("/identifications/{id}")
     public ResponseEntity<?> findIdentificationType(@PathVariable("id") Integer id) {
 
@@ -50,7 +51,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<IdentificationType>(identificationType, HttpStatus.OK);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/identifications")
     public ResponseEntity<?> create(@RequestBody IdentificationType identificationType, BindingResult result){
 
@@ -84,7 +85,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PutMapping("/identifications")
     public ResponseEntity<?> update(@RequestBody IdentificationType identificationType, BindingResult result) {
 
@@ -118,7 +119,7 @@ public class IdentificationTypeApiController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @DeleteMapping("/identifications/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 

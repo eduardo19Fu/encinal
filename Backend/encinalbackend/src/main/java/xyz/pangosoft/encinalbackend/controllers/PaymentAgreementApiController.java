@@ -1,5 +1,6 @@
 package xyz.pangosoft.encinalbackend.controllers;
 
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,18 @@ import xyz.pangosoft.encinalbackend.services.IPaymentAgreementService;
 import xyz.pangosoft.encinalbackend.services.IStatusService;
 import xyz.pangosoft.encinalbackend.services.ITerrainService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class PaymentAgreementApiController {
@@ -134,5 +141,30 @@ public class PaymentAgreementApiController {
         response.put("message", "¡El acuerdo de pagos ha sido emitido con éxito!");
         response.put("paymentAgreement", newPaymentAgreement);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+    /*************** PDF REPORTS CONTROLLERS ********************/
+
+    @GetMapping("/payment-agreements/generate/{id}")
+    public void generatePaymentAgreement(@PathVariable("id") Integer idagreement, HttpServletResponse httpServletResponse)
+            throws JRException, SQLException, FileNotFoundException {
+
+        try{
+            byte[] bytesPaymentAgreement = paymentAgreementService.rptPaymentAgreement(idagreement);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(bytesPaymentAgreement.length);
+            out.write(bytesPaymentAgreement, 0, bytesPaymentAgreement.length);
+
+            httpServletResponse.setContentType("application/pdf");
+            httpServletResponse.addHeader("Content-Disposition", "inline; filename=payment-agreement-"+idagreement+".pdf");
+
+            OutputStream os;
+
+            os = httpServletResponse.getOutputStream();
+            out.writeTo(os);
+            os.flush();
+            os.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }

@@ -1,20 +1,34 @@
 package xyz.pangosoft.encinalbackend.services.implementations;
 
+import net.sf.jasperreports.engine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import xyz.pangosoft.encinalbackend.models.Client;
 import xyz.pangosoft.encinalbackend.models.PaymentAgreement;
 import xyz.pangosoft.encinalbackend.models.Status;
 import xyz.pangosoft.encinalbackend.repositories.IPaymentAgreementRepository;
 import xyz.pangosoft.encinalbackend.services.IPaymentAgreementService;
 
+import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentAgreementServiceImpl implements IPaymentAgreementService {
 
     @Autowired
     private IPaymentAgreementRepository paymentAgreementRepository;
+
+    @Autowired
+    protected DataSource localDataSource;
 
     @Override
     public List<PaymentAgreement> listPaymentAgreements() {
@@ -59,5 +73,30 @@ public class PaymentAgreementServiceImpl implements IPaymentAgreementService {
     @Override
     public Double getFee(Integer paymentAgreementId) {
         return this.paymentAgreementRepository.fee(paymentAgreementId);
+    }
+
+    /****************** PDF REPORT SERVICES *******************/
+
+    @Override
+    public byte[] rptPaymentAgreement(Integer idagreement) throws JRException, FileNotFoundException, SQLException {
+
+        Connection con = localDataSource.getConnection(); // Obtiene la conexión actual a la base de datos
+        Map<String, Object> params = new HashMap<>();
+        InputStream file = getClass().getResourceAsStream("/reports/rpt_payment_agreement.jrxml");
+        params.put("paymentId", idagreement);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+
+        ByteArrayOutputStream byteArrayOutputStream = getByteArrayOutputStream(jasperPrint);
+
+        con.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    protected ByteArrayOutputStream getByteArrayOutputStream(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, byteArrayOutputStream);
+        return byteArrayOutputStream;
     }
 }

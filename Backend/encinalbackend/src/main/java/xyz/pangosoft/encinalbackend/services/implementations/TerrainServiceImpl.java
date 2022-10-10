@@ -27,6 +27,11 @@ public class TerrainServiceImpl implements ITerrainService {
     }
 
     @Override
+    public List<Terrain> listSoldTerrains() {
+        return this.terrainRepository.findSoldTerrains();
+    }
+
+    @Override
     public List<Terrain> listTerrainsByBlock(Block block){
         return this.terrainRepository.findByBlock(block);
     }

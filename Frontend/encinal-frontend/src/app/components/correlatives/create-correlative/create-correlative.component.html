@@ -1,0 +1,113 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{title}}</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a [routerLink]="['/correlatives/index']">Correlativos</a></li>
+                    <li class="breadcrumb-item active">Registrar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<hr>
+
+<div class="col-md-9">
+
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Formulario de Registro</h3>
+        </div>
+        <form #correlativeForm="ngForm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="from-group">
+                            <label for="initial-correlative">Correlativo Inicial</label>
+                            <input type="number" name="initial-correlative" id="initial-correlative" class="form-control"
+                                [(ngModel)]="correlative.initialCorrelative" placeholder="Ingrese el correlativo inicial"
+                                (keyup)="changeCurrentField($event.target.value)" required #initialCorrelative="ngModel">
+                            
+                            <div *ngIf="initialCorrelative.invalid && (initialCorrelative.dirty || initialCorrelative.touched)">
+                                <span class="requerido" *ngIf="initialCorrelative.errors.required">
+                                    El correlativo inicial es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="final-correlative">Correlativo Final</label>
+                            <input type="text" name="final-correlative" id="final-correlative" class="form-control"
+                                [(ngModel)]="correlative.finalCorrelative" placeholder="Ingrese el correlativo final"
+                                required #finalCorrelative="ngModel">
+
+                            <div *ngIf="finalCorrelative.invalid && (finalCorrelative.dirty || finalCorrelative.touched)">
+                                <span class="requerido" *ngIf="finalCorrelative.errors.required">
+                                    El correlativo final es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="current-correlative">Correlativo Actual</label>
+                            <input type="text" name="current-correlative" id="current-correlative" class="form-control"
+                                [(ngModel)]="correlative.currentCorrelative" required #currentCorrelative="ngModel" disabled>
+
+                            <div *ngIf="currentCorrelative.invalid && (currentCorrelative.dirty || currentCorrelative.touched)">
+                                <span class="requerido" *ngIf="currentCorrelative.errors.required">
+                                    El correlativo actual es obligatorio.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="address">Dirección</label>
+
+                            <select name="assigned-to" id="assigned-to" class="form-control" [(ngModel)]="correlative.assignedTo"
+                                required #assignedTo="ngModel">
+                                <option [ngValue]="undefined">Elija un usuario</option>
+                                <option *ngFor="let user of users" [ngValue]="user">{{user.firstName + ' ' + user.lastName}}</option>
+                            </select>
+
+                            <div *ngIf="assignedTo.invalid && (assignedTo.dirty || assignedTo.touched)">
+                                <span class="requerido" *ngIf="assignedTo.errors.required">
+                                    Es necesario seleccionar un usuario.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button *ngIf="!correlativeForm.clientId else update" type="submit" class="btn bg-gradient-success" 
+                    (click)="create()" [disabled]="!correlativeForm.form.valid">
+                    
+                    Registrar
+                </button>
+
+                <ng-template #update>
+                    <button type="submit" class="btn bg-gradient-danger" 
+                        (click)="update()" [disabled]="!clientForm.form.valid">
+                    
+                        Actualizar
+                    </button>
+                </ng-template>
+                
+            </div>
+        </form>
+    </div>
+
+</div>

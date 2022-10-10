@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://encinal5-808d5.web.app", "https://condadoelencinal.com"})
 @RestController
 @RequestMapping("/api")
 public class SaleApiController {
@@ -46,6 +46,12 @@ public class SaleApiController {
 
     @Autowired
     private IPaymentService paymentService;
+
+    @Autowired
+    private IClientTerrainService clientTerrainService;
+
+    @Autowired
+    private IClientService clientService;
 
     @GetMapping("/sales/daily-sales")
     public Double dailySales(){
@@ -111,15 +117,50 @@ public class SaleApiController {
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping(value = "/sales/client/{id}")
+    public ResponseEntity<?> getByClient(@PathVariable Integer id) {
+
+        List<Sale> sales = new ArrayList<>();
+        Client client = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            client = clientService.singleClient(id);
+            sales = saleService.listSalesByClient(client);
+
+        } catch (DataAccessException e) {
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (client == null) {
+            response.put("message", "¡El cliente solicitado no se encuentra registrado en la base de datos!");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (sales.size() <= 0) {
+            response.put("message", "El cliente solicitado no cuenta con ninguna venta registrada a su nombre");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(sales, HttpStatus.OK);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/sales")
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 
         Map<String, Object> response = new HashMap<>();
+
         Sale newSale = null;
         Status status = null;
         SaleType saleType = null;
         Terrain terrain = null;
         Seller seller = null;
+
+        ClientTerrain clientTerrain = null;
+        ClientTerrain newClientTerrain = null;
 
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream()
@@ -138,6 +179,13 @@ public class SaleApiController {
                 terrainService.save(terrain);
 
                 newSale = saleService.save(sale);
+
+                /*clientTerrain.setClient(sale.getClient());
+                clientTerrain.setTerrain(sale.getTerrain());
+
+                newClientTerrain = clientTerrainService.save(clientTerrain);
+                System.out.println(newClientTerrain);*/
+
             } else {
                 sale.setStatus(statusService.singleStatus(17));
                 terrain = sale.getTerrain();
@@ -145,6 +193,14 @@ public class SaleApiController {
                 terrainService.save(terrain);
 
                 newSale = saleService.save(sale);
+
+                /*System.out.println(sale.getClient());
+
+                clientTerrain.setClient(this.clientService.singleClient(sale.getClient().getClientId()));
+                clientTerrain.setTerrain(this.terrainService.singleTerrain(sale.getTerrain().getTerrainId()));
+
+                newClientTerrain = clientTerrainService.save(clientTerrain);
+                System.out.println(newClientTerrain);*/
             }
 
 

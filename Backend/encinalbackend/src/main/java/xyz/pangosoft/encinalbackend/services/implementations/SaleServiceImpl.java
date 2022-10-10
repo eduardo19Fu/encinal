@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import xyz.pangosoft.encinalbackend.models.Client;
 import xyz.pangosoft.encinalbackend.models.Sale;
 import xyz.pangosoft.encinalbackend.repositories.ISaleRepository;
 import xyz.pangosoft.encinalbackend.services.ISaleService;
@@ -41,6 +42,11 @@ public class SaleServiceImpl implements ISaleService {
     @Override
     public List<Sale> listSalesByBlockAndDate(Integer blockId, Date initDate, Date endDate) {
         return this.saleRepository.findByBlockAndDate(blockId, initDate, endDate);
+    }
+
+    @Override
+    public List<Sale> listSalesByClient(Client client) {
+        return this.saleRepository.findByClient(client);
     }
 
     @Override

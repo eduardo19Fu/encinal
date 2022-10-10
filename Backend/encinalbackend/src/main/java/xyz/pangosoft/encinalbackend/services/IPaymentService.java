@@ -6,4 +6,8 @@ public interface IPaymentService {
 
     public Payment save(Payment payment);
 
+    public Payment getPaymentAbove(Long paymentId);
+
+    public Integer getTotalFees(Long agreement_id);
+
 }

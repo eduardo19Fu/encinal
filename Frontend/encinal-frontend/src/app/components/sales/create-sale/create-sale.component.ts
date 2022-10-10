@@ -2,18 +2,19 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { SellerService } from '../../../services/seller-service/seller.service';
-import { TerrainService } from '../../../services/terrain-service/terrain.service';
-import { SaleService } from '../../../services/sale-service/sale.service';
 import { Terrain } from '../../../models/terrain';
 import { Seller } from 'src/app/models/seller';
 import { Client } from '../../../models/client';
-import { ClientService } from '../../../services/client-service/client.service';
-import { SaleTypeService } from '../../../services/sale-types-service/sale-type.service';
-import { SaleType } from '../../../models/sale-type';
-import { Sale } from '../../../models/sale';
 import { Payment } from '../../../models/payment';
 import { PaymentAgreement } from '../../../models/payment-agreement';
+import { SaleType } from '../../../models/sale-type';
+import { Sale } from '../../../models/sale';
+
+import { SellerService } from '../../../services/seller-service/seller.service';
+import { TerrainService } from '../../../services/terrain-service/terrain.service';
+import { SaleService } from '../../../services/sale-service/sale.service';
+import { ClientService } from '../../../services/client-service/client.service';
+import { SaleTypeService } from '../../../services/sale-types-service/sale-type.service';
 import { PaymentAgreementService } from '../../../services/payment-agreement/payment-agreement.service';
 import { ItemService } from '../../../services/items/item.service';
 
@@ -90,12 +91,12 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
 
   create(): void { }
 
-  loadTerrain(): void{
+  loadTerrain(): void {
     this.activatedRoute.params.subscribe(
       params => {
         const id = params.terrainId;
 
-        if (id){
+        if (id) {
           this.terrainService.getTerrain(id).subscribe(
             terrain => {
               this.sale.terrain = terrain;
@@ -108,7 +109,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     );
   }
 
-  loadInterestRate(): void{
+  loadInterestRate(): void {
     this.itemService.getItem(2).subscribe(
       item => {
         this.interestRate = item.itemValue;
@@ -187,34 +188,38 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       let months: number; // La cantidad de meses para los pagos
 
       interest = (this.interestRate / 12) / 100;
-      months = this.years * 12;
-      let pv: number = this.terrain.price - this.hitch;
+      months = this.years;
+      let pv: number = this.terrain.price - this.hitch; // Valor restante despues de haber operado el enganche.
 
-      const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);
+      const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest); // Calculo de cuota fija.
       this.monthlyFee = pmt;
 
+      // Inicio del ciclo de calculo de cutoas y saldo restante.
       for (let i = 1; i <= months; i++) {
         this.payment = new Payment();
 
         this.payment.paymentNumber = i;
         this.payment.interestRateGenerated = pv * interest;
-        this.payment.principalValue = pmt - this.payment.interestRateGenerated;
+        this.payment.principalValue = pmt - this.payment.interestRateGenerated; // AMORTIZACION
         this.payment.paymentTotal = this.monthlyFee;
+        this.payment.provisional_payment = 0.0;
 
-        const newDate = moment(this.paymentDateValue).add(i, 'months').toDate();
+        const date = moment((document.getElementById('payment-date') as HTMLInputElement).value).toDate();
+        const newDate = moment(date).add(i, 'months').toDate();
+
         this.payment.expireDate = new Date(newDate);
 
-        pv = pv - this.payment.principalValue;
+        pv = pv - this.payment.principalValue; // Saldo restante por cada iteracion.
         if (pv < 0) {
-          this.payment.remainingBalance = 0;
+          this.payment.remainingBalance = 0; // El primer saldo negativo, valdrá cero
         } else {
-          this.payment.remainingBalance = pv;
+          this.payment.remainingBalance = pv; // Mientras  no se anegativo asignará pv como saldo restante.
         }
 
         this.payments.push(this.payment);
 
       }
-      // console.log(this.payments);
+      
       this.jqueryConfigs.configFeesDataTable('fees');
     } else {
       Swal.fire('Enganche Vacío', 'El valor del enganche no puede ser vacío, por favor ingrese un valor.', 'warning');
@@ -238,14 +243,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
           this.paymentAgreement.totalPayments = this.paymentAgreement.payments.length;
           // console.log(this.paymentAgreement);
 
-          this.paymentAgreementService.create(this.paymentAgreement).subscribe(
-            res => {
-              this.router.navigate(['/sales/index']);
-              Swal.fire('Venta Realizada con éxito',
-                `Se ha creado con éxito el acuerdo de pagos`, 'success');
-            }
-          );
-          // console.log(response);
+          this.createAgreement(this.paymentAgreement);
         }
       );
     }
@@ -259,14 +257,50 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
     return sum;
   }
 
-  compareTerrain(o1: Terrain, o2: Terrain): boolean{
+  createAgreement(agreement: PaymentAgreement): void {
+    this.paymentAgreementService.create(this.paymentAgreement).subscribe(
+      response => {
+        this.router.navigate(['/sales/index']);
+        Swal.fire('Venta Realizada con éxito',
+          `Se ha creado con éxito el acuerdo de pagos`, 'success');
+
+        // Generate PDF
+        this.generateSalePDF(response.paymentAgreement.paymentAgreementId);
+      }
+    );
+  }
+
+  generateSalePDF(agreementId: number): void {
+    this.paymentAgreementService.getPaymentAgreementPDF(agreementId).subscribe(
+      response => {
+        const url = window.URL.createObjectURL(response.data);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.setAttribute('target', 'blank');
+        a.href = url;
+        /*
+          opcion para pedir descarga de la respuesta obtenida
+          a.download = response.filename;
+        */
+        window.open(a.toString(), '_blank');
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  compareTerrain(o1: Terrain, o2: Terrain): boolean {
     if (o1 === undefined && o2 === undefined) {
       return true;
     }
     return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.terrainId === o2.terrainId;
   }
 
-  reloadPage(): void{
+  reloadPage(): void {
     window.location.reload();
   }
 }

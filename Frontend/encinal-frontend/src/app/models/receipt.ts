@@ -13,6 +13,7 @@ export class Receipt {
     receiptNumber: string;
     createdAt: Date;
     total: number;
+    arrearsValue: number;
 
     seller: Seller;
     status: Status;

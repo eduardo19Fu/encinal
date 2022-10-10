@@ -29,6 +29,10 @@ import { RoleGuard } from './guards/role.guard';
 import { UpdateItemComponent } from './components/items/update-item/update-item.component';
 import { ReceiptsComponent } from './components/receipts/receipts.component';
 import { CreateReceiptComponent } from './components/receipts/create-receipt/create-receipt.component';
+import { CorrelativesComponent } from './components/correlatives/correlatives.component';
+import { CreateCorrelativeComponent } from './components/correlatives/create-correlative/create-correlative.component';
+import { TransfersComponent } from './components/transfers/transfers.component';
+import { CreateTransferComponent } from './components/transfers/create-transfer/create-transfer.component';
 
 const appRoutes: Routes = [
     /*********** PATH FOR HOME PAGES  *************/
@@ -53,6 +57,11 @@ const appRoutes: Routes = [
     // Receips
     {path: 'receipts/index', component: ReceiptsComponent, canActivate: [AuthGuard]},
     {path: 'receipts/create', component: CreateReceiptComponent, canActivate: [AuthGuard]},
+
+    // Correlatives
+    {path: 'correlatives/index', component: CorrelativesComponent, canActivate: [AuthGuard]},
+    {path: 'correlatives/create', component: CreateCorrelativeComponent, canActivate: [AuthGuard]},
+    {path: 'correlatives/create/{id}', component: CreateCorrelativeComponent, canActivate: [AuthGuard]},
 
     // Payments
     {path: 'sales/payments/index', component: PaymentsComponent, canActivate: [AuthGuard]},
@@ -83,6 +92,9 @@ const appRoutes: Routes = [
     {path: 'admin/identification-types/index', component: IdentificationTypesComponent, canActivate: [AuthGuard]},
 
     // Items
+    {path: 'transfers/index', component: TransfersComponent, canActivate: [AuthGuard]},
+    {path: 'transfers/create', component: CreateTransferComponent, canActivate: [AuthGuard]},
+    {path: 'transfers/create/:id', component: CreateTransferComponent, canActivate: [AuthGuard]},
     {path: 'admin/items/index', component: ItemsComponent, canActivate: [AuthGuard]},
     {path: 'admin/items/create', component: CreateItemComponent, canActivate: [AuthGuard, RoleGuard], data: {role: ['ROLE_SUPERADMIN']}},
     {path: 'admin/items/create/:id', component: CreateItemComponent, canActivate: [AuthGuard]},

@@ -1,194 +1,393 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_payment_agreement" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78520663-1891-414b-8078-6dfab4c90355">
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="encinal"/>
-    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="212"/>
-    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="783"/>
-    <queryString language="SQL">
-        <![CDATA[SELECT pa.*, sa.*, p.*, cl.*
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="212"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="783"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="encinal_adapter.jrdax"/>
+	<parameter name="paymentId" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 	pa.payment_agreement_id,
+		pa.interest_rate,
+		pa.hitch,
+		pa.total_payments,
+		pa.total_agreement,
+		sa.sale_date,
+		(
+			SELECT st.status
+			FROM status as st, payments_agreements as pya
+			WHERE st.status_id = pya.status_id AND pya.payment_agreement_id = pa.payment_agreement_id
+		) AS payment_agreement_status,
+		p.payment_number,
+		p.principal_value,
+		(
+			SELECT st.status
+			FROM status as st, payments
+			WHERE payments.status_id = payments.status_id AND payments.payment_id = p.payment_id
+			LIMIT 1
+
+		) AS payment_status,
+		p.interest_rate_generated,
+		p.arrears,
+		p.payment_total,
+		p.remaining_balance,
+		p.expire_date,
+		concat(cl.first_name, ' ', ifnull(cl.middle_name, ''), ' ', cl.last_name) AS cliente,
+		cl.id,
+		get_cantidad_cuotas( $P{paymentId} ) as cantidad_cuotas,
+		ifnull(p.provisional_payment, 0.00) as provisional_payment	
 FROM payments AS p
 INNER JOIN payments_agreements AS pa ON pa.payment_agreement_id = p.payment_agreement_id
 INNER JOIN sales AS sa ON sa.sale_id = pa.sale_id
 INNER JOIN clients AS cl ON cl.client_id = sa.client_id
-WHERE pa.payment_agreement_id = 1]]>
-    </queryString>
-    <field name="payment_agreement_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="payment_agreement_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="interest_rate" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="interest_rate"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="total_agreement" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="total_agreement"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="total_payments" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="total_payments"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="status_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="sale_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="sale_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
-    </field>
-    <field name="COLUMN_7" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="sale_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="sale_date" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.label" value="sale_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="seller_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="seller_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="client_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="client_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="terrain_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="terrain_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="total" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="total"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="sale_type_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="sale_type_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="COLUMN_14" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
-    </field>
-    <field name="payment_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="payment_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="payment_number" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="payment_number"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="COLUMN_17" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="payment_agreement_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="principal_value" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="principal_value"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="interest_rate_generated" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="interest_rate_generated"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="payment_total" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="payment_total"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="remaining_balance" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="remaining_balance"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="COLUMN_22" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="expire_date" class="java.sql.Date">
-        <property name="com.jaspersoft.studio.field.label" value="expire_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
-    </field>
-    <field name="COLUMN_24" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="client_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="first_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="first_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="middle_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="middle_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="last_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="last_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="nit" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="nit"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="id" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="identification_type_id" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="identification_type_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="tel_number" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="tel_number"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="email" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="email"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="birth_date" class="java.sql.Date">
-        <property name="com.jaspersoft.studio.field.label" value="birth_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="created_at" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.label" value="created_at"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="address" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="address"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="COLUMN_36" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <field name="amount_outstanding" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.label" value="amount_outstanding"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
-    </field>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="51" splitType="Stretch">
-            <staticText>
-                <reportElement x="0" y="0" width="570" height="50" uuid="1b42781a-f17b-45ee-8778-94a08b54edd6"/>
-                <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="16" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Acuerdo de Pagos
+WHERE pa.payment_agreement_id = $P{paymentId}]]>
+	</queryString>
+	<field name="payment_agreement_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="payment_agreement_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_agreement_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
+	</field>
+	<field name="interest_rate" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="interest_rate"/>
+		<property name="com.jaspersoft.studio.field.label" value="interest_rate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
+	</field>
+	<field name="hitch" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="hitch"/>
+		<property name="com.jaspersoft.studio.field.label" value="hitch"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
+	</field>
+	<field name="total_payments" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_payments"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_payments"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
+	</field>
+	<field name="total_agreement" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_agreement"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_agreement"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments_agreements"/>
+	</field>
+	<field name="sale_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="sale_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="sale_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sales"/>
+	</field>
+	<field name="payment_agreement_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payment_agreement_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_agreement_status"/>
+	</field>
+	<field name="payment_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="payment_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<field name="principal_value" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="principal_value"/>
+		<property name="com.jaspersoft.studio.field.label" value="principal_value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[Amortizacion.]]></fieldDescription>
+	</field>
+	<field name="payment_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payment_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_status"/>
+	</field>
+	<field name="interest_rate_generated" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="interest_rate_generated"/>
+		<property name="com.jaspersoft.studio.field.label" value="interest_rate_generated"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[Interés generado.]]></fieldDescription>
+	</field>
+	<field name="arrears" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="arrears"/>
+		<property name="com.jaspersoft.studio.field.label" value="arrears"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[morosidad generada.]]></fieldDescription>
+	</field>
+	<field name="payment_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="payment_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[La cuota fija generada.]]></fieldDescription>
+	</field>
+	<field name="remaining_balance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="remaining_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="remaining_balance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[Saldo pendiente total.
+
+]]></fieldDescription>
+	</field>
+	<field name="expire_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="expire_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="expire_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+	</field>
+	<field name="id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clients"/>
+	</field>
+	<field name="cantidad_cuotas" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad_cuotas"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_cuotas"/>
+	</field>
+	<field name="provisional_payment" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="provisional_payment"/>
+		<property name="com.jaspersoft.studio.field.label" value="provisional_payment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+		<fieldDescription><![CDATA[Abonos.]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="570" height="50" uuid="1b42781a-f17b-45ee-8778-94a08b54edd6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acuerdo de Pagos
 Condado "El Encinal"]]></text>
-            </staticText>
-        </band>
-    </title>
-    <pageHeader>
-        <band height="5" splitType="Stretch"/>
-    </pageHeader>
-    <detail>
-        <band height="50" splitType="Stretch"/>
-    </detail>
-    <columnFooter>
-        <band height="45" splitType="Stretch"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54" splitType="Stretch"/>
-    </pageFooter>
-    <summary>
-        <band height="42" splitType="Stretch"/>
-    </summary>
+			</staticText>
+			<image>
+				<reportElement x="150" y="0" width="50" height="50" uuid="a00c5c82-73f6-4787-a337-075fd91a3d26"/>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/static/images/logo-encinal.jpeg")]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="124" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="104" height="22" uuid="0dcbf43c-d8bf-427b-9cb1-0f6799c0977f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Cliente]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="22" width="570" height="31" uuid="1f0ca429-969c-4c1c-8752-f6a88a56d1c6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="22" width="50" height="18" uuid="5dc90f81-424e-45c5-9490-70567aa9c909"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="22" width="186" height="18" uuid="98c986af-ce70-4fea-b669-3688e99e5087"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="180" height="22" uuid="cc912ad3-5752-45c9-93d3-3428ca9a0100"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Acuerdo de Pagos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="92" width="570" height="27" uuid="70ecf998-ee00-42c5-82df-272116c4296c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="340" y="92" width="50" height="18" uuid="d1c3be37-9019-4aac-b1a4-c92ba56199fa"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="390" y="92" width="86" height="18" uuid="358e3af5-a391-4bf0-875d-318bd78ec15e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sale_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="92" width="70" height="18" uuid="9b6abf00-8d18-4306-aa6e-0a47c3e68f9e"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Enganche:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="92" width="100" height="18" uuid="5bb8b1b9-92b6-4a80-911c-d5cf382f1a0e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{hitch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="22" width="30" height="18" uuid="8ec61234-5fc7-4525-abab-274a4be3f497"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DPI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="22" width="130" height="18" uuid="1e5c536d-05f1-4580-9c75-35e79ebcc791"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="92" width="90" height="18" uuid="b33dab8e-7500-43d8-acfd-e7d97a0aaf4c"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant. de Pagos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="92" width="40" height="18" uuid="00ac7bfb-3e4d-4415-b662-3c9fce1b5a64"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{total_payments}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61">
+			<staticText>
+				<reportElement x="0" y="36" width="52" height="20" uuid="40935263-47b2-4281-967a-067830a61022">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64c18395-5a6b-40af-8759-a46c74f9944b"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="36" width="70" height="21" uuid="f286ff6f-c32f-472e-938d-9c688915996b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a7163d6-1909-482d-ba48-38e3611c1679"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Capital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="55" y="36" width="70" height="21" uuid="5e30fd8b-7ea5-4a3e-8fb0-b3fabb1a5918">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aba16db7-d637-410f-a192-48b5ea8c38a8"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Interés]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="36" width="84" height="21" uuid="03afe986-142d-442b-b534-f979e7b64833">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="faf2270e-7086-498e-864a-e1df8d96a8b4"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="36" width="84" height="21" uuid="066fcb68-35dd-4e0c-bbd7-68be3d27af81">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cce43f90-499b-4b6e-aa4c-eef3dd4286ee"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="36" width="100" height="21" uuid="63fae44d-8363-496b-b8ad-0f2279c3fd56">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="55106ecc-fa67-465c-9432-c6a271066904"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="3" width="570" height="20" uuid="bdc32fdd-1064-428f-9531-433c2fa0dc0d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64c18395-5a6b-40af-8759-a46c74f9944b"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pagos]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="24" width="571" height="1" uuid="5a415ea2-3ecb-457a-8f5c-b776e3549b9a"/>
+			</line>
+			<staticText>
+				<reportElement x="293" y="36" width="80" height="20" uuid="0f07ee51-0836-414d-bfb3-a10ac25587a5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51ada4be-6226-4d8c-9262-2d2301db0d71"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abonos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="52" height="20" uuid="7a0ae4e9-2bb0-4ac3-876c-e3957a80c814">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64c18395-5a6b-40af-8759-a46c74f9944b"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{payment_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="0" width="70" height="20" uuid="29dec27e-2c45-4d08-ab00-c14671ffd93a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a7163d6-1909-482d-ba48-38e3611c1679"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{principal_value}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="0" width="70" height="20" uuid="d17b2d92-50f7-425f-b8ee-878466a0eb98">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aba16db7-d637-410f-a192-48b5ea8c38a8"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{interest_rate_generated}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="205" y="0" width="84" height="20" uuid="46eb126f-8443-4075-9d73-d52f5f0b4c48">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="faf2270e-7086-498e-864a-e1df8d96a8b4"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{payment_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="84" height="20" uuid="acabc375-fd67-4fcf-8b28-38ba23c12dac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cce43f90-499b-4b6e-aa4c-eef3dd4286ee"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{remaining_balance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="471" y="0" width="100" height="20" uuid="1bcbad1f-3fde-4392-9174-648529c13ecb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="55106ecc-fa67-465c-9432-c6a271066904"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{expire_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="0" width="80" height="20" uuid="6629106d-30e5-49ff-b1c3-2d10702d5e35">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51ada4be-6226-4d8c-9262-2d2301db0d71"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{provisional_payment}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="400" y="0" width="100" height="20" uuid="1997dbed-e899-4f56-a06a-8b52e7b67bd7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="0" width="72" height="20" uuid="9d7957bd-bed0-41a4-bde1-e7d3ed34df17"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

@@ -38,10 +38,8 @@ export class SaleService {
     const date1 = moment(initDate).format('yyyy-MM-DD');
     const date2 = moment(endDate).format('yyyy-MM-DD');
 
-    console.log(date1);
-    console.log(date2);
-
     const httpParams = new HttpParams()
+      // .set('idManzana', '0')
       .set('initDate', date1)
       .set('endDate', date2);
 

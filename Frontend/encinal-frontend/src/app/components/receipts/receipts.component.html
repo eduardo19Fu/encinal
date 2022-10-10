@@ -75,13 +75,13 @@
                             Editar
                         </button>&nbsp; -->
 
-                        <!-- <button class="btn bg-gradient-danger" type="button" name="delete"
-                            (click)="delete(marca)" 
-                            [disabled]="receipt.status.status == 'Inactivo' || client.status.status == 'Moroso'">
+                        <button class="btn bg-gradient-danger" type="button" name="cancel"
+                            (click)="cancelReceipt(receipt)" 
+                            [disabled]="receipt.status.status == 'Anulado'">
                             
                             <i class="fas fa-ban"></i>
-                            Desactivar
-                        </button> -->
+                            Anular
+                        </button>
                     </td>
                 </tr>
             </tbody>

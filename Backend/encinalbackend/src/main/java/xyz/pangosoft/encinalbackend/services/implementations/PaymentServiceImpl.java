@@ -16,4 +16,14 @@ public class PaymentServiceImpl implements IPaymentService {
     public Payment save(Payment payment) {
         return paymentRepository.save(payment);
     }
+
+    @Override
+    public Payment getPaymentAbove(Long paymentId) {
+        return paymentRepository.findPaymentAbove(paymentId).orElse(null);
+    }
+
+    @Override
+    public Integer getTotalFees(Long agreement_id) {
+        return paymentRepository.totalFees(agreement_id);
+    }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "terrains")
@@ -34,9 +35,9 @@ public class Terrain implements Serializable {
     @JsonIgnoreProperties({"terrains", "hibernateLazyInitializer", "handler"})
     private Block block;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "terrain")
-    @JsonIgnoreProperties(value = {"terrain","hibernateLazyInitializer", "handler"}, allowSetters = true)
-    private Sale sale;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "terrain")
+//    @JsonIgnoreProperties(value = {"terrain","hibernateLazyInitializer", "handler"}, allowSetters = true)
+//    private List<Sale> sales;
 
     public Integer getTerrainId() {
         return terrainId;
@@ -51,7 +52,7 @@ public class Terrain implements Serializable {
     }
 
     public void setTerrainNumber(String terrainNumber) {
-        this.terrainNumber = terrainNumber;
+        this.terrainNumber = terrainNumber.toUpperCase();
     }
 
     public Double getPrice() {
@@ -102,13 +103,13 @@ public class Terrain implements Serializable {
         this.block = block;
     }
 
-    public Sale getSale() {
-        return sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
+//    public Sale getSale() {
+//        return sale;
+//    }
+//
+//    public void setSale(Sale sale) {
+//        this.sale = sale;
+//    }
 
     private static final long serialVersionUID = 1L;
 }

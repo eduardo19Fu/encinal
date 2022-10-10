@@ -30,7 +30,7 @@ public class FindDefaulter {
     @Autowired
     private IPaymentAgreementService paymentAgreementService;
 
-    // @Scheduled(cron = "0 0 23 * * ?" /*fixedDelay = TimeConstants.MINUTE*/)
+    /*@Scheduled(cron = "0 0 23 * * ?" /*fixedDelay = TimeConstants.MINUTE)*/
     public void adjustDefaulters(){
         this.currentDate = new Date();
 
@@ -60,7 +60,7 @@ public class FindDefaulter {
                 }
                 customer = new Client();
                 customer = paymentAgreement.getSale().getClient();
-                customer.setAmountOutstanding(amount_outstanding);
+//                customer.setAmountOutstanding(amount_outstanding);
                 customer.setStatus(newStatusClient);
 
                 clientService.save(customer);

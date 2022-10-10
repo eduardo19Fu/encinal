@@ -1,0 +1,89 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{title}}</h1>
+                <br>
+                <a class="btn bg-gradient-success" [routerLink]="['/transfers/create']">
+                    <i class="fas fa-plus-circle"></i>
+                    Nueva
+                </a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="card">
+    <div class="card-header">
+        Listado de Traspasos
+    </div>
+    <div class="card-body table-responsive">
+
+        <div *ngIf="transfers?.length == 0" class="alert alert-info alert-dismissible">
+            <h5>
+                <i class="icon fas fa-info"></i>
+                Atención!
+            </h5>
+
+            No existe ningún traspaso registrado en la Base de Datos!
+        </div>
+
+        <table id="users" class="table table-hover table-striped table-bordered dataTable dtr-inline table-sm"
+            role="grid" *ngIf="transfers?.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Realizado por</th>
+                    <th>Cliente Original</th>
+                    <th>Cliente Nuevo</th>
+                    <th>Lote</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let transfer of transfers">
+                    <td>{{transfer.userId}}</td>
+                    <td>{{transfer.firstName}}</td>
+                    <td>{{transfer.middleName}}</td>
+                    <td>{{transfer.lastName}}</td>
+                    <td class="center-options">
+                        <button class="btn bg-gradient-success" type="button" (click)="openDetail(user)"
+                            data-toggle="modal" data-target="#modal-lg">
+                            <i class="fas fa-asterisk"></i>
+
+                            Detalle
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-warning" type="button" name="edit"
+                            [routerLink]="['/admin/users/create', user.userId]">
+                            
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>&nbsp;
+
+                        <button class="btn bg-gradient-danger" type="button" name="disable"
+                            (click)="disable(user)" 
+                            [disabled]="user.enabled == 0">
+                            
+                            <i class="fas fa-ban"></i>
+                            Desactivar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Realizado por</th>
+                    <th>Cliente Original</th>
+                    <th>Cliente Nuevo</th>
+                    <th>Lote</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -12,6 +12,8 @@ public interface ITerrainService {
 
     public List<Terrain> listTerrainsOnSale(Status status);
 
+    public List<Terrain> listSoldTerrains();
+
     public List<Terrain> listTerrainsByBlock(Block block);
 
     public Terrain singleTerrain(Integer idTerrain);

@@ -67,6 +67,13 @@
                                 value="{{client ? client.id : ''}}" disabled>
                         </div>
                     </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="created-at">Fecha de Pago:</label>
+                            <input type="date" class="form-control" name="created-at" [(ngModel)]="receipt.createdAt">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -106,7 +113,10 @@
                             </select>
                         </div>
 
-                        <ng-template #abono>
+                    </div>
+
+                    <ng-template #abono class="row">
+                        <div class="col">
                             <div class="form-group" *ngIf="receiptType.receiptTypeId === 2">
                                 <label for="payment-agreement">Acuerdo de Pagos</label>
                                 <select name="payment-agreements" id="payment-agreements" class="form-control"
@@ -117,30 +127,47 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
 
+                        <div class="col">                        
                             <div class="form-group" *ngIf="receiptType.receiptTypeId === 2">
                                 <label for="payment-agreement">Abono</label>
                                 <input type="number" name="abono" id="abono" class="form-control">
                             </div>
-                        </ng-template>
+                        </div>
+                    </ng-template>
 
+                    <div class="col">
+                        <div class="form-group" *ngIf="receiptType.receiptTypeId === 1">
+                            <label for="total-ingresado">Ingrese Monto Depositado</label>
+                            <input type="number" name="totalIngresado" id="totalIngresado" class="form-control"
+                                [(ngModel)]="totalIngresado">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group" *ngIf="receiptType.receiptTypeId === 1">
+                            <label for="arrears-value">Mora</label>
+                            <input type="number" name="arrears-value" id="arrears-value" class="form-control" value="0"
+                                (keyup)="cambioMora($event.target.value)">
+                        </div>
                     </div>
                 </div>
 
                 <div class="row" *ngIf="client">
                     <div class="col">
                         <input type="submit" role="button" class="btn btn-primary" value="Pagar"
-                            (click)="createPayment()">
+                            (click)="createReceipt()">
                     </div>
                 </div>
 
-                <hr *ngIf="receiptType.receiptTypeId === 1">
-                <div class="row" *ngIf="receiptType.receiptTypeId === 1 && payments?.length > 0">
+                <hr *ngIf="receiptType.receiptTypeId >= 1">
+                <div class="row" *ngIf="receiptType.receiptTypeId >= 1 && payments?.length > 0">
                     <div class="col">
-                        <h4>Total: {{receipt.calcularTotal() | currency: 'Q':'symbol'}}</h4>
+                        <h4>Total: {{(receipt.arrearsValue > 0 ? receipt.total : receipt.calcularTotal()) | currency: 'Q':'symbol'}}</h4>
                     </div>
                 </div>
-                <div class="row" *ngIf="receiptType.receiptTypeId === 1">
+                <div class="row" *ngIf="receiptType.receiptTypeId >= 1">
                     <div class="col">
                         <div class="form-group">
                             <div class="card card-body table-responsive" *ngIf="payments?.length > 0">
@@ -160,7 +187,7 @@
                                             <td class="center-options"
                                                 *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
                                                 <input class="form-check-input" type="checkbox"
-                                                    (change)="paymentOnCheck(payment, $event)">
+                                                    (change)="paymentOnCheck(payment, $event)" id="">
                                             </td>
                                             <td
                                                 *ngIf="payment.status.statusId === 22 || payment.status.statusId === 25">
@@ -181,16 +208,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <!-- <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" 
-                                        (change)="paymentOnCheck(payment, $event)">
-                                    <label class="form-check-label">
-                                        Pago No. {{payment.paymentNumber}}
-                                    </label>&nbsp;
-                                    <label class="form-check-label">
-                                        Por un total de {{payment.paymentTotal}}
-                                    </label>
-                                </div> -->
                             </div>
                         </div>
                     </div>

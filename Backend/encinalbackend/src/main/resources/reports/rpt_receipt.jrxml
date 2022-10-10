@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_receipt" pageWidth="680" pageHeight="368" orientation="Landscape" columnWidth="640" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3021ee35-184a-4c33-935c-5855bc4f6477">
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="encinal"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+    <property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+    <property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="393"/>
+    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="602"/>
+    <parameter name="receiptId" class="java.lang.Integer"/>
+    <queryString language="SQL">
+        <![CDATA[SELECT r.*, rd.subtotal, rd.payment_id, p.arrears, p.payment_number
+FROM receipts AS r
+INNER JOIN receipt_details AS rd ON rd.receipt_id = r.receipt_id
+INNER JOIN payments AS p ON p.payment_id = rd.payment_id
+WHERE r.receipt_id =  $P{receiptId}]]>
+    </queryString>
+    <field name="receipt_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="receipt_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="receipt_number" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="receipt_number"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="created_at" class="java.sql.Timestamp">
+        <property name="com.jaspersoft.studio.field.label" value="created_at"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="status_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="status_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="payment_agreement_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="payment_agreement_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="total" class="java.math.BigDecimal">
+        <property name="com.jaspersoft.studio.field.label" value="total"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="receipt_type_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="receipt_type_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="register_by" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="register_by"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipts"/>
+    </field>
+    <field name="subtotal" class="java.math.BigDecimal">
+        <property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipt_details"/>
+    </field>
+    <field name="payment_id" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="payment_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="receipt_details"/>
+    </field>
+    <field name="arrears" class="java.math.BigDecimal">
+        <property name="com.jaspersoft.studio.field.label" value="arrears"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+    </field>
+    <field name="payment_number" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.label" value="payment_number"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="payments"/>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <detail>
+        <band height="223" splitType="Stretch">
+            <textField>
+                <reportElement x="540" y="0" width="100" height="30" uuid="8b66a333-07df-483e-96ab-d4478a5dea10"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{created_at}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="60" y="130" width="100" height="30" uuid="fad55a87-6c81-452f-857f-6243652cd599"/>
+                <textFieldExpression><![CDATA[$F{arrears}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="60" y="80" width="100" height="30" uuid="5988599f-da2f-4541-8301-d9a24a3870e2"/>
+                <textFieldExpression><![CDATA[$F{payment_number}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="13" splitType="Stretch"/>
+    </pageFooter>
+</jasperReport>

@@ -12,6 +12,9 @@ public interface ITerrainRepository extends JpaRepository<Terrain, Integer> {
 
     List<Terrain> findByStatusIs(Status status);
 
+    @Query("Select t from Terrain t where t.status.statusId not in(10,13)")
+    List<Terrain> findSoldTerrains();
+
     @Query("Select t from Terrain t where t.block = ?1")
     List<Terrain> findByBlock(Block block);
 }

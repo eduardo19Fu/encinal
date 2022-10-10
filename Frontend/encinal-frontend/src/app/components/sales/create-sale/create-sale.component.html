@@ -116,13 +116,14 @@
                         <div class="form-group">
                             <label for="interest-rate">Interés</label>
                             <input type="number" name="interes-rate" id="interest-rate" class="form-control"
-                                [(ngModel)]="interestRate" [disabled]="interestRate">
+                                [(ngModel)]="interestRate" >
+                                <!-- [disabled]="interestRate" -->
                         </div>
                     </div>
 
                     <div class="col">
                         <div class="form-group">
-                            <label for="years">Años</label>
+                            <label for="years">Meses</label>
                             <input type="number" name="years" id="years" class="form-control" [(ngModel)]="years">
                         </div>
                     </div>

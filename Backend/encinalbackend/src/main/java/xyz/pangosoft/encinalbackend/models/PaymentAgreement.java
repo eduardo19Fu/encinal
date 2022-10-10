@@ -21,7 +21,7 @@ public class PaymentAgreement implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler" })
     private Sale sale;
 
     @ManyToOne(fetch = FetchType.LAZY)
