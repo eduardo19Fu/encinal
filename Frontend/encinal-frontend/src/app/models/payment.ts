@@ -10,6 +10,7 @@ export class Payment {
     remainingBalance: number;
     arrears: number;
     paymentTotal: number;
+    provisional_payment: number;
 
     status: Status;
 }

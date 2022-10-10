@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "clients")
@@ -84,7 +85,7 @@ public class Client implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.toUpperCase();
     }
 
     public String getMiddleName() {
@@ -92,7 +93,7 @@ public class Client implements Serializable {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = middleName.toUpperCase();
     }
 
     public String getLastName() {
@@ -100,7 +101,7 @@ public class Client implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.toUpperCase();
     }
 
     public String getNit() {
@@ -108,7 +109,7 @@ public class Client implements Serializable {
     }
 
     public void setNit(String nit) {
-        this.nit = nit;
+        this.nit = nit.toUpperCase();
     }
 
     public String getId() {
@@ -156,7 +157,7 @@ public class Client implements Serializable {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address.toUpperCase();
     }
 
     public Double getAmountOutstanding() {

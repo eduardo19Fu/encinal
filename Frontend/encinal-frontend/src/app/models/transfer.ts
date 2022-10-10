@@ -1,6 +1,7 @@
 import { Client } from './client';
 import { User } from './user';
 import { Terrain } from './terrain';
+import { Sale } from './sale';
 
 export class Transfer {
     transferId: number;
@@ -10,5 +11,5 @@ export class Transfer {
     createdBy: User;
     fromClient: Client;
     toClient: Client;
-    terrain: Terrain;
+    sale: Sale;
 }

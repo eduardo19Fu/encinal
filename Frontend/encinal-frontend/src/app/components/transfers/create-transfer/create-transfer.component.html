@@ -27,17 +27,25 @@
                 <div class="row">
                     <div class="col">
                         <div class="from-group">
-                            <label for="first-name">Lote</label>
-                            <select class="form-control">
-                                <option *ngFor="let terrain of soldTerrains" value="">{{terrain.terrainNumber}}</option>
+                            <label for="terrain">Lote</label>
+                            <select class="form-control" name="terrain" id="terrain" [(ngModel)]="transfer.sale">
+                                <option [ngValue]="undefined">Elija terreno a transferir</option>
+                                <option *ngFor="let terrain of soldTerrains" [ngValue]="terrain">
+                                    {{sale.terrain.terrainNumber}}
+                                </option>
                             </select>
                         </div>
                     </div>
 
                     <div class="col">
                         <div class="form-group">
-                            <label for="middle-name">Segundo Nombre</label>
-                            
+                            <label for="from-client" style="display: block;">Cliente Original</label>
+                            <input type="text" name="from-client" id="from-client" class="form-control"
+                                style="width: 85%; display: inline; margin-right: 10px;">
+
+                            <button type="button" class="btn bg-fuchsia">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -45,29 +53,26 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="last-name">Apellido (s)</label>
-                            
+                            <label for="last-name" style="display: block;">Cliente Destino</label>
+                            <input type="text" name="to-cliente" id="to-client" class="form-control"
+                                style="width: 80%; display: inline; margin-right: 10px;">
+
+                            <button type="button" class="btn bg-fuchsia">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
-                            <label for="telefono">Telefono</label>
-                           
-                        </div>
+                        
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="contract-date">Fecha de Contratación</label>
-                            
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="base-salary">Sueldo Base</label>
-                            
+                            <label for="description">Descripci&oacute;n</label>
+                            <textarea name="description" id="description" cols="10" rows="5"
+                            class="form-control"></textarea>
                         </div>
                     </div>
                 </div>

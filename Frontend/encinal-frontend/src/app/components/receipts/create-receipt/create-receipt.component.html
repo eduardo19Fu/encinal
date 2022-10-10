@@ -153,7 +153,7 @@
                 <hr *ngIf="receiptType.receiptTypeId === 1">
                 <div class="row" *ngIf="receiptType.receiptTypeId === 1 && payments?.length > 0">
                     <div class="col">
-                        <h4>Total: {{receipt.calcularTotal() | currency: 'Q':'symbol'}}</h4>
+                        <h4>Total: {{(receipt.arrearsValue > 0 ? receipt.total : receipt.calcularTotal()) | currency: 'Q':'symbol'}}</h4>
                     </div>
                 </div>
                 <div class="row" *ngIf="receiptType.receiptTypeId === 1">

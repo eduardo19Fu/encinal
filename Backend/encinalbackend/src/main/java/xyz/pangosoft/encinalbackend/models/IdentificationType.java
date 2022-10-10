@@ -2,6 +2,7 @@ package xyz.pangosoft.encinalbackend.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Locale;
 
 @Entity
 @Table(name = "identification_types")
@@ -26,7 +27,7 @@ public class IdentificationType implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     private static final long serialVersionUID = 1L;

@@ -44,7 +44,7 @@ public class Sale implements Serializable {
     private Terrain terrain;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "sale")
-    @JsonIgnoreProperties(value = { "sale","hibernateLazyInitializer", "handler" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"sale","hibernateLazyInitializer", "handler" }, allowSetters = true)
     private PaymentAgreement paymentAgreement;
 
 

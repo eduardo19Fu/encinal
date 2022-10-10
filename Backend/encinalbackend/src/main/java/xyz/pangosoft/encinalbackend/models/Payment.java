@@ -12,13 +12,14 @@ public class Payment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer paymentId;
+    private Long paymentId;
     private Integer paymentNumber;
     private Double principalValue;
     private Double interestRateGenerated;
     private Double remainingBalance;
     private Double arrears;
     private Double paymentTotal;
+    private Double provisionalPayment;
 
     @Temporal(TemporalType.DATE)
     private Date expireDate;
@@ -28,11 +29,11 @@ public class Payment implements Serializable {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Status status;
 
-    public Integer getPaymentId() {
+    public Long getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(Integer paymentId) {
+    public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
     }
 
@@ -100,18 +101,29 @@ public class Payment implements Serializable {
         this.paymentTotal = paymentTotal;
     }
 
+    public Double getProvisionalPayment() {
+        return provisionalPayment;
+    }
+
+    public void setProvisionalPayment(Double provisionalPayment) {
+        this.provisionalPayment = provisionalPayment;
+    }
+
     @Override
     public String toString() {
-        return "Payment{" +
-                "paymentId=" + paymentId +
-                ", paymentNumber=" + paymentNumber +
-                ", principalValue=" + principalValue +
-                ", interestRateGenerated=" + interestRateGenerated +
-                ", remainingBalance=" + remainingBalance +
-                ", paymentTotal=" + paymentTotal +
-                ", expireDate=" + expireDate +
-                ", status=" + status +
-                '}';
+        final StringBuilder sb = new StringBuilder("Payment{");
+        sb.append("paymentId=").append(paymentId);
+        sb.append(", paymentNumber=").append(paymentNumber);
+        sb.append(", principalValue=").append(principalValue);
+        sb.append(", interestRateGenerated=").append(interestRateGenerated);
+        sb.append(", remainingBalance=").append(remainingBalance);
+        sb.append(", arrears=").append(arrears);
+        sb.append(", paymentTotal=").append(paymentTotal);
+        sb.append(", provisionalPayment=").append(provisionalPayment);
+        sb.append(", expireDate=").append(expireDate);
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
     }
 
     private static final long serialVersionUID = 1L;

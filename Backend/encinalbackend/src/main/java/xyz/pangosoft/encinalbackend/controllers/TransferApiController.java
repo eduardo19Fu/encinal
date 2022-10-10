@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import xyz.pangosoft.encinalbackend.models.Transfer;
 import xyz.pangosoft.encinalbackend.services.IClientTerrainService;
@@ -58,7 +59,7 @@ public class TransferApiController {
 
         return new ResponseEntity<Transfer>(transfer, HttpStatus.OK);
     }
-
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/transfers")
     public ResponseEntity<?> create(@RequestBody Transfer transfer){
 

@@ -2,6 +2,7 @@ package xyz.pangosoft.encinalbackend.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import xyz.pangosoft.encinalbackend.models.Client;
 import xyz.pangosoft.encinalbackend.models.Sale;
 
 import java.util.Date;
@@ -28,5 +29,7 @@ public interface ISaleRepository extends JpaRepository<Sale, Integer> {
     @Query(value = "Select ifnull(sum(sa.total), 0.00) from sales sa " +
             "where date(sa.sale_date) = current_date()", nativeQuery = true)
     Double dailyTotalSales();
+
+    List<Sale> findByClient(Client client);
 
 }

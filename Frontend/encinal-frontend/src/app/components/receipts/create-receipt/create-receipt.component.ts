@@ -29,6 +29,7 @@ export class CreateReceiptComponent implements OnInit {
   title: string;
   valorMora: number;
   totalIngresado: number;
+  fechaPago: Date;
 
   user: User;
   client: Client;
@@ -122,6 +123,7 @@ export class CreateReceiptComponent implements OnInit {
         const moraIngresada = (+(document.getElementById('arrears-value') as HTMLInputElement).value) / 100;
 
         item.payment = payment;
+        item.payment.arrears = moraIngresada;
         item.subtotal = item.calcularSubTotal();
 
         this.receipt.items.push(item);
@@ -153,7 +155,6 @@ export class CreateReceiptComponent implements OnInit {
     this.receipt.receiptType = this.receiptType;
     this.receipt.paymentAgreement = this.paymentAgreement;
     let restante = 0;
-    console.log('estas aqui 1');
     // this.receipt.arrearsValue = (+(document.getElementById('arrears-value') as HTMLInputElement).value) / 100;
     // this.receipt.arrearsValue = 0;
 
@@ -264,9 +265,10 @@ export class CreateReceiptComponent implements OnInit {
 
   cambioMora(event: any): number {
     this.receipt.arrearsValue = (+(event) / 100);
-    // console.log(this.receipt.arrearsValue);
+    console.log(this.receipt.arrearsValue);
     if (this.receipt.arrearsValue > 0 && this.receipt.total > 0) {
       this.receipt.total = (this.receipt.calcularTotal() * this.receipt.arrearsValue) + this.receipt.calcularTotal();
+      console.log(this.receipt.total);
 
       // this.receiptService.create(this.receipt).subscribe(
       //   response => {

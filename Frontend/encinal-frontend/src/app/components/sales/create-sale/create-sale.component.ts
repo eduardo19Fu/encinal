@@ -189,35 +189,37 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
 
       interest = (this.interestRate / 12) / 100;
       months = this.years;
-      let pv: number = this.terrain.price - this.hitch;
+      let pv: number = this.terrain.price - this.hitch; // Valor restante despues de haber operado el enganche.
 
-      const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest);
+      const pmt: number = pv / ((1 - (Math.pow((1 + interest), (-1 * months)))) / interest); // Calculo de cuota fija.
       this.monthlyFee = pmt;
 
+      // Inicio del ciclo de calculo de cutoas y saldo restante.
       for (let i = 1; i <= months; i++) {
         this.payment = new Payment();
 
         this.payment.paymentNumber = i;
         this.payment.interestRateGenerated = pv * interest;
-        this.payment.principalValue = pmt - this.payment.interestRateGenerated;
+        this.payment.principalValue = pmt - this.payment.interestRateGenerated; // AMORTIZACION
         this.payment.paymentTotal = this.monthlyFee;
+        this.payment.provisional_payment = 0.0;
 
         const date = moment((document.getElementById('payment-date') as HTMLInputElement).value).toDate();
         const newDate = moment(date).add(i, 'months').toDate();
 
         this.payment.expireDate = new Date(newDate);
 
-        pv = pv - this.payment.principalValue;
+        pv = pv - this.payment.principalValue; // Saldo restante por cada iteracion.
         if (pv < 0) {
-          this.payment.remainingBalance = 0;
+          this.payment.remainingBalance = 0; // El primer saldo negativo, valdrá cero
         } else {
-          this.payment.remainingBalance = pv;
+          this.payment.remainingBalance = pv; // Mientras  no se anegativo asignará pv como saldo restante.
         }
 
         this.payments.push(this.payment);
 
       }
-      // console.log(this.payments);
+      
       this.jqueryConfigs.configFeesDataTable('fees');
     } else {
       Swal.fire('Enganche Vacío', 'El valor del enganche no puede ser vacío, por favor ingrese un valor.', 'warning');
@@ -241,35 +243,7 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
           this.paymentAgreement.totalPayments = this.paymentAgreement.payments.length;
           // console.log(this.paymentAgreement);
 
-          this.paymentAgreementService.create(this.paymentAgreement).subscribe(
-            res => {
-              this.router.navigate(['/sales/index']);
-              Swal.fire('Venta Realizada con éxito',
-                `Se ha creado con éxito el acuerdo de pagos`, 'success');
-
-              // Generate PDF
-              this.paymentAgreementService.getPaymentAgreementPDF(res.paymentAgreement.paymentAgreementId).subscribe(
-                r => {
-                  const url = window.URL.createObjectURL(r.data);
-                  const a = document.createElement('a');
-                  document.body.appendChild(a);
-                  a.setAttribute('style', 'display: none');
-                  a.setAttribute('target', 'blank');
-                  a.href = url;
-                  /*
-                    opcion para pedir descarga de la respuesta obtenida
-                    a.download = response.filename;
-                  */
-                  window.open(a.toString(), '_blank');
-                  window.URL.revokeObjectURL(url);
-                  a.remove();
-                },
-                error => {
-                  console.log(error);
-                }
-              );
-            }
-          );
+          this.createAgreement(this.paymentAgreement);
         }
       );
     }
@@ -281,6 +255,42 @@ export class CreateSaleComponent implements OnInit, OnDestroy {
       sum = sum + e.paymentTotal;
     });
     return sum;
+  }
+
+  createAgreement(agreement: PaymentAgreement): void {
+    this.paymentAgreementService.create(this.paymentAgreement).subscribe(
+      response => {
+        this.router.navigate(['/sales/index']);
+        Swal.fire('Venta Realizada con éxito',
+          `Se ha creado con éxito el acuerdo de pagos`, 'success');
+
+        // Generate PDF
+        this.generateSalePDF(response.paymentAgreement.paymentAgreementId);
+      }
+    );
+  }
+
+  generateSalePDF(agreementId: number): void {
+    this.paymentAgreementService.getPaymentAgreementPDF(agreementId).subscribe(
+      response => {
+        const url = window.URL.createObjectURL(response.data);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.setAttribute('target', 'blank');
+        a.href = url;
+        /*
+          opcion para pedir descarga de la respuesta obtenida
+          a.download = response.filename;
+        */
+        window.open(a.toString(), '_blank');
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   compareTerrain(o1: Terrain, o2: Terrain): boolean {

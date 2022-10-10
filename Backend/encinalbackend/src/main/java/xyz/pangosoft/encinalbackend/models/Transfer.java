@@ -34,12 +34,12 @@ public class Transfer implements Serializable {
     private Client toClient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "terrain_id")
+    @JoinColumn(name = "sale_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Terrain terrainId;
+    private Sale SaleId;
 
     @PrePersist
-    public void prepersist(){
+    public void prepersist() {
         this.createdAt = new Date();
     }
 
@@ -91,12 +91,12 @@ public class Transfer implements Serializable {
         this.description = description;
     }
 
-    public Terrain getTerrainId() {
-        return terrainId;
+    public Sale getSaleId() {
+        return SaleId;
     }
 
-    public void setTerrainId(Terrain terrainId) {
-        this.terrainId = terrainId;
+    public void setSaleId(Sale saleId) {
+        SaleId = saleId;
     }
 
     private final static long serialVersionUID = 1L;

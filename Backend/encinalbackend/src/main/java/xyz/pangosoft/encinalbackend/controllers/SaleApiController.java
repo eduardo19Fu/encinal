@@ -117,6 +117,37 @@ public class SaleApiController {
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
+    @GetMapping(value = "/sales/client/{id}")
+    public ResponseEntity<?> getByClient(@PathVariable Integer id) {
+
+        List<Sale> sales = new ArrayList<>();
+        Client client = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            client = clientService.singleClient(id);
+            sales = saleService.listSalesByClient(client);
+
+        } catch (DataAccessException e) {
+            response.put("message", "¡Ha ocurrido un error en la Base de Datos!");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (client == null) {
+            response.put("message", "¡El cliente solicitado no se encuentra registrado en la base de datos!");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (sales.size() <= 0) {
+            response.put("message", "El cliente solicitado no cuenta con ninguna venta registrada a su nombre");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(sales, HttpStatus.OK);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_SECRETARIO"})
     @PostMapping("/sales")
     public ResponseEntity<?> create(@RequestBody Sale sale, BindingResult result){
 

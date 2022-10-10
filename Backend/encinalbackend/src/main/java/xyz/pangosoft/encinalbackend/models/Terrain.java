@@ -52,7 +52,7 @@ public class Terrain implements Serializable {
     }
 
     public void setTerrainNumber(String terrainNumber) {
-        this.terrainNumber = terrainNumber;
+        this.terrainNumber = terrainNumber.toUpperCase();
     }
 
     public Double getPrice() {

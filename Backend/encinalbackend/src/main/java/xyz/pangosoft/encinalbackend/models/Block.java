@@ -60,7 +60,7 @@ public class Block implements Serializable {
     }
 
     public void setBlockNumber(String blockNumber) {
-        this.blockNumber = blockNumber;
+        this.blockNumber = blockNumber.toUpperCase();
     }
 
     public Integer getCapacity() {

@@ -79,16 +79,18 @@ public class ReceiptApiController {
         Status newPaymentStatus = null;
 
         int cuotas = 0;
-        Double remainingPrincipal = 0.00;
+        Double remainingPrincipal = 0.00; // No usada
         Double pmt = 0.00;
         Double pv = 0.00;
         Double fee = 0.00;
 
+        Double abono = 0.00;
+        Double saldoAnterior = 0.0;
 
         try{
             receiptStatus = statusService.singleStatusName("Pagado", "Receipt");
             receipt.setStatus(receiptStatus);
-            newReceipt = this.receiptService.create(receipt);
+             newReceipt = this.receiptService.create(receipt);
 
             if(receipt.getReceiptType().getReceiptTypeId() == 1){
                 paymentStatus = statusService.singleStatusName("Pagado", "Payment");
@@ -98,6 +100,7 @@ public class ReceiptApiController {
                     for(ReceiptDetail item : newReceipt.getItems()){
                         Payment payment = item.getPayment();
                         payment.setStatus(paymentStatus);
+                        payment.setArrears((receipt.getArrearsValue() * payment.getPaymentTotal()));
                         this.paymentService.save(payment);
                     }
                 }
@@ -107,50 +110,51 @@ public class ReceiptApiController {
                 List<Payment> oldPayments = receipt.getPaymentAgreement().getPayments();
                 List<Payment> newPayments = new ArrayList<>();
 
-                remainingPrincipal = this.paymentAgreementService.getPrincipalTotal(receipt.getPaymentAgreement().getPaymentAgreementId());
+                pmt = this.paymentAgreementService.getFee(receipt.getPaymentAgreement().getPaymentAgreementId()); // Cuota fija
 
-                pv = remainingPrincipal - receipt.getTotal();
-                pmt = this.paymentAgreementService.getFee(receipt.getPaymentAgreement().getPaymentAgreementId());
+                cuotas = paymentService.getTotalFees(receipt.getPaymentAgreement().getPaymentAgreementId().longValue());
 
-                cuotas = pv.intValue() / pmt.intValue();
+                Payment tempPayment = new Payment();
+                abono = receipt.getTotal();
 
-                for(Payment payment : oldPayments){
-                    if(!payment.getStatus().getStatus().equals("Pagado") || !payment.getStatus().getStatus().equals("Anulado")){
-                        payment.setStatus(oldPaymentStatus);
-                        this.paymentService.save(payment);
-                    }
-                }
+                for (Payment payment : receipt.getPaymentAgreement().getPayments()) {
 
-                for(int i = 1; i <= cuotas; i++){
-                    Payment payment = new Payment();
+                    if (payment.getPaymentId().longValue() == receipt.getItems().get(0).getPayment().getPaymentId().longValue()) {
+                        saldoAnterior = paymentService.getPaymentAbove(receipt.getItems().get(0).getPayment().getPaymentId()).getRemainingBalance();
+                        payment.setProvisionalPayment(abono);
+                        payment.setPrincipalValue (
+                                payment.getPaymentTotal() + abono - payment.getInterestRateGenerated()
+                        );
 
-                    newPaymentStatus = this.statusService.singleStatusName("Activo", "Payment");
-                    payment.setPaymentNumber(i);
-                    payment.setInterestRateGenerated(pv * ((receipt.getPaymentAgreement().getInterestRate() / 12) / 100));
-                    payment.setPrincipalValue(pmt - payment.getInterestRateGenerated());
-                    payment.setPaymentTotal(pmt);
-                    payment.setStatus(newPaymentStatus);
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date());
-                    calendar.add(Calendar.MONTH, i);
-                    Date paymentDate = calendar.getTime();
-
-                    payment.setExpireDate(paymentDate);
-                    pv = pv - payment.getPrincipalValue();
-                    if(pv < 0){
-                        payment.setRemainingBalance(0.00);
-                    } else{
-                        payment.setRemainingBalance(pv);
+                        if (!(saldoAnterior < payment.getPrincipalValue())) {
+                            payment.setRemainingBalance(saldoAnterior - payment.getPrincipalValue());
+                        } else {
+                            double valor = 0.0;
+                            valor = receipt.getPaymentAgreement().getSale().getTerrain().getPrice() - receipt.getPaymentAgreement().getHitch();
+                            payment.setRemainingBalance(valor - payment.getPrincipalValue());
+                        }
                     }
 
+                    if (payment.getPaymentId().longValue() > receipt.getItems().get(0).getPayment().getPaymentId().longValue()) { // Cuotas subsecuentes a la del abono
+                        payment.setInterestRateGenerated(tempPayment.getRemainingBalance() * ((receipt.getPaymentAgreement().getInterestRate() / 12) / 100));
+                        payment.setPrincipalValue(payment.getPaymentTotal() - payment.getInterestRateGenerated());
+                        payment.setRemainingBalance(tempPayment.getRemainingBalance() - payment.getPrincipalValue());
+
+                        if (payment.getRemainingBalance() <= 0) { // Determinar si es la ultima cuota
+                            payment.setPaymentTotal(tempPayment.getRemainingBalance() + payment.getInterestRateGenerated());
+                            payment.setRemainingBalance(0.00);
+                        }
+                    }
+
+                    tempPayment = payment;
                     newPayments.add(payment);
                 }
 
                 paymentAgreementUpdated = receipt.getPaymentAgreement();
                 paymentAgreementUpdated.setPayments(newPayments);
 
-                this.paymentAgreementService.save(paymentAgreementUpdated);
+                 this.paymentAgreementService.save(paymentAgreementUpdated);
+
             }
 
         } catch(DataAccessException e){
@@ -161,6 +165,7 @@ public class ReceiptApiController {
 
         response.put("message", "¡El pago se ha realizado con éxito!");
         response.put("receipt", newReceipt);
+//        response.put("paymentAgreement", paymentAgreementUpdated);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 

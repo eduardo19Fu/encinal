@@ -49,7 +49,7 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toUpperCase();
     }
 
     public String getEmail() {
@@ -73,7 +73,7 @@ public class User implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.toUpperCase();
     }
 
     public String getMiddleName() {
@@ -81,7 +81,7 @@ public class User implements Serializable {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = middleName.toUpperCase();
     }
 
     public String getLastName() {
@@ -89,7 +89,7 @@ public class User implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.toUpperCase();
     }
 
     public boolean getEnabled() {
