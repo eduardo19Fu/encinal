@@ -39,7 +39,7 @@ public class Receipt implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_by")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"password", "roles", "hibernateLazyInitializer", "handler"})
     private User registerBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,7 +53,7 @@ public class Receipt implements Serializable {
 
     @PrePersist
     public void prepersist(){
-        this.createdAt = new Date();
+        // this.createdAt = new Date();
     }
 
     public Integer getReceiptId() {

@@ -29,7 +29,6 @@ export class CreateReceiptComponent implements OnInit {
   title: string;
   valorMora: number;
   totalIngresado: number;
-  fechaPago: Date;
 
   user: User;
   client: Client;
@@ -104,7 +103,7 @@ export class CreateReceiptComponent implements OnInit {
     this.paymentAgreementService.getPaymentAgreement(event.target.value).subscribe(
       paymentAgreement => {
         this.paymentAgreement = paymentAgreement;
-        this.payments = this.paymentAgreement.payments;
+        this.payments = this.paymentAgreement.payments.filter((payment) => payment.status.statusId !== 23 && payment.status.statusId !== 24);
       }
     );
   }
@@ -120,8 +119,12 @@ export class CreateReceiptComponent implements OnInit {
       if (event.target.checked) {
 
         const item = new ReceiptDetail();
-        const moraIngresada = (+(document.getElementById('arrears-value') as HTMLInputElement).value) / 100;
-
+        let moraIngresada = 0.0;
+        
+        if (this.receipt.receiptType.receiptTypeId === 1) {
+          moraIngresada = (+(document.getElementById('arrears-value') as HTMLInputElement).value) / 100;
+        }
+        
         item.payment = payment;
         item.payment.arrears = moraIngresada;
         item.subtotal = item.calcularSubTotal();
@@ -138,6 +141,7 @@ export class CreateReceiptComponent implements OnInit {
       }
     } else {
       Swal.fire('¡Acción no Permitida!', 'No se puede cobrar más de una cuota en un mismo recibo.', 'warning');
+      event.target.checked = false;
     }
   }
 
@@ -151,133 +155,92 @@ export class CreateReceiptComponent implements OnInit {
     );
   }
 
-  createPayment(): void {
+  createReceipt(): void {
     this.receipt.receiptType = this.receiptType;
     this.receipt.paymentAgreement = this.paymentAgreement;
-    let restante = 0;
-    // this.receipt.arrearsValue = (+(document.getElementById('arrears-value') as HTMLInputElement).value) / 100;
-    // this.receipt.arrearsValue = 0;
 
-    if (this.receipt.receiptType.receiptTypeId === 1) {
+    if (this.receipt.createdAt || this.receipt.createdAt !== undefined) {
 
-      if (this.totalIngresado || this.totalIngresado > 0) {
-
-        if (this.receipt.items.length > 0) {
-
-          if (this.receipt.arrearsValue > 0) {
-            this.receipt.total = (this.receipt.calcularTotal() * this.receipt.arrearsValue) + this.receipt.calcularTotal();
-            console.log(this.receipt.total);
-
-            // calculates the remainder between the amount paid in and the total of the payments
-            restante = this.totalIngresado - this.receipt.total;
-            console.log(this.totalIngresado);
-            console.log(restante);
-
-            if (restante === 0) {
-              this.receiptService.create(this.receipt).subscribe(
-                response => {
-                  this.router.navigate(['/receipts/index']);
-                  Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
-                }
-              );
-            } else if (restante < 0) {
-              Swal.fire('Advertencia', 'Valor ingresado no puede ser menor que el total a pagar por las cuotas.', 'warning');
-            } else if (restante > 0) {
-              this.receiptService.getType(2).subscribe(
-                response => {
-                  this.receiptType = response;
-                  console.log(this.receiptType);
-                }
-              );
-            }
-
-          } else {
-            this.receipt.total = this.receipt.calcularTotal();
-            console.log('estas aqui 5.1');
-
-            // calculates the remainder between the amount paid in and the total of the payments
-            restante = this.totalIngresado - this.receipt.total;
-            console.log(this.totalIngresado);
-            console.log(restante);
-
-            if (restante === 0) {
-              this.receiptService.create(this.receipt).subscribe(
-                response => {
-                  this.router.navigate(['/receipts/index']);
-                  Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
-                }
-              );
-            } else if (restante < 0) {
-              Swal.fire('Advertencia', 'Valor ingresado no puede ser menor que el total a pagar por las cuotas.', 'warning');
-            } else if (restante > 0) {
-              this.receiptService.create(this.receipt).subscribe(
-                response => {
-                  if (response) {
-                    this.receiptService.getType(2).subscribe(
-                      response => {
-                        this.receiptType = response;
-                        console.log(this.receiptType);
-
-                        this.receipt.total = restante;
-                        console.log(restante);
-                        this.receipt.receiptType = this.receiptType;
-                        this.receiptService.create(this.receipt).subscribe(
-                          response => {
-                            this.router.navigate(['/receipts/index']);
-                            Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
-                          }, error => {
-                            Swal.fire('Error', error.message, 'error');
-                          }
-                        );
-                      }
-                    );
-                  }
-                }, error => {
-                  Swal.fire('Error al crear el recibo', error.error.message, 'error');
-                }
-              );
-            }
-          }
-
-        } else {
-          Swal.fire('Advertencia', 'No se ha marcado ninguna cuota para realizar el pago.', 'warning');
-        }
-
-      } else {
-        Swal.fire('Advertencia', 'Monto Ingresado debe ser mayor a 0.', 'warning');
+      if (this.receipt.receiptType.receiptTypeId === 1) {
+        console.log('estas aqui 1');
+        this.pagoCuota(this.receipt);
+      } else if (this.receipt.receiptType.receiptTypeId === 2) {
+        this.pagoAbono(this.receipt);
       }
 
-    } else if (this.receipt.receiptType.receiptTypeId === 2) {
-      this.receipt.total = +(document.getElementById('abono') as HTMLInputElement).value;
+    } else {
+      Swal.fire('Advertencia', 'Debe ingresar una fecha de pago correcta.', 'warning');
+    }
 
-      // if (this.receipt.total >= 5000) {
-      this.receiptService.create(this.receipt).subscribe(
-        response => {
-          this.router.navigate(['/receipts/index']);
-          Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
+  }
+
+  pagoCuota(receipt: Receipt): void {
+    if (this.totalIngresado || this.totalIngresado > 0) {
+      console.log('estas aqui pago cuota 1');
+      if(this.receipt.items.length > 0) {
+        
+        if(this.receipt.arrearsValue > 0) {
+          this.receipt.total = (this.receipt.calcularTotal() * this.receipt.arrearsValue) + this.receipt.calcularTotal();
+        } else {
+          this.receipt.total = this.receipt.calcularTotal();
         }
-      );
-      // } else {
-      //   Swal.fire('Monto Inválido', 'No se pueden efectuar abonos a capital menores a Q. 5,000.00', 'warning');
-      // }
+          
+          // calculates the remainder between the amount paid in and the total of the payments
+          let restante = this.totalIngresado - this.receipt.total;
+          console.log('estas aqui pago cuota 2');
+          if (restante >= 0) {
+            this.receiptService.create(receipt).subscribe(
+              response => {
+                this.router.navigate(['/receipts/index']);
+                Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
+              }
+            );
+            console.log(receipt);
+          } else if (restante < 0) {
+            Swal.fire('Advertencia', 'Valor ingresado no puede ser menor que el total a pagar por las cuotas.', 'warning');
+          }
+
+      } else {
+        Swal.fire('Advertencia', 'No ha seleccionado ninguna cuota para cancelar.', 'warning');
+      }
+    } else {
+      Swal.fire('Advertencia', 'Por favor, ingrese un monto válido para llevar a cabo la operación.', 'warning');
+    }
+  }
+
+  pagoAbono(receipt: Receipt): void {
+    this.receipt.total = +(document.getElementById('abono') as HTMLInputElement).value;
+
+    if (this.receipt.total || this.receipt.total !== 0) {
+
+      if (this.receipt.items.length > 0) {
+  
+        // if (this.receipt.total >= 5000) {
+          this.receiptService.create(this.receipt).subscribe(
+            response => {
+              this.router.navigate(['/receipts/index']);
+              Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
+            }
+          );
+          console.log(this.receipt);
+          // } else {
+          //   Swal.fire('Monto Inválido', 'No se pueden efectuar abonos a capital menores a Q. 5,000.00', 'warning');
+          // }
+      } else {
+        Swal.fire('Advertencia', 'Debe elegir un mes al menos para poder realizar el abono.', 'warning');
+      }
+    } else {
+      Swal.fire('Advertencia', 'Debe ingresar un monto válido y mayor a 0.', 'warning');
     }
   }
 
   cambioMora(event: any): number {
     this.receipt.arrearsValue = (+(event) / 100);
-    console.log(this.receipt.arrearsValue);
+    
     if (this.receipt.arrearsValue > 0 && this.receipt.total > 0) {
       this.receipt.total = (this.receipt.calcularTotal() * this.receipt.arrearsValue) + this.receipt.calcularTotal();
-      console.log(this.receipt.total);
+    } 
 
-      // this.receiptService.create(this.receipt).subscribe(
-      //   response => {
-      //     this.router.navigate(['/receipts/index']);
-      //     Swal.fire('¡Pago Éxitoso!', 'El pago se ha realizado con éxito.', 'success');
-      //   }
-      // );
-    } else {
-    }
     return this.receipt.arrearsValue;
   }
 

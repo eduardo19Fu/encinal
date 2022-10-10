@@ -35,7 +35,7 @@
 		concat(cl.first_name, ' ', ifnull(cl.middle_name, ''), ' ', cl.last_name) AS cliente,
 		cl.id,
 		get_cantidad_cuotas( $P{paymentId} ) as cantidad_cuotas,
-		p.provisional_payment
+		ifnull(p.provisional_payment, 0.00) as provisional_payment	
 FROM payments AS p
 INNER JOIN payments_agreements AS pa ON pa.payment_agreement_id = p.payment_agreement_id
 INNER JOIN sales AS sa ON sa.sale_id = pa.sale_id
