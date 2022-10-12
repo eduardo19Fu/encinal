@@ -55,6 +55,21 @@
                         </button>
                     </div>
                 </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label for="sale-date">Fecha de Venta</label>
+                        <input type="date" class="form-control" name="sale-date" id="sale-date"
+                            [(ngModel)]="sale.saleDate" required #saleDate="ngModel">
+                    </div>
+
+                    <div *ngIf="saleDate.invalid && (saleDate.dirty || saleDate.touched)">
+                        <span class="requerido" *ngIf="saleDate.errors.required">
+                            Elija una fecha válida.
+                        </span>
+                    </div>
+
+                </div>
             </div>
 
             <div class="row">
@@ -152,7 +167,7 @@
                 <div>
                     <h4>Cuota Mensual {{monthlyFee | currency: "Q" : "symbol"}}</h4>
                     <button class="btn bg-gradient-danger" *ngIf="payments?.length > 0" (click)="createFeesSale()"
-                        [disabled]="!terrain || !customer || !seller">
+                        [disabled]="!terrain || !customer || !seller || !sale.saleDate">
 
                         <i class="fas fa-cash-register"></i>
                         Vender

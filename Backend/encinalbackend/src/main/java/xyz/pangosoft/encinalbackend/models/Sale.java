@@ -50,7 +50,7 @@ public class Sale implements Serializable {
 
     @PrePersist
     public void saleDate(){
-        this.saleDate = new Date();
+//        this.saleDate = new Date();
     }
 
     public Integer getSaleId() {
