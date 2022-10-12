@@ -20,7 +20,6 @@ export class AuthService {
     private httpClient: HttpClient
   ) {
     this.url = 'http://localhost:8180';
-    // this.url = 'https://encinal-oficial.herokuapp.com';
     // this.url = 'https://condadoelencinal.com:8180';
   }
 

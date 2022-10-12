@@ -109,7 +109,11 @@ public class Client implements Serializable {
     }
 
     public void setNit(String nit) {
-        this.nit = nit.toUpperCase();
+        if (nit != null) {
+            this.nit = nit.toUpperCase();
+        } else {
+            this.nit = nit;
+        }
     }
 
     public String getId() {
